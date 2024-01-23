@@ -5,7 +5,7 @@ import java.sql.Date;
 public class BoardDTO {
 	private int boardNum;		// 게시글 번호
 	private int memberNum;		// 게시글을 작성한 회원의 번호
-	private String ID;			// 게시글을 작성한 회원의 ID
+	private String memberID;			// 게시글을 작성한 회원의 ID
 	private String nickname;	// 게시글을 작성한 회원의 닉네임
 	private String grade;		// 게시글을 작성한 회원의 등급
 	private String category;	// 게시글의 카테고리
@@ -19,7 +19,7 @@ public class BoardDTO {
 	private String state;		// 게시글의 상태(판매, 판매완료)
 	private int viewCount;		// 게시글 조회수
 	private int commendNum;		// 게시글과 조인한 추천테이블의 번호
-	private int commendCount;	// 게시글의 추천수를 파악할 수 있는 변수
+	private int recommandCount;	// 게시글의 추천수를 파악할 수 있는 변수
 	private int reviewNum;		// 게시글과 조인한 댓글테이블의 번호
 	private String reviewDate;	// 댓글의 작성일
 	private String reviewContents;	// 댓글 내용
@@ -156,20 +156,20 @@ public class BoardDTO {
 		this.reviewContents = reviewContents;
 	}
 
-	public int getCommendCount() {
-		return commendCount;
+	public int getRecommandCount() {
+		return recommandCount;
 	}
 
-	public void setCommendCount(int commendCount) {
-		this.commendCount = commendCount;
+	public void setRecommandCount(int recommandCount) {
+		this.recommandCount = recommandCount;
 	}
 
-	public String getID() {
-		return ID;
+	public String getMemberID() {
+		return memberID;
 	}
 
-	public void setID(String iD) {
-		ID = iD;
+	public void setMemberID(String memberID) {
+		this.memberID  = memberID;
 	}
 
 	public String getNickname() {
@@ -192,6 +192,7 @@ public class BoardDTO {
 		return searchCondision;
 	}
 
+
 	public void setSearchCondision(String searchCondision) {
 		this.searchCondision = searchCondision;
 	}
@@ -202,6 +203,16 @@ public class BoardDTO {
 
 	public void setUpdatePage(String updatePage) {
 		this.updatePage = updatePage;
+	}
+	@Override
+	public String toString() {
+		return "BoardDTO [boardNum=" + boardNum + ", memberNum=" + memberNum + ", memberID=" + memberID + ", nickname="
+				+ nickname + ", grade=" + grade + ", category=" + category + ", title=" + title + ", contents="
+				+ contents + ", boardDate=" + boardDate + ", price=" + price + ", image=" + image + ", productcategory="
+				+ productcategory + ", company=" + company + ", state=" + state + ", viewCount=" + viewCount
+				+ ", commendNum=" + commendNum + ", commendCount=" + recommandCount + ", reviewNum=" + reviewNum
+				+ ", reviewDate=" + reviewDate + ", reviewContents=" + reviewContents + ", searchCondision="
+				+ searchCondision + ", updatePage=" + updatePage + "]";
 	}
 
 }

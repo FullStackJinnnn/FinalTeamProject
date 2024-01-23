@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="model.board.*"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="stone" %>
 
 <!DOCTYPE html>
@@ -7,11 +7,11 @@
 
 <head>
 <meta charset="UTF-8">
-<title>내가 쓴 게시글 자세히보기</title>
+<title>자유게시판게시글자세히보기</title>
 <meta charset="utf-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+<link rel="stylesheet" href="../assets/css/main.css" />
 
 <noscript>
 	<link rel="stylesheet" href="../assets/css/noscript.css" />
@@ -45,7 +45,7 @@ table.alt tbody tr td {
     border-color: white;
 }
 
-.actions {
+ul {
 	float: right;
 }
 </style>
@@ -56,26 +56,27 @@ table.alt tbody tr td {
 	<stone:printNav member='${member}' />
 	<!-- Main -->
 	<div id="main">
+
 		<!-- Post -->
 		<section class="post">
 			<header class="major">
-				<h3>${boardDTO.title}</h3>
+				<h3>화면 구성하는 거 힘들면 개추 ㅋㅋ</h3>
 				<br>
 			</header>
 			<!-- 날짜 및 작성자 -->
 			<h4>
-				Date :${boardDTO.boardDate}<br>Writer : ${boardDTO.nickname}<br>
+				Date : 2024-01-24<br>Writer : 김성민입니다
 			</h4>
-			
+
 
 			<hr />
 
 
 			<!-- 내용 -->
-			<blockquote>${boardDTO.contents}</blockquote>
-			<h6>Views : ${boardDTO.viewCount}</h6>
+			<blockquote>일단 나부터 ㅋㅋ</blockquote>
+			<h6>Views : 53</h6>
 			<br>
-			<h6>Recommend : ${boardDTO.recommandCount}</h6>
+			<h6>Recommend : 7</h6>
 			<br>
 			<div class="col-6 col-12-small" style="text-align:right;">
 				<br>
@@ -90,11 +91,43 @@ table.alt tbody tr td {
 
 
 			<!-- 댓글 -->
-			<stone:review />
+			<section>
+				<form method="post" action="#">
+					<div class="fields">
+						<div class="field">
+							<label for="message">Write Contents</label>
+							<textarea name="message" id="message" rows="3"></textarea>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><input type="submit" value="leaving a comment" /></li>
+					</ul>
+					<br>
+				</form>
+			</section>
+			<hr />
+			<div class="table-wrapper">
+				<table class="alt">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Contents</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>승현짱</td>
+							<td>ㄹㅇ 진짜 힘들다 힘들어</td>
+							<td>2024-01-15</td>
+						</tr>
+						
+					</tbody>
+
+				</table>
+			</div>
 		</section>
 	</div>
-	
-	<stone:copyright />
 
 
 

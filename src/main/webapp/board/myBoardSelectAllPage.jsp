@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="stone" %>
+	pageEncoding="UTF-8" import="model.board.*,java.util.ArrayList"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="stone"%>
 
 <!DOCTYPE html>
 <html>
@@ -11,85 +13,53 @@
 <meta charset="utf-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
-<link rel="stylesheet" href="../assets/css/main.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/main.css" />
 
 <noscript>
 	<link rel="stylesheet" href="../assets/css/noscript.css" />
 </noscript>
-
 </head>
 
 <body class="is-preload">
 	<stone:printNav member='${member}' />
+
 	<!-- Main -->
 	<div id="main">
-
 		<!-- Featured Post -->
-	
-
 		<div class="table-wrapper">
+
 			<table class="alt">
 				<thead>
 					<tr>
-						<th>num</th>
-						<th>title</th>
-						<th>writer</th>
-						<th>date</th>
-						<th>recommend</th>
-						<th>views</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>날짜</th>
+						<th>추천</th>
+						<th>조회수</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>6</td>
-						<td><a href="#">화면 구성하는 거 힘들면 개추 ㅋㅋ</a></td>
-						<td>김성민입니다</td>
-						<td>date</td>
-						<td>1</td>
-						<td>1</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td><a href="#">title 5</a></td>
-						<td>writer 5</td>
-						<td>date 5</td>
-						<td>recommend 5</td>
-						<td>views 5</td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td><a href="#">title 4</a></td>
-						<td>writer 4</td>
-						<td>date 4</td>
-						<td>recommend 4</td>
-						<td>views 4</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td><a href="#">title 3</a></td>
-						<td>writer 3</td>
-						<td>date 3</td>
-						<td>recommend 3</td>
-						<td>views 3</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td><a href="#">title 2</a></td>
-						<td>writer 2</td>
-						<td>date 2</td>
-						<td>recommend 2</td>
-						<td>views 2</td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td><a href="#">title 1</a></td>
-						<td>writer 1</td>
-						<td>date 1</td>
-						<td>recommend 1</td>
-						<td>views 1</td>
-					</tr>
-					
+					<c:if test="${fn:length(boardDatas) <= 0}">
+						<tr>
+							<td colspan="7">내가 작성한 게시글이 없습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${fn:length(boardDatas) > 0}">
+						<c:forEach var="data" items="${boardDatas}">
+							<tr>
+								<td>${data.boardNum}</td>
+								<td><a
+									href="myBoardSelectOnePage.do?boardNum=${data.boardNum}">${data.title}</a></td>
+								<td>${data.nickname}</td>
+								<td>${data.boardDate}</td>
+								<td>${data.recommandCount}</td>
+								<td>${data.viewCount}</td>
+							</tr>
+						</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 		</div>
@@ -104,10 +74,9 @@
 					href="#" class="page">10</a> <a href="#" class="next">Next</a>
 			</div>
 		</footer>
-
 	</div>
-	<stone:copyright />
 
+	<stone:copyright />
 
 	<!-- Scripts -->
 	<script src="../assets/js/jquery.min.js"></script>
@@ -117,8 +86,6 @@
 	<script src="../assets/js/breakpoints.min.js"></script>
 	<script src="../assets/js/util.js"></script>
 	<script src="../assets/js/main.js"></script>
-
-
 </body>
 
 </html>

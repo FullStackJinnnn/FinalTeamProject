@@ -40,26 +40,26 @@ public class BoardDAO {
 	
 	// 게시글 검색 기능 - 작성자(NICKNAME)로 검색
 	private static final String SELECTALL_SEARCHWRITER = "SELECT BOARD.BOARDNUM, MEMBER.MEMBERNUM, BOARD.CATEGORY, "
-			+ "BOARD.TITLE, TO_CHAR(BOARD.BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, BOARD.STATE, BOARD.VIEWCOUNT, COMMEND.COMMENDNUM, MEMBER.NICKNAME, "
+			+ "BOARD.TITLE, TO_CHAR(BOARD.BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, BOARD.STATE, BOARD.VIEWCOUNT, RECOMMAND.RECOMMANDNUM, MEMBER.NICKNAME, "
 			+ "MEMBER.ID, COUNT(BOARD.BOARDNUM) AS CNT FROM BOARD "
-			+ "JOIN MEMBER ON BOARD.MEMBERNUM = MEMBER.MEMBERNUM "
-			+ "JOIN COMMEND ON BOARD.BOARDNUM = COMMEND.BOARDNUM WHERE CATEGORY = ? "
+			+ "LEFT JOIN MEMBER ON BOARD.MEMBERNUM = MEMBER.MEMBERNUM "
+			+ "LEFT JOIN RECOMMAND ON BOARD.BOARDNUM = RECOMMAND.BOARDNUM WHERE NICKNAME = ? "
 			+ "AND MEMBER.NICKNAME LIKE '%'||?||'%'"
 			+ "GROUP BY BOARD.BOARDNUM, MEMBER.MEMBERNUM, BOARD.CATEGORY, BOARD.TITLE, BOARD.BOARDDATE, "
-			+ "BOARD.STATE, BOARD.VIEWCOUNT, COMMEND.COMMENDNUM, MEMBER.NICKNAME, MEMBER.ID "
+			+ "BOARD.STATE, BOARD.VIEWCOUNT, RECOMMAND.RECOMMANDNUM, MEMBER.NICKNAME, MEMBER.ID "
 			+ "ORDER BY BOARD.BOARDNUM DESC";	
 
 	// 게시글 상세보기_ 리뷰, 판매글
-	private static final String SELECTONE = "SELECT BOARD.BOARDNUM, MEMBER.MEMBERNUM, MEMBER.NICNAME, "
-			+ "MEMBER.ID, BOARD.CATEGORY, BOARD.TITLE, BOARD.CONTENTS, TO_CHAR(BOARD.BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, BOARD.PRICE, "
-			+ "BOARD.IMAGE, BOARD.PRODUCTCATEGORY, BOARD.COMPANY, BOARD.STATE, BOARD.VIEWCOUNT, "
-			+ "COMMEND.COMMENDNUM, COUNT(BOARD.BOARDNUM) AS CNT FROM BOARD "
-			+ "JOIN MEMBER ON BOARD.MEMBERNUM = MEMBER.MEMBERNUM "
-			+ "JOIN COMMEND ON BOARD.BOARDNUM = COMMEND.BOARDNUM "
-			+ "WHERE BOARD.BOARDNUM = ? GROUP BY BOARD.BOARDNUM, MEMBER.MEMBERNUM, MEMBER.NICNAME, "
-			+ "MEMBER.ID, BOARD.CATEGORY, BOARD.TITLE, BOARD.CONTENTS, BOARD.BOARDDATE, "
-			+ "BOARD.PRICE, BOARD.IMAGE, BOARD.PRODUCTCATEGORY,  "
-			+ "BOARD.COMPANY, BOARD.STATE, BOARD.VIEWCOUNT";
+	private static final String SELECTONE = "SELECT BOARD.BOARDNUM, MEMBER.MEMBERNUM, MEMBER.NICKNAME, "
+	        + "MEMBER.ID, BOARD.CATEGORY, BOARD.TITLE, BOARD.CONTENTS, TO_CHAR(BOARD.BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, BOARD.PRICE, "
+	        + "BOARD.IMAGE, BOARD.PRODUCTCATEGORY, BOARD.COMPANY, BOARD.STATE, BOARD.VIEWCOUNT, "
+	        + "RECOMMAND.RECOMMANDNUM, COUNT(BOARD.BOARDNUM) AS CNT FROM BOARD "
+	        + "LEFT JOIN MEMBER ON BOARD.MEMBERNUM = MEMBER.MEMBERNUM "
+	        + "LEFT JOIN RECOMMAND ON BOARD.BOARDNUM = RECOMMAND.BOARDNUM "
+	        + "WHERE BOARD.BOARDNUM = ? GROUP BY BOARD.BOARDNUM, MEMBER.MEMBERNUM, MEMBER.NICKNAME, "
+	        + "MEMBER.ID, BOARD.CATEGORY, BOARD.TITLE, BOARD.CONTENTS, BOARD.BOARDDATE, "
+	        + "BOARD.PRICE, BOARD.IMAGE, BOARD.PRODUCTCATEGORY,  "
+	        + "BOARD.COMPANY, BOARD.STATE, BOARD.VIEWCOUNT, RECOMMAND.RECOMMANDNUM";
 	// 조인한 게시판 테이블
 	// 추천 테이블, 회원 테이블
 	// 사용한 컬럼(보여줄 목록) : 게시글번호, 작성자번호(회원 테이블), 회원 닉네임(회원테이블), 회원ID(회원 테이블), 게시글 카테고리, 글제목,
@@ -123,8 +123,8 @@ public class BoardDAO {
 					data.setViewCount(rs.getInt("VIEWCOUNT"));
 					data.setCommendNum(rs.getInt("COMMENDNUM"));
 					data.setNickname(rs.getString("NICNAME"));
-					data.setID(rs.getString("ID"));
-					data.setCommendCount(rs.getInt("COMMENDCOUNT"));
+					data.setMemberID(rs.getString("ID"));
+					data.setRecommandCount(rs.getInt("CNT"));
 					datas.add(data);
 				}
 
@@ -142,6 +142,7 @@ public class BoardDAO {
 				} else if (boardDTO.getSearchCondision().equals("작성자")) {
 					pstmt = conn.prepareStatement(SELECTALL_SEARCHWRITER);
 					pstmt.setString(1, boardDTO.getNickname());
+				
 				} else {
 					pstmt = conn.prepareStatement(SELECTALL);
 				}
@@ -157,8 +158,8 @@ public class BoardDAO {
 					data.setViewCount(rs.getInt("VIEWCOUNT"));
 					data.setCommendNum(rs.getInt("COMMENDNUM"));
 					data.setNickname(rs.getString("NICNAME"));
-					data.setID(rs.getString("ID"));
-					data.setCommendCount(rs.getInt("COMMENDCOUNT"));
+					data.setMemberID(rs.getString("ID"));
+					data.setRecommandCount(rs.getInt("CNT"));
 					datas.add(data);
 				}
 
@@ -176,6 +177,7 @@ public class BoardDAO {
 				} else if (boardDTO.getSearchCondision().equals("작성자")) {
 					pstmt = conn.prepareStatement(SELECTALL_SEARCHWRITER);
 					pstmt.setString(1, boardDTO.getNickname());
+					pstmt.setString(2, boardDTO.getNickname());
 				} else {
 					pstmt = conn.prepareStatement(SELECTALL);
 				}
@@ -189,10 +191,10 @@ public class BoardDAO {
 					data.setBoardDate(rs.getString("BOARDDATE"));
 					data.setState(rs.getString("STATE"));
 					data.setViewCount(rs.getInt("VIEWCOUNT"));
-					data.setCommendNum(rs.getInt("COMMENDNUM"));
-					data.setNickname(rs.getString("NICNAME"));
-					data.setID(rs.getString("ID"));
-					data.setCommendCount(rs.getInt("COMMENDCOUNT"));
+					data.setCommendNum(rs.getInt("RECOMMANDNUM"));
+					data.setNickname(rs.getString("NICKNAME"));
+					data.setMemberID(rs.getString("ID"));
+					data.setRecommandCount(rs.getInt("CNT"));
 					datas.add(data);
 				}
 
@@ -233,8 +235,8 @@ public class BoardDAO {
 					data.setState(rs.getString("STATE"));
 					data.setViewCount(rs.getInt("VIEWCOUNT"));
 					data.setCommendNum(rs.getInt("COMMENDNUM"));
-					data.setID(rs.getString("ID"));
-					data.setCommendCount(rs.getInt("COMMENDCOUNT"));
+					data.setMemberID(rs.getString("MEMBERID"));
+					data.setRecommandCount(rs.getInt("CNT"));
 					data.setReviewNum(rs.getInt("REVIEWNUM"));
 				} else {
 					return null;
@@ -256,7 +258,7 @@ public class BoardDAO {
 					data = new BoardDTO();
 					data.setBoardNum(rs.getInt("BOARDNUM"));
 					data.setMemberNum(rs.getInt("MEMBERNUM"));
-					data.setNickname(rs.getString("NICNAME"));
+					data.setNickname(rs.getString("NICKNAME"));
 					data.setCategory(rs.getString("CATEGORY"));
 					data.setTitle(rs.getString("TITLE"));
 					data.setContents(rs.getString("CONTENTS"));
@@ -267,10 +269,9 @@ public class BoardDAO {
 					data.setCompany(rs.getString("COMPANY"));
 					data.setState(rs.getString("STATE"));
 					data.setViewCount(rs.getInt("VIEWCOUNT"));
-					data.setCommendNum(rs.getInt("COMMENDNUM"));
-					data.setID(rs.getString("ID"));
-					data.setCommendCount(rs.getInt("COMMENDCOUNT"));
-					data.setReviewNum(rs.getInt("REVIEWNUM"));
+					data.setCommendNum(rs.getInt("RECOMMANDNUM"));
+					data.setMemberID(rs.getString("ID"));
+					data.setRecommandCount(rs.getInt("CNT"));
 				} else {
 					return null;
 				}

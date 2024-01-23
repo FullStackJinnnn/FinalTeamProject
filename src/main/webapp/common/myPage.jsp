@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="model.member.*"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="stone"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
@@ -67,44 +68,11 @@
 </head>
 
 <body class="is-preload">
-    <!-- Wrapper -->
-    <div id="wrapper">
-        <!-- Header -->
-        <header id="header">
-            <a href="index.jsp" class="logo">CHAL KAG</a>
-        </header>
 
-        <!-- Nav -->
-        <nav id="nav">
-            <ul class="links">
-                <%
-                if (session.getAttribute("member") != null) { // 로그인 상태 메뉴
-                %>
-                <li><a href="sellBoardSelectAllPage.do">UsedTrade</a></li>
-                <li><a href="cameraReviewSelectAllPage.do">CameraReview</a></li>
-                <li><a href="freeBoardSelectAllPage.do">FreeBoard</a></li>
-                <li><a href="logout.do">LOGOUT</a></li>
-                <li><a href="myPage.do">MYPAGE</a></li>
-                <%
-                } else // 로그아웃 상태 메뉴
-                {
-                %>
-                <li><a href="sellBoardSelectAllPage.do">Used Trade</a></li>
-                <li><a href="cameraReviewSelectAllPage.do">Camera Review</a></li>
-                <li><a href="freeBoardSelectAllPage.do">Free Board</a></li>
-                <li><a href="loginPage.do">LOGIN</a></li>
-                <li><a href="joinPage.do">SIGN IN</a></li>
-                <%
-                }
-                %>
-            </ul>
-        </nav>
-    </div>
-
+    <stone:printNav member='${member}'/>
+	
     <div id="footer">
-        <%
-        MemberDTO memberDTO = (MemberDTO) request.getAttribute("memberDTO");
-        %>
+
         <section>
             <div class="fields">
                 <h1 style="font-size: 150px; text-align: center;">MyPage</h1>
@@ -112,7 +80,7 @@
                     <!-- 프사 -->
                     <div class="field">
                         <div class="photo">
-                            <img id="preview" alt="프로필 이미지" src="mimg/<%=memberDTO.getProfile()%>" onload="resizePreviewImage(this, 350, 350)">
+                            <img id="preview" alt="프로필 이미지" src="mimg/${memberDTO.profile}" onload="resizePreviewImage(this, 350, 350)">
                         </div>
                         <label for="fileInput" class="btn-upload">이미지 선택 <input type="file" name="file" id="fileInput" form="firstForm"></label>
                     </div>
@@ -120,25 +88,25 @@
 
                 <!-- 아이디 -->
                 <div class="field">
-                    <label for="myPageID"></label> <input type="text" name="myPageID" id="myPageID" value="<%=memberDTO.getMemberID()%>" readonly />
+                    <label for="myPageID"></label> <input type="text" name="myPageID" id="myPageID" value="${memberDTO.memberID}" readonly />
                 </div>
 
                 <!-- 이름 -->
                 <div class="field">
-                    <label for="myPageName"></label> <input type="text" name="myPageName" id="myPageName" value="<%=memberDTO.getName()%>" readonly />
+                    <label for="myPageName"></label> <input type="text" name="myPageName" id="myPageName" value="${memberDTO.name}" readonly />
                 </div>
 
                 <!-- 닉네임 -->
                 <div class="field">
                     <form id="changeNickname" method="post" action="changeNickname.do">
-                        <label for="myPageNickname"></label> <input type="text" name="myPageNickname" id="myPageNickname" value="<%=memberDTO.getNickname()%>" required /> <input type="submit" value="닉네임 변경" style="margin-left: 30px;" />
+                        <label for="myPageNickname"></label> <input type="text" name="myPageNickname" id="myPageNickname" value="${memberDTO.nickname}" required /> <input type="submit" value="닉네임 변경" style="margin-left: 30px;" />
                     </form>
                 </div>
 
                 <!-- 번호 -->
                 <div class="field">
                     <form id="changePh" method="post" action="#">
-                        <label for="myPagePh"></label> <input type="text" name="myPagePh" id="myPagePh" value="<%=memberDTO.getPh()%>" readonly />
+                        <label for="myPagePh"></label> <input type="text" name="myPagePh" id="myPagePh" value="${memberDTO.ph}" readonly />
                         <button type="button" style="margin-left: 30px;" onclick="location.href='#'">전화번호 변경</button>
                     </form>
                 </div>
@@ -146,7 +114,7 @@
                 <!-- 자신이 작성한 글로 이동 -->
                 <div class="field">
                     <form id="myBoard" method="post" action="#">
-                        <button type="button" onclick="location.href='#'">내 작성글로 가기</button>
+                        <button type="button" onclick="location.href='myBoardSelectAllPage.do'">내 작성글로 가기</button>
                     </form>
                 </div>
 
@@ -176,7 +144,7 @@
 	        if (phoneNumberElement) {
 	        	
 	            // myPagePh의 값을 maskPhoneNumber 함수를 이용하여 "*"로 가려진 형태로 변경
-	            phoneNumberElement.value = maskPhoneNumber('<%=memberDTO.getPh()%>');
+	            phoneNumberElement.value = maskPhoneNumber('${memberDTO.ph}');
 	        }
 	    });
 	
@@ -237,13 +205,13 @@
 	        resizedCanvas.height = maxHeight;
 	
 	        // 파일 확장자에 따라 JPEG 또는 PNG로 변환하여 조정된 이미지로 설정
-	        if (img.src.toLowerCase().endsWith('.png')) {
+	 /*        if (img.src.toLowerCase().endsWith('.png')) {
 	            resizedCtx.drawImage(canvas, 0, 0, size, size, 0, 0, maxWidth, maxHeight);
 	            img.src = resizedCanvas.toDataURL('image/png');
-	        } else {
+	        } else { */
 	            resizedCtx.drawImage(canvas, 0, 0, size, size, 0, 0, maxWidth, maxHeight);
 	            img.src = resizedCanvas.toDataURL('image/jpeg');
-	        }
+	       // }
 	
 	        // 이미지가 리사이징되었음을 표시 207번라인으로 돌아가 함수종료
 	        imageResized = true;

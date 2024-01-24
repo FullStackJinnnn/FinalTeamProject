@@ -117,8 +117,7 @@ a {
 		<section>
 			<div class="fields">
 				<h1 style="font-size: 150px; text-align: center;">MyPage</h1>
-				<form id="changeProfile" action="profileUpload.do" method="post"
-					enctype="multipart/form-data" onsubmit="return validateForm()">
+				<form id="changeProfile">
 					<!-- 프사 -->
 					<div class="field">
 						<div class="photo">
@@ -129,10 +128,12 @@ a {
 							<label for="fileInput" class="imageUpload">이미지 선택 <input
 								type="file" name="file" id="fileInput" form="changeProfile"></label>
 
-							<input type="submit" value="이미지 확정"><br>
+							<input type="submit" value="이미지 확정" id="btnSubmit"><br>
 						</div>
 					</div>
 				</form>
+
+				<!-- 	</form> -->
 
 				<!-- 아이디 -->
 				<div class="field">
@@ -178,7 +179,10 @@ a {
 
 				<div class="field"
 					style="display: flex; justify-content: space-between; margin-top: 30px">
-
+					<div>
+						<button type="button" onclick="location.href='main.do'">변경
+							완료</button>
+					</div>
 					<div style="text-align: right;">
 						<button type="button" onclick="location.href='deleteAccount.do'">회원
 							탈퇴</button>
@@ -187,9 +191,51 @@ a {
 			</div>
 		</section>
 	</div>
-
 	<script>
-	function validateFile() {
+	
+	$(document).ready(function(){
+	      $("#btnSubmit").on("click",function(){
+	    	//preventDefault 는 기본으로 정의된 이벤트를 작동하지 못하게 하는 메서드이다. submit을 막음 
+	    	//아마 submit type 말고 button을 쓰는게 나은듯..
+	    	  event.preventDefault();
+	    	  
+	    	   var fileInput = document.getElementById('fileInput');
+			   var form= $('#changeProfile')[0];
+			   var formData = new FormData(form);
+	   	    // 선택한 파일이 없으면 알림창 띄우기
+	   	   	 if (fileInput.files.length === 0) {
+	   	        alert("이미지를 선택해주세요.");
+	   	        return false; // 폼 제출을 막기 위해 false 반환
+	   	    }
+	   	    // 선택한 파일이 있으면 폼 제출을 허용
+	      
+	    	  $.ajax({
+	              type : "POST",
+	              enctype: 'multipart/form-data', 
+	              url : "ProfileUpload2.do",
+	              data : formData,
+	              contentType : false,
+				  processData : false,
+				  success : function(data){
+					  console.log(data);
+					  if(data=='1'){
+						  alert("complete");  
+						  return true; 
+					  }
+				  },
+				  error :function(error) {
+					  console.log('에러');
+					  console.log('에러종류: '+error);
+					  alert("fail"); 
+					  
+				  }
+	    	    });
+	          
+	      });
+	   });
+	      
+	
+/* 	function validateForm() {
 	    // 파일 인풋 엘리먼트 가져오기
 	    var fileInput = document.getElementById('fileInput');
 
@@ -200,8 +246,8 @@ a {
 	    }
 	    // 선택한 파일이 있으면 폼 제출을 허용
 	    return true;
-	}
-	    }
+	} */
+	    
 	
 		 <!-- 전화번호 암호화  -->
 	    // DOMContentLoaded 이벤트가 발생했을 때 실행되는 함수 화면이 다 로드됨을 뜻함

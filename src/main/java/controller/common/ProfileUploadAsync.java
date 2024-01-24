@@ -2,30 +2,53 @@ package controller.common;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
-import controller.front.Action;
-import controller.front.ActionForward;
 import model.member.MemberDAO;
 import model.member.MemberDTO;
 
-public class ProfileUploadAction implements Action {
+/**
+ * Servlet implementation class ProfileUploadasync
+ */
+@WebServlet("/ProfileUpload2.do")
+public class ProfileUploadAsync extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ProfileUploadAsync() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	@Override
-	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		ActionForward forward = new ActionForward();
-		request.setCharacterEncoding("UTF-8");
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		
+		
+		
 		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
 
@@ -95,65 +118,21 @@ public class ProfileUploadAction implements Action {
 					existingFile.delete();
 				}
 			}
-
+			int outFlag=0;
 			// DB에 변경한 프로필 사진명 저장
 			memberDTO.setProfile(newFileName);
 			memberDTO.setSearchCondition("프로필변경");
 			boolean flag = memberDAO.update(memberDTO);
 			if (flag) {
-				System.out.println(memberDTO);
-				forward.setPath("myPage.do");
-				forward.setRedirect(true);
-			} else {
-				forward.setPath("error/alertPage.jsp");
-				forward.setRedirect(true);
+				outFlag=1;
 			}
-
-			// 회원가입시 저장한 회원 프로필이 없으면 그냥 메인으로 이동
+			PrintWriter out=response.getWriter();
+			out.print(outFlag);
+			System.out.println(outFlag);
 
 		}
-		return forward;
-	}
-}
-
-//rename Override를 위한 클래스
-class CustomFileRenamePolicy extends DefaultFileRenamePolicy {
-
-	private String newFileName;
-
-	public CustomFileRenamePolicy(String newFileName) {
-		this.newFileName = newFileName;
+	
+		
 	}
 
-	// 저장하는 파일명 재정의 하는 메서드
-	@Override
-	public File rename(File file) {
-
-		// 파일 확장자를 extension에 대입
-		String extension = extractExtension(file.getName());
-
-		// newName에 newFileName(memberNum값) + ".확장자" 대입
-		String newName = newFileName + extension;
-
-		// 새로운 파일객체 생성 후 리턴
-		File newFile = new File(file.getParent(), newName);
-
-		return newFile;
-	}
-
-	// 파일 이름에서 확장자를 추출하는 메서드
-	private String extractExtension(String fileName) {
-		// "."이 있는 인덱스 확인
-		int dotIndex = fileName.lastIndexOf('.');
-
-		// 파일 이름에 점이 존재하고, 파일 이름의 마지막 문자가 점이 아닌 경우 확인
-		if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
-
-			// "."을포함한 문자열 추출
-			return fileName.substring(dotIndex);
-
-		} else {
-			return ""; // 확장자가 없는 경우 빈 문자열 반환
-		}
-	}
 }

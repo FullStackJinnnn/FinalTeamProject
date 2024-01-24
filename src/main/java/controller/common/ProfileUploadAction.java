@@ -97,8 +97,8 @@ public class ProfileUploadAction implements Action {
                 boolean flag = memberDAO.update(memberDTO);
                 if (flag) {
                     System.out.println(memberDTO);
-                    forward.setPath("main.do");
-                    forward.setRedirect(true);
+                    forward.setPath("myPage.do");
+                    forward.setRedirect(false);
                 } else {
                     forward.setPath("error/alertPage.jsp");
                     forward.setRedirect(true);

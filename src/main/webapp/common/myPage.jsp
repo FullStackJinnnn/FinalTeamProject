@@ -1,138 +1,208 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="model.member.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" import="model.member.*"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="stone"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <!-- jQuery 추가 -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-    <title>마이페이지</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+<!-- jQuery 추가 -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+	crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<title>마이페이지</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/main.css" />
 
-    <noscript>
-        <link rel="stylesheet" href="assets/css/noscript.css" />
-    </noscript>
-    <style>
-        input::-webkit-input-placeholder {
-            font-family: "Source Sans Pro", Helvetica, sans-serif;
-        }
+<noscript>
+	<link rel="stylesheet" href="assets/css/noscript.css" />
+</noscript>
+<style>
+input::-webkit-input-placeholder {
+	font-family: "Source Sans Pro", Helvetica, sans-serif;
+}
 
-        a {
-            font-family: "Source Sans Pro", Helvetica, sans-serif;
-        }
+a {
+	font-family: "Source Sans Pro", Helvetica, sans-serif;
+}
 
-        .field {
-            margin-bottom: 50px;
-        }
+.field {
+	margin-bottom: 50px;
+}
 
-        .photo {
-            width: 350px;
-            height: 350px;
-            border: 3px solid black;
-            overflow: hidden;
-        }
+/* 파일 업로드 버튼 외부 css적용 안되어서 내부 css로 적용...*/
+/* Button */
+.fileUpload label.imageUpload {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	-ms-appearance: none;
+	appearance: none;
+	-moz-transition: background-color 0.2s ease-in-out, box-shadow 0.2s
+		ease-in-out, color 0.2s ease-in-out;
+	-webkit-transition: background-color 0.2s ease-in-out, box-shadow 0.2s
+		ease-in-out, color 0.2s ease-in-out;
+	-ms-transition: background-color 0.2s ease-in-out, box-shadow 0.2s
+		ease-in-out, color 0.2s ease-in-out;
+	transition: background-color 0.2s ease-in-out, box-shadow 0.2s
+		ease-in-out, color 0.2s ease-in-out;
+	border: 0;
+	border-radius: 0;
+	cursor: pointer;
+	display: inline-block;
+	font-family: "Source Sans Pro", Helvetica, sans-serif;
+	font-size: 0.8rem;
+	font-weight: 900;
+	letter-spacing: 0.075em;
+	height: 3rem;
+	line-height: 3rem;
+	padding: 0 2rem;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	white-space: nowrap;
+	background-color: transparent;
+	box-shadow: inset 0 0 0 2px #717981;
+	color: #717981 !important;
+	margin-top: 0.325rem;
+}
 
-        .field input[type="text"] {
-            display: inline-block;
-            width: 60%;
-            font-weight: bold;
-        }
+.fileUpload label.imageUpload:hover {
+	box-shadow: inset 0 0 0 2px #18bfef;
+	color: #18bfef !important;
+}
 
-        .btn-upload {
-            width: 150px;
-            height: 50px;
-            margin-top: 10px;
-            background: #fff;
-            border: 1px solid rgb(77, 77, 77);
-            border-radius: 10px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.fileUpload label.imageUpload.primary {
+	background-color: #212931;
+	box-shadow: none;
+	color: #ffffff !important;
+}
 
-        .btn-upload:hover {
-            background: rgb(77, 77, 77);
-            color: #fff;
-        }
+.fileUpload label.imageUpload.primary:hover {
+	background-color: #18bfef;
+}
 
-        #fileInput {
-            display: none;
-        }
-    </style>
+/* .fileUpload {
+	display: flex;
+	align-items: center;
+} */
+.photo {
+	width: 350px;
+	height: 350px;
+	border: 3px solid black;
+	overflow: hidden;
+}
+
+.field input[type="text"] {
+	display: inline-block;
+	width: 60%;
+	font-weight: bold;
+}
+
+#fileInput {
+	display: none;
+}
+</style>
 </head>
 
 <body class="is-preload">
 
-    <stone:printNav member='${member}'/>
-	
-    <div id="footer">
+	<stone:printNav member='${member}' />
 
-        <section>
-            <div class="fields">
-                <h1 style="font-size: 150px; text-align: center;">MyPage</h1>
-                <form id="firstForm" action="profileUpload.do" method="post" enctype="multipart/form-data">
-                    <!-- 프사 -->
-                    <div class="field">
-                        <div class="photo">
-                            <img id="preview" alt="프로필 이미지" src="mimg/${memberDTO.profile}" onload="resizePreviewImage(this, 350, 350)">
-                        </div>
-                        <label for="fileInput" class="btn-upload">이미지 선택 <input type="file" name="file" id="fileInput" form="firstForm"></label>
-                    </div>
-                </form>
+	<div id="footer">
 
-                <!-- 아이디 -->
-                <div class="field">
-                    <label for="myPageID"></label> <input type="text" name="myPageID" id="myPageID" value="${memberDTO.memberID}" readonly />
-                </div>
+		<section>
+			<div class="fields">
+				<h1 style="font-size: 150px; text-align: center;">MyPage</h1>
+				<form id="changeProfile" action="profileUpload.do" method="post"
+					enctype="multipart/form-data" onsubmit="return validateForm()">
+					<!-- 프사 -->
+					<div class="field">
+						<div class="photo">
+							<img id="preview" alt="프로필 이미지" src="mimg/${memberDTO.profile}"
+								onload="resizePreviewImage(this, 350, 350)">
+						</div>
+						<div class="fileUpload">
+							<label for="fileInput" class="imageUpload">이미지 선택 <input
+								type="file" name="file" id="fileInput" form="changeProfile"></label>
 
-                <!-- 이름 -->
-                <div class="field">
-                    <label for="myPageName"></label> <input type="text" name="myPageName" id="myPageName" value="${memberDTO.name}" readonly />
-                </div>
+							<input type="submit" value="이미지 확정"><br>
+						</div>
+					</div>
+				</form>
 
-                <!-- 닉네임 -->
-                <div class="field">
-                    <form id="changeNickname" method="post" action="changeNickname.do">
-                        <label for="myPageNickname"></label> <input type="text" name="myPageNickname" id="myPageNickname" value="${memberDTO.nickname}" required /> <input type="submit" value="닉네임 변경" style="margin-left: 30px;" />
-                    </form>
-                </div>
+				<!-- 아이디 -->
+				<div class="field">
+					<label for="myPageID"></label> <input type="text" name="myPageID"
+						id="myPageID" value="${memberDTO.memberID}" readonly />
+				</div>
 
-                <!-- 번호 -->
-                <div class="field">
-                    <form id="changePh" method="post" action="#">
-                        <label for="myPagePh"></label> <input type="text" name="myPagePh" id="myPagePh" value="${memberDTO.ph}" readonly />
-                        <button type="button" style="margin-left: 30px;" onclick="location.href='#'">전화번호 변경</button>
-                    </form>
-                </div>
+				<!-- 이름 -->
+				<div class="field">
+					<label for="myPageName"></label> <input type="text"
+						name="myPageName" id="myPageName" value="${memberDTO.name}"
+						readonly />
+				</div>
 
-                <!-- 자신이 작성한 글로 이동 -->
-                <div class="field">
-                    <form id="myBoard" method="post" action="#">
-                        <button type="button" onclick="location.href='myBoardSelectAllPage.do'">내 작성글로 가기</button>
-                    </form>
-                </div>
+				<!-- 닉네임 -->
+				<div class="field">
+					<form id="changeNickname" method="post" action="changeNickname.do">
+						<label for="myPageNickname"></label> <input type="text"
+							name="myPageNickname" id="myPageNickname"
+							value="${memberDTO.nickname}" required /> <input type="submit"
+							value="닉네임 변경" style="margin-left: 30px;" />
+					</form>
+				</div>
 
-                <div class="field" style="display: flex; justify-content: space-between; margin-top: 30px">
-                    <div>
-                        <!-- "변경완료" 버튼을 눌렀을 때 firstform 제출 116번라인 upload.do 실행-->
-                        <!-- 유저 프로필 저장만을 위해서 사용중 -->
-                        <input type="submit" value="변경완료" form="firstForm"><br>
-                    </div>
-                    <div style="text-align: right;">
-                        <button type="button" onclick="location.href='deleteAccount.do'">회원 탈퇴</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+				<!-- 번호 -->
+				<div class="field">
+					<form id="changePh" method="post" action="#">
+						<label for="myPagePh"></label> <input type="text" name="myPagePh"
+							id="myPagePh" value="${memberDTO.ph}" readonly />
+						<button type="button" style="margin-left: 30px;"
+							onclick="location.href='#'">전화번호 변경</button>
+					</form>
+				</div>
+
+				<!-- 자신이 작성한 글로 이동 -->
+				<div class="field">
+					<form id="myBoard" method="post" action="#">
+						<button type="button"
+							onclick="location.href='myBoardSelectAllPage.do'">내 작성글로
+							가기</button>
+					</form>
+				</div>
+
+				<div class="field"
+					style="display: flex; justify-content: space-between; margin-top: 30px">
+
+					<div style="text-align: right;">
+						<button type="button" onclick="location.href='deleteAccount.do'">회원
+							탈퇴</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 
 	<script>
+	function validateFile() {
+	    // 파일 인풋 엘리먼트 가져오기
+	    var fileInput = document.getElementById('fileInput');
+
+	    // 선택한 파일이 없으면 알림창 띄우기
+	    if (fileInput.files.length === 0) {
+	        alert("이미지를 선택해주세요.");
+	        return false; // 폼 제출을 막기 위해 false 반환
+	    }
+	    // 선택한 파일이 있으면 폼 제출을 허용
+	    return true;
+	}
+	    }
+	
 		 <!-- 전화번호 암호화  -->
 	    // DOMContentLoaded 이벤트가 발생했을 때 실행되는 함수 화면이 다 로드됨을 뜻함
 	    document.addEventListener('DOMContentLoaded', function () {

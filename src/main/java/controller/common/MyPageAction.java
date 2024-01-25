@@ -19,17 +19,17 @@ public class MyPageAction implements Action {
 			throws ServletException, IOException {
 
 		ActionForward forward = new ActionForward();
-		forward.setPath("common/myPage.jsp");
-		forward.setRedirect(false);
 
 		HttpSession session = request.getSession();
-		MemberDAO mDAO = new MemberDAO();
+		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setMemberID((String) session.getAttribute("member"));
-		memberDTO.setSearchCondition("정보출력");
-		memberDTO = mDAO.selectOne(memberDTO);
+		memberDTO.setSearchCondition("내정보출력");
+		memberDTO = memberDAO.selectOne(memberDTO);
 		if (memberDTO != null) {
 			request.setAttribute("memberDTO", memberDTO);
+			forward.setPath("common/myPage.jsp");
+			forward.setRedirect(false);
 		} else {
 			forward.setPath("error/alertPage.jsp");
 			forward.setRedirect(true);

@@ -23,18 +23,11 @@ public class MyBoardSelectAllPageAction implements Action {
 
 		ActionForward forward = new ActionForward();
 
-
-		MemberDAO memberDAO = new MemberDAO();
-		MemberDTO memberDTO = new MemberDTO();
 		BoardDAO boardDAO = new BoardDAO();
 		BoardDTO boardDTO = new BoardDTO();
-		memberDTO.setSearchCondition("정보출력");
-		HttpSession session = request.getSession();
-		memberDTO.setMemberID((String) session.getAttribute("member"));
-		memberDTO = memberDAO.selectOne(memberDTO);
 		boardDTO.setCategory("내가 작성한 글"); // 카테고리 세팅 안하면 오류남! else문으로 가기위한 더미값 입력
 		boardDTO.setSearchCondision("작성자");
-		boardDTO.setNickname(memberDTO.getNickname());
+		boardDTO.setNickname(request.getParameter("nickname"));
 		ArrayList<BoardDTO> boardDatas = boardDAO.selectAll(boardDTO);
 		if (boardDatas != null) {
 			request.setAttribute("boardDatas", boardDatas);
@@ -49,3 +42,4 @@ public class MyBoardSelectAllPageAction implements Action {
 	}
 
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

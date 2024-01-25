@@ -134,7 +134,8 @@ public class BoardDAO {
 			} finally {
 				JDBCUtil.disconnect(pstmt, conn);
 			}
-		} else if (boardDTO.getCategory().equals("리뷰")) {
+		} else if (boardDTO.getCategory().equals("리"
+				+ "뷰")) {
 			try {
 				if (boardDTO.getSearchCondision().equals("제목")) {
 					pstmt = conn.prepareStatement(SELECTALL_SEARCHTITLE);

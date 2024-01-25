@@ -28,8 +28,11 @@ public class MemberDAO {
 	// 생년월일 출력 형식은 '1993-09-10' 으로 지정
 	// 자신과 다른유저가 작성한 글 볼때 필요한 BOARDNUM, TITLE을 INNER JOIN으로 가져옴
 	// 아이디자체가 고유값이기 때문에 아이디로 확인해서 정보 가져옴 .정석진
-	private static final String SELECTONE_MEMBERINFO = "SELECT M.MEMBERNUM,ID,PW,NAME,NICKNAME, TO_CHAR(BIRTH,'YYYY-MM-DD') AS BIRTH_DATE,PH,PROFILE,GRADE, BOARDNUM"
+	private static final String SELECTONE_MYINFO = "SELECT M.MEMBERNUM,ID,PW,NAME,NICKNAME, TO_CHAR(BIRTH,'YYYY-MM-DD') AS BIRTH_DATE,PH,PROFILE,GRADE, BOARDNUM"
 			+ " FROM MEMBER M LEFT JOIN BOARD B ON M.MEMBERNUM = B.MEMBERNUM WHERE ID=?";
+	
+	private static final String SELECTONE_MEMBERINFO = "SELECT M.MEMBERNUM,ID,NICKNAME, PH,PROFILE,GRADE, BOARDNUM"
+			+ " FROM MEMBER M LEFT JOIN BOARD B ON M.MEMBERNUM = B.MEMBERNUM WHERE NICKNAME=?";
 
 	private static final String SELECTONE_REPORT = "SELECT M.MEMBERNUM,ID,NICKNAME, BOARDNUM, TITLE, REPORTCONTENTS"
 			+ " FROM MEMBER M LEFT JOIN BOARD B ON M.MEMBERNUM = B.MEMBERNUM WHERE ID=?";
@@ -113,9 +116,9 @@ public class MemberDAO {
 			} finally {
 				JDBCUtil.disconnect(pstmt, conn);
 			}
-		} else if (memberDTO.getSearchCondition().equals("정보출력")) {
+		} else if (memberDTO.getSearchCondition().equals("내정보출력")) {
 			try {
-				pstmt = conn.prepareStatement(SELECTONE_MEMBERINFO);
+				pstmt = conn.prepareStatement(SELECTONE_MYINFO);
 				pstmt.setString(1, memberDTO.getMemberID());
 				ResultSet rs = pstmt.executeQuery();
 
@@ -127,6 +130,29 @@ public class MemberDAO {
 					data.setName(rs.getString("NAME"));
 					data.setNickname(rs.getString("NICKNAME"));
 					data.setBirth(rs.getString("BIRTH_DATE"));
+					data.setPh(rs.getString("PH"));
+					data.setProfile(rs.getString("PROFILE"));
+					data.setGrade(rs.getString("GRADE"));
+					data.setBoardNum(rs.getInt("BOARDNUM"));
+
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				JDBCUtil.disconnect(pstmt, conn);
+			}
+		} else if (memberDTO.getSearchCondition().equals("유저정보출력")) {
+			try {
+				pstmt = conn.prepareStatement(SELECTONE_MEMBERINFO);
+				pstmt.setString(1, memberDTO.getNickname());
+				ResultSet rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					data = new MemberDTO();
+					data.setMemberNum(rs.getInt("MEMBERNUM"));
+					data.setMemberID(rs.getString("ID"));
+					data.setNickname(rs.getString("NICKNAME"));
 					data.setPh(rs.getString("PH"));
 					data.setProfile(rs.getString("PROFILE"));
 					data.setGrade(rs.getString("GRADE"));

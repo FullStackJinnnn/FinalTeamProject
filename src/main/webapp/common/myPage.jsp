@@ -105,6 +105,7 @@ a {
 #fileInput {
 	display: none;
 }
+
 </style>
 </head>
 
@@ -122,13 +123,16 @@ a {
 					<div class="field">
 						<div class="photo">
 							<img id="preview" alt="프로필 이미지" src="mimg/${memberDTO.profile}"
-								onload="resizePreviewImage(this, 350, 350)">
+								onload="resizePreviewImage(this, 350, 350)"> 
 						</div>
+						<button type="button"onclick="location.href='memberBoardSelectAllPage.do?nickname=티모모'">유저 게시글 출력 테스트</button>
+						
+						으아아아아아아아아아아아 작성자 : <a href="memberPage.do?nickname=티모모">티모모</a>
 						<div class="fileUpload">
 							<label for="fileInput" class="imageUpload">이미지 선택 <input
 								type="file" name="file" id="fileInput" form="changeProfile"></label>
 
-							<input type="submit" value="이미지 확정" id="btnSubmit"><br>
+							<input type="submit" value="이미지 확정" id="btnImageSubmit"><br>
 						</div>
 					</div>
 				</form>
@@ -150,11 +154,11 @@ a {
 
 				<!-- 닉네임 -->
 				<div class="field">
-					<form id="changeNickname" method="post" action="changeNickname.do">
+					<form id="changeNickname" >
 						<label for="myPageNickname"></label> <input type="text"
 							name="myPageNickname" id="myPageNickname"
 							value="${memberDTO.nickname}" required /> <input type="submit"
-							value="닉네임 변경" style="margin-left: 30px;" />
+							value="닉네임 변경" id="btnNicknameSubmit" style="margin-left: 30px;" />
 					</form>
 				</div>
 
@@ -172,7 +176,7 @@ a {
 				<div class="field">
 					<form id="myBoard" method="post" action="#">
 						<button type="button"
-							onclick="location.href='myBoardSelectAllPage.do'">내 작성글로
+							onclick="location.href='myBoardSelectAllPage.do?nickname=${memberDTO.nickname}'">내 작성글로
 							가기</button>
 					</form>
 				</div>
@@ -194,7 +198,7 @@ a {
 	<script>
 	
 	$(document).ready(function(){
-	      $("#btnSubmit").on("click",function(){
+	      $("#btnImageSubmit").on("click",function(){
 	    	//preventDefault 는 기본으로 정의된 이벤트를 작동하지 못하게 하는 메서드이다. submit을 막음 
 	    	//아마 submit type 말고 button을 쓰는게 나은듯..
 	    	  event.preventDefault();
@@ -219,7 +223,7 @@ a {
 				  success : function(data){
 					  console.log(data);
 					  if(data=='1'){
-						  alert("complete");  
+						  alert("프로필 이미지 변경완료!");  
 						  return true; 
 					  }
 				  },
@@ -233,20 +237,47 @@ a {
 	          
 	      });
 	   });
-	      
 	
-/* 	function validateForm() {
-	    // 파일 인풋 엘리먼트 가져오기
-	    var fileInput = document.getElementById('fileInput');
+	
+ $(document).ready(function(){
+	      $("#btnNicknameSubmit").on("click",function(){
+	    	  event.preventDefault();
+	    	   var myPageNickname =$('#myPageNickname').val();
+	    	   console.log(myPageNickname);
+	    	   var checkNicknameEmpty = document.getElementById("myPageNickname").value.trim(); //아무것도 입력 안했을때 체크
+	   	    // 선택한 파일이 없으면 알림창 띄우기
+	   	   	 if (checkNicknameEmpty=="") {
+	   	        alert("변경할 닉네임을 입력해주세요!!");
+	   	        return false; // 폼 제출을 막기 위해 false 반환
+	   	    }
+	   	    // 선택한 파일이 있으면 폼 제출을 허용
+	      
+	    	  $.ajax({
+	              type : "POST",
+	              url : "changeNickname2.do",
+	              data : {'myPageNickname' : myPageNickname},
+	              dataType : 'text',
+				  success : function(data){
+					  console.log(data);
+					  if(data=='1'){
+						  alert("닉네임 변경완료!");  
+						  return true; 
+					  } else {
+						  alert("닉네임 중복!");
+						  return true;
+					  }
+					  
+				  },
+				  error :function(error) {
+					  console.log('에러');
+					  console.log('에러종류: '+error);
+					  alert("fail"); 
+				  }
+	    	    });
+	      });
+	   });
+	
 
-	    // 선택한 파일이 없으면 알림창 띄우기
-	    if (fileInput.files.length === 0) {
-	        alert("이미지를 선택해주세요.");
-	        return false; // 폼 제출을 막기 위해 false 반환
-	    }
-	    // 선택한 파일이 있으면 폼 제출을 허용
-	    return true;
-	} */
 	    
 	
 		 <!-- 전화번호 암호화  -->
@@ -439,7 +470,6 @@ a {
 	                    }
 	                };
 	            };
-	
 	            // 파일을 Data URL로 읽기 시작
 	            reader.readAsDataURL(file);
 	        }

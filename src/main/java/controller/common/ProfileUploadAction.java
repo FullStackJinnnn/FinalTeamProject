@@ -60,7 +60,7 @@ public class ProfileUploadAction implements Action {
 			// 파일 이름 중복 시 사용할 사용자 정의 파일 리네임 정책 객체를 생성하고 전달 103번라인 참조
 			// 현재 이름을 무조건 현재로그인된 memberNum으로 변경하고 저장
 			MultipartRequest multipartRequest = new MultipartRequest(request, uploadDir, maxSize, encoding,
-					new CustomFileRenamePolicy(Integer.toString(memberDTO.getMemberNum())));
+					new CustomFileRenamePolicy1(Integer.toString(memberDTO.getMemberNum())));
 
 			// memberNum으로 재설정한 이름 newFileName에 대입
 			String newFileName = multipartRequest.getFilesystemName("file");
@@ -117,11 +117,11 @@ public class ProfileUploadAction implements Action {
 }
 
 //rename Override를 위한 클래스
-class CustomFileRenamePolicy extends DefaultFileRenamePolicy {
+class CustomFileRenamePolicy1 extends DefaultFileRenamePolicy {
 
 	private String newFileName;
 
-	public CustomFileRenamePolicy(String newFileName) {
+	public CustomFileRenamePolicy1(String newFileName) {
 		this.newFileName = newFileName;
 	}
 
@@ -130,7 +130,7 @@ class CustomFileRenamePolicy extends DefaultFileRenamePolicy {
 	public File rename(File file) {
 
 		// 파일 확장자를 extension에 대입
-		String extension = extractExtension(file.getName());
+		String extension = (extractExtension(file.getName())).toLowerCase();
 
 		// newName에 newFileName(memberNum값) + ".확장자" 대입
 		String newName = newFileName + extension;

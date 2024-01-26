@@ -39,6 +39,7 @@
 						<th>추천</th>
 						<th>조회수</th>
 						<th></th>
+						
 					</tr>
 				</thead>
 				<tbody>

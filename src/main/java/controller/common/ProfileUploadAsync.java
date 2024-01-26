@@ -46,10 +46,7 @@ public class ProfileUploadAsync extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		
-		
-		
+
 		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
 
@@ -68,7 +65,7 @@ public class ProfileUploadAsync extends HttpServlet {
 		// memberNum을 가져와서 사용자가 저장한 프로필 이미지 명으로 사용하려고 selectOne 사용
 		HttpSession session = request.getSession();
 		memberDTO.setMemberID((String) session.getAttribute("member"));
-		memberDTO.setSearchCondition("정보출력");
+		memberDTO.setSearchCondition("내정보출력");
 		memberDTO = memberDAO.selectOne(memberDTO);
 
 		if (memberDTO != null) {
@@ -95,25 +92,28 @@ public class ProfileUploadAsync extends HttpServlet {
 				// "1.JPG"저장 후 "1.PNG"를 저장하는 과정에서 확장자를 제외한 "1"만 비교해서
 				// 같은게 있다면 기존 파일 삭제 후 새로운 파일 폴더에 저장하는 과정
 
-				// 기존 프로필 파일이 저장되어있는 절대경로 확인
+				// 기존 파일이 저장되어있는 절대경로 확인
 				String existingFilePath = uploadDir + File.separator + memberDTO.getProfile();
 
-				// 기존 프로필 파일이 저장되어있는 절대 경로를 나타내는 File 객체를 생성
+				// 기존 파일이 저장되어있는 절대 경로를 가지고있는 exsistingFile 객체 생성
 				File existingFile = new File(existingFilePath);
 
+				// 새로운 파일이 저장된 절대경로 확인
 				String newFilePath = uploadDir + File.separator + newFileName;
+				// 새로운 파일이 저장되어있는 절대 경로를 가지고있는 newFile 객체생성
 				File newFile = new File(newFilePath);
 
 				String existingFileName = memberDTO.getProfile();
+				// 기존 파일이 존재하고 기존파일의 확장자를 포함한 이름이 새로운파일의 확장자를 포함한 이름과 같으면
 				if (existingFile.exists() && existingFileName.equals(newFileName)) {
-					// 기존 파일을 덮어쓰기
 					try {
+						// newfile을 existingFile에 덮어씌움
 						Files.copy(newFile.toPath(), existingFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 					} catch (IOException e) {
-						e.printStackTrace(); // 에러 처리 로직을 추가해야 합니다.
+						e.printStackTrace();//덮어씌움 실패하면 에러처리 해야함
 					}
 				}
-				// 기존 프로필 파일이 존재하고, 새로 업로드된 파일의 기존 프로필 파일과 새로 업로드된 프로필 파일의 확장자를 제외한 이름이 같으면
+				//확장자를 포함한 기존파일과 새로운파일의 이름이 다르면 
 				else {
 					// 기존 파일을 삭제
 					existingFile.delete();
@@ -151,7 +151,7 @@ class CustomFileRenamePolicy extends DefaultFileRenamePolicy {
 	@Override
 	public File rename(File file) {
 
-		// 파일 확장자를 extension에 대입
+		// 업로드한파일 확장자를 extension에 대입
 		String extension = (extractExtension(file.getName()));
 
 		// newName에 newFileName(memberNum값) + ".확장자" 대입
@@ -179,4 +179,3 @@ class CustomFileRenamePolicy extends DefaultFileRenamePolicy {
 		}
 	}
 }
-

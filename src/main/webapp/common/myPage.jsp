@@ -198,7 +198,7 @@ a {
 	<script>
 	
 	$(document).ready(function(){
-	      $("#btnImageSubmit").on("click",function(){
+	      $("#btnImageSubmit").on("click",function(event){
 	    	//preventDefault 는 기본으로 정의된 이벤트를 작동하지 못하게 하는 메서드이다. submit을 막음 
 	    	//아마 submit type 말고 button을 쓰는게 나은듯..
 	    	  event.preventDefault();
@@ -213,36 +213,35 @@ a {
 	   	    }
 	   	    // 선택한 파일이 있으면 폼 제출을 허용
 	      
-	    	  $.ajax({
-	              type : "POST",
-	              enctype: 'multipart/form-data', 
-	              url : "ProfileUpload2.do",
-	              data : formData,
-	              contentType : false,
-				  processData : false,
-				  success : function(data){
-					  console.log(data);
-					  if(data=='1'){
-						  alert("프로필 이미지 변경완료!");  
-						  return true; 
-					  }
-				  },
-				  error :function(error) {
-					  console.log('에러');
-					  console.log('에러종류: '+error);
-					  alert("fail"); 
-					  
-				  }
-	    	    });
+		   	  $.ajax({
+		   	    type: "POST",
+		   	    enctype: 'multipart/form-data', 
+		   	    url: "ProfileUpload2.do",
+		   	    data: formData,
+		   	    contentType: false,
+		   	    processData: false,
+		   	    success: function(data) {
+		   	        console.log(data);
+		   	        if (data == '1') {
+		   	            alert("프로필 이미지 변경완료!");
+		   	            return true;
+		   	        }
+		   	    },
+		   	    error: function(error) {
+		   	        console.log('에러');
+		   	        console.log('에러종류: ' + JSON.stringify(error));
+		   	        alert("fail");
+		   	    }
+		   	});
 	          
 	      });
 	   });
 	
 	
  $(document).ready(function(){
-	      $("#btnNicknameSubmit").on("click",function(){
+	      $("#btnNicknameSubmit").on("click",function(event){
 	    	  event.preventDefault();
-	    	   var myPageNickname =$('#myPageNickname').val();
+	    	   var myPageNickname = $('#myPageNickname').val();
 	    	   console.log(myPageNickname);
 	    	   var checkNicknameEmpty = document.getElementById("myPageNickname").value.trim(); //아무것도 입력 안했을때 체크
 	   	    // 선택한 파일이 없으면 알림창 띄우기

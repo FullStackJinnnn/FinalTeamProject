@@ -41,3 +41,20 @@ public class MemberBoardSelectAllPageAction implements Action{
 		}
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

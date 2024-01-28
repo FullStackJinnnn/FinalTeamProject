@@ -16,10 +16,10 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/main.css" />
+	href="/chalKag/assets/css/main.css" />
 
 <noscript>
-	<link rel="stylesheet" href="assets/css/noscript.css" />
+	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
 </noscript>
 <style>
 input::-webkit-input-placeholder {
@@ -73,7 +73,7 @@ a {
 					<!-- 프사 -->
 					<div class="field">
 						<div class="photo">
-							<img id="preview" alt="프로필 이미지" src="mimg/${memberDTO.profile}"
+							<img id="preview" alt="프로필 이미지" src="memberProfileImages/${memberDTO.profile}?v=${Math.random()}"
 								onload="resizePreviewImage(this, 350, 350)">
 						</div>
 					</div>
@@ -104,7 +104,7 @@ a {
 				<div class="field">
 					<form id="myBoard" method="post" action="#">
 						<button type="button"
-							onclick="location.href='memberBoardSelectAllPage.do?nickname=${memberDTO.nickname}'">유저가 작성한글 보기
+							onclick="location.href='/chalKag/memberBoardSelectAllPage.do?nickname=${memberDTO.nickname}'">유저가 작성한글 보기
 							</button>
 					</form>
 				</div>
@@ -113,10 +113,6 @@ a {
 					style="display: flex; justify-content: space-between; margin-top: 30px">
 					<div>
 						<button type="button" onclick="location.href='main.do'">돌아가기</button>
-					</div>
-					<div style="text-align: right;">
-						<button type="button" onclick="location.href='reportWritePage.do'">신고하기
-							</button>
 					</div>
 				</div>
 			</div>

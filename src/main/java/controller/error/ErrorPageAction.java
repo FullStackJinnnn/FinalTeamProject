@@ -16,7 +16,7 @@ public class ErrorPageAction implements Action{
 			throws ServletException, IOException {
 		
 		ActionForward forward = new ActionForward();
-		forward.setPath("error/errorPage.jsp");
+		forward.setPath("/error/errorPage.jsp");
 		forward.setRedirect(true);
 		
 		return forward;

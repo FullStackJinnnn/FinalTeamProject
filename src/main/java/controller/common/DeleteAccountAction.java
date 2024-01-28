@@ -26,7 +26,7 @@ public class DeleteAccountAction implements Action {
 		MemberDTO memberDTO = new MemberDTO();
 
 		HttpSession session = request.getSession();
-		memberDTO.setMemberID((String) session.getAttribute("member"));
+		memberDTO.setId((String) session.getAttribute("member"));
 		memberDTO.setGrade("탈퇴");
 		memberDTO.setSearchCondition("회원탈퇴");
 

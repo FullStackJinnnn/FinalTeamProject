@@ -5,7 +5,7 @@ import java.sql.Date;
 public class ReviewDTO {
 	private int reviewNum;
 	private int boardNum;
-	private int memberNum;
+	private String id;			// memberNum 및 memberId ID로 변경 - 김도연 2024/01/27
 	private String reviewDate;
 	String reviewContents; //
 
@@ -25,12 +25,12 @@ public class ReviewDTO {
 		this.boardNum = boardNum;
 	}
 
-	public int getMemberNum() {
-		return memberNum;
+	public String getId() {
+		return id;
 	}
 
-	public void setMemberNum(int memberNum) {
-		this.memberNum = memberNum;
+	public void setId(String iD) {
+		id = iD;
 	}
 
 	public String getReviewDate() {

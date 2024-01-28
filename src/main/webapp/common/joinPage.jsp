@@ -1,82 +1,79 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="stone" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="stone"%>
 <!DOCTYPE html>
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<title>회원가입 페이지</title>
-	<link rel="stylesheet" href="../assets/css/main.css" />
-	<script src="../assets/js/jquery.min.js"></script>
-	<script src="../assets/js/jquery.scrollex.min.js"></script>
-	<script src="../assets/js/jquery.scrolly.min.js"></script>
-	<script src="../assets/js/browser.min.js"></script>
-	<script src="../assets/js/breakpoints.min.js"></script>
-	<script src="../assets/js/util.js"></script>
-	<script src="../assets/js/main.js"></script>
-	<script src="../assets/js/signIn.js"></script>
-	<script src="../assets/js/regax.js"></script>
+<meta charset="UTF-8">
+<title>회원가입 페이지</title>
+<link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 </head>
 
 <body>
-<stone:printNav/>
+	<stone:printNav member='${member}' />
 	<footer id="footer">
 		<section>
 
-			<form id="yourFormId" method="post" action="#" onsubmit="return validateForm()">
+			<form id="yourFormId" method="post" action="/chalKag/join.do"
+				onsubmit="return validateForm()">
 				<div class="fields">
 					<div class="field">
-						<label for="email">email</label>
-						<input type="email" name="email" id="email" required />
-						<input style="margin-top: 10px;" type="button" value="이메일 중복확인">
+						<label for="email">email</label> <input type="email"
+							name="memberID" id="email" required /> <input
+							style="margin-top: 10px;" type="button" value="이메일 중복확인"
+							onclick="checkID()" /> <span id="IDErrMsg"></span>
 					</div>
 					<div class="field">
-						<label for="pw">password</label>
-						<input type="password" name="pw" id="pw" minlength="8" maxlength="16" required />
+						<label for="pw">password</label> <input type="password"
+							name="memberPW" id="pw" minlength="8" maxlength="16" required />
 					</div>
 					<div class="field">
-						<label for="pwCheck">password check</label>
-						<input type="password" id="pwCheck" required />
+						<label for="pwCheck">password check</label> <input type="password"
+							id="pwCheck" required />
 						<p id="pwError" class="error"></p>
 					</div>
 
 					<div class="field">
-						<label for="memberName">name</label>
-						<input type="text" id="memberName" maxlength="50" required />
+						<label for="memberName">name</label> <input type="text"
+							name="name" id="memberName" maxlength="50" required />
 					</div>
 
 					<div class="field">
-						<label for="nickName">nick name</label>
-						<input type="text" id="nickName" minlength="2" maxlength="50" required />
-						<input style="margin-top: 10px;" type="button" value="닉네임 중복확인">
+						<label for="nickname">nick name</label> <input type="text"
+							id="nickname" name="nickname" minlength="2" maxlength="50"
+							required /> <input style="margin-top: 10px;" type="button"
+							value="닉네임 중복확인" onclick="checkNickname()" /> <span
+							id="nicknameErrMsg" class="error"></span>
 					</div>
-					
+
 					<div class="field">
-						<label for="img">프로필</label>
-						<input type="file" id="nickName" />
+						<label for="img">프로필</label> <input type="file" name="profile"
+							id="profile" />
 						<!-- <input style="margin-top: 10px;" type="button" value="파일선택"> -->
 					</div>
 
 					<div class="field">
-						<label for="ph">phone number</label>
-						<input type="text" id="ph" placeholder="000-0000-0000 으로 입력해주세요." required />
-						<input style="margin-top: 10px;" type="button" value="전화번호 문자확인">
-						<p id="phError" class="error"></p>
+						<label for="ph">phone number</label> <input type="text" name="ph"
+							id="ph" placeholder="-빼고 입력해주세요 입력해주세요." maxlength="11" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required />
+							<input style="margin-top: 20px;" type="button" value="인증번호 보내기" id="phCheckBtn" onclick="sendAuthenticationSMS()"/> 
+							<input type="text" name="phCheck" id="phCheck" placeholder="인증번호를 입력해주세요" style="margin-top:20px;"/>
+							 <input style="margin-top: 20px;" type="button" value="확인" id="smsCheck" onclick="smsCheck()" />  
+							<span class="successPhCheck"></span>
+							<input type="hidden" id="phDoubleCheck"/>
+							
+							<span id="phErrMsg" class="error"></span>
 					</div>
 
 					<div class="field">
-						<label for="birth">birth</label>
-						<select id="year" name="year"></select>
-						<label for="year">year</label>
-						<select id="month" name="month"></select>
-						<label for="month">month</label>
-						<select id="day" name="day"></select>
+						<label for="birth">birth</label> <select id="year" name="year"></select>
+						<label for="year">year</label> <select id="month" name="month"></select>
+						<label for="month">month</label> <select id="day" name="day"></select>
 						<label for="day">day</label>
 					</div>
 
-					<!-- 
-					<div style="display: flex; align-items: center; left: 50%;">
+					 
+					<div class="field">
 						<div class="terms">
 							<div class="field">
 								<input type="checkbox" id="agreeTerms" name="agreeTerms1">
@@ -130,6 +127,7 @@
 									7.2 이용자의 귀책사유로 인한 서비스 이용의 장애 또는 손해에 대해서 회사는 책임을 지지 않습니다.
 
 									**8. 약관 해석 및 재판관할**
+
 
 									8.1 본 약관에 관한 해석 및 분쟁의 해결은 대한민국 법률을 적용하며, 관할 법원은 서울중앙지방법원으로 합니다.
 
@@ -254,21 +252,29 @@
 								</p>
 							</div>
 						</div>
+						<div class="field" style="text-align:center;">
+							<input type="submit" value="signIn" />
+						</div>
 					</div>
 					 
-					
-					-->
-					
-					
-							<ul class="actions">
-								<li>
-									<input type="submit" value="signIn"/>
-								</li>
-							</ul>
 			</form>
 		</section>
 	</footer>
-	<stone:copyright/>
+	<stone:copyright />
+	
+	<script src="/chalKag/assets/js/jquery.min.js"></script>
+	<script src="/chalKag/assets/js/jquery.scrollex.min.js"></script>
+	<script src="/chalKag/assets/js/jquery.scrolly.min.js"></script>
+	<script src="/chalKag/assets/js/browser.min.js"></script>
+	<script src="/chalKag/assets/js/breakpoints.min.js"></script>
+	<script src="/chalKag/assets/js/util.js"></script>
+	<script src="/chalKag/assets/js/main.js"></script>
+	<script src="/chalKag/assets/js/signIn.js"></script>
+	<script src="/chalKag/assets/js/checkNickname.js"></script>
+	<script src="/chalKag/assets/js/checkPh.js"></script>
+	<script src="/chalKag/assets/js/checkID.js"></script>
+	<script src="/chalKag/assets/js/smsCheck.js"></script>
+	<script src="/chalKag/assets/js/sendAuthentication.js"></script>
 </body>
 
 </html>

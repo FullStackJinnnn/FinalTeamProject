@@ -16,40 +16,30 @@ public class SellBoardUpdatePageAction implements Action { // 카메라 판매�
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		ActionForward forward = new ActionForward();
-		
+
 		request.setCharacterEncoding("UTF-8");
-		
+
 		BoardDAO boardDAO = new BoardDAO();
 		BoardDTO boardDTO = new BoardDTO();
-		
-		boardDTO.setTitle(request.getParameter("title"));
-		boardDTO.setContents(request.getParameter("contents"));
-		boardDTO.setPrice(Integer.parseInt(request.getParameter("price")));
-		boardDTO.setImage(request.getParameter("image"));
-		boardDTO.setProductcategory(request.getParameter("productcategory"));
-		boardDTO.setCompany(request.getParameter("company"));
-		boardDTO.setState(request.getParameter("state"));
-		boardDTO.setViewCount(0);
-		boardDTO.setBoardNum(Integer.parseInt(request.getParameter("boardNum")));
-		
-		boolean flag = boardDAO.update(boardDTO);
 
-		if (flag) { // 성공시 메인으로 이동
+		boardDTO.setBoardNum((Integer) request.getAttribute("boardNum"));
+		boardDAO.selectOne(boardDTO);
+		request.setAttribute("boardSelectOne", boardDTO);
 
-			forward.setPath("/main.do");
-			forward.setRedirect(true);
-
-		} else { // 실패시 alert 창으로 이동
-
-			forward.setPath("error/alert.jsp");
-			forward.setRedirect(false);
-			request.setAttribute("msg", "게시글 수정 실패! 다시 이용해 주세요");
-
-		}
+		forward.setPath("board/sellBoardUpdatePage.jsp");
+		forward.setRedirect(false);
 
 		return forward;
-			
-	} 
+
+	}
 }
+
+// V 보드셀렉트원 >> 뭔가 보내줄수있음
+// C 1. 내가 보드셀렉트원의 모든 정보를 그대로받는방법
+
+//   2. DAO.selectOne()을 내가 쓸수있음
+//     결론 bid만 받음
+
+// V 보드업데이트페이지로 보내줄예정

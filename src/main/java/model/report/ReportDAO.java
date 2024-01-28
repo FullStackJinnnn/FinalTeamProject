@@ -15,17 +15,16 @@ public class ReportDAO {
 
 	// 신고전체출력 신고 목록 전체 출력시 리포트넘버와 신고자만 출력 .정석진
 	private static final String SELECTALL = "SELECT REPORTNUM, REPORTER FROM REPORT ORDER BY REPORTNUM DESC";
-	
-	
+
 	// 신고 상세보기 ▶ 신고된 글을 파악할수 있게 BOARDNUM, TITLE 출력, 신고를 INSERT할때 REPORTER, SUSPECT에
 	// 멤버 ID가 들어가는 거라면 NICNNAME, ID는 필요없을 것 같아 추가 안함 다중조인이 불필요한 것 같기도 함 .정석진
-	private static final String SELECTONE_REPORTMANAGE = "SELECT M.MEMBERNUM, BOARDNUM, TITLE, REPORTNUM, REPORTER, SUSPECT, REPORTCONTENTS, REPORTDATE, ACCOUNTSTOP"
-			+ "FROM REPORT R JOIN MEMBER M ON M.MEMBERNUM = R.MEMBERNUM JOIN BOARD B ON M.MEMBERNUM = B.MEMBERNUM WHERE REPORTNUM=?";
+	private static final String SELECTONE_REPORTMANAGE = "SELECT M.ID, BOARDNUM, TITLE, REPORTNUM, REPORTER, SUSPECT, REPORTCONTENTS, REPORTDATE, ACCOUNTSTOP"
+			+ "FROM REPORT R JOIN MEMBER M ON M.ID = R.ID JOIN BOARD B ON M.ID = B.ID WHERE REPORTNUM=?";
 
 	// 신고하기 ▶ 신고페이지 출력에 필요한 정보는 (게시글 제목, 신고할 유저 정보)
 	// MemberDAO의 SELECTONE_MEMBERINFO사용 .정석진
-	private static final String INSERT_REPORT = "INSERT INTO REPORT(REPORTNUM, MEMBERNUM, SUSPECT, REPORTER, REPORTCONTENTS)"
-			+ " VALUES((SELECT NVL(MAX(REPORTNUM),0)+1 FROM REPORT),?,?,?,?)";
+	private static final String INSERT_REPORT = "INSERT INTO REPORT(REPORTNUM, ID, SUSPECT, REPORTER, REPORTCONTENTS"
+			+ "VALUES((SELECT NVL(MAX(REPORTNUM),0)+1 FROM REPORT),?,?,?,?)";
 
 	private static final String UPDATE = "";
 
@@ -33,13 +32,13 @@ public class ReportDAO {
 	private static final String DELETE = "DELETE FROM REPORT WHERE REPORTNUM=?";
 
 	public ArrayList<ReportDTO> selectAll(ReportDTO reportDTO) {
-		ArrayList<ReportDTO> datas = new ArrayList<ReportDTO>(); 
+		ArrayList<ReportDTO> datas = new ArrayList<ReportDTO>();
 		conn = JDBCUtil.connect();
 
 		try {
 			pstmt = conn.prepareStatement(SELECTALL);
 			ResultSet rs = pstmt.executeQuery();
-			
+
 			while (rs.next()) {
 				ReportDTO data = new ReportDTO();
 				data.setReportNum(rs.getInt("REPORTNUM"));
@@ -66,7 +65,7 @@ public class ReportDAO {
 
 			if (rs.next()) {
 				data = new ReportDTO();
-				data.setMemberNum(rs.getInt("MEMBERNUM"));
+				data.setId(rs.getString("ID"));
 				data.setBoardNum(rs.getInt("BOARDNUM"));
 				data.setTitle(rs.getString("TITLE"));
 				data.setReportNum(rs.getInt("REPORTNUM"));
@@ -90,11 +89,11 @@ public class ReportDAO {
 
 		try {
 			pstmt = conn.prepareStatement(INSERT_REPORT);
-			pstmt.setInt(1, reportDTO.getMemberNum());
+			pstmt.setString(1, reportDTO.getId());
 			pstmt.setString(2, reportDTO.getSuspect());
 			pstmt.setString(3, reportDTO.getReporter());
-			pstmt.setString(4, reportDTO.getReportContents()); 
-			
+			pstmt.setString(4, reportDTO.getReportContents());
+
 			int result = pstmt.executeUpdate();
 			if (result <= 0) {
 				return false;

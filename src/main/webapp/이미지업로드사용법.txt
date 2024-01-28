@@ -1,0 +1,9 @@
+업로드 기능 사용법 
+
+- cos.jar 파일 WEB_INF 하위의 lib 폴더에 저장
+
+- webapp 폴더에 프로필 사진을 저장할 폴더 mimg 생성
+
+- MyPage에서 프로필 변경 하고 화면 나가면 폴더에 저장되는데
+Project Explorer에는 나오지 않아서 Project Explorer의 mimg폴더 클릭 후 클릭 후 
+F5 눌러서 새로고침 진행해야 변경한 사진이 적용됩니다...

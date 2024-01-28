@@ -23,7 +23,7 @@ public class MyPageAction implements Action {
 		HttpSession session = request.getSession();
 		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
-		memberDTO.setMemberID((String) session.getAttribute("member"));
+		memberDTO.setId((String) session.getAttribute("member"));
 		memberDTO.setSearchCondition("내정보출력");
 		memberDTO = memberDAO.selectOne(memberDTO);
 		if (memberDTO != null) {
@@ -31,9 +31,9 @@ public class MyPageAction implements Action {
 			forward.setPath("common/myPage.jsp");
 			forward.setRedirect(false);
 		} else {
+			request.setAttribute("msg", "로그인 실패!");
 			forward.setPath("error/alertPage.jsp");
 			forward.setRedirect(true);
-			request.setAttribute("msg", "로그인 실패!");
 		}
 
 		return forward;

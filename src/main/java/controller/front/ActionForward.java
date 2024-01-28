@@ -25,4 +25,9 @@ public class ActionForward {
 		this.redirect = redirect;
 	}
 
+	@Override
+	public String toString() {
+		return "ActionForward [path=" + path + ", redirect=" + redirect + "]";
+	}
+
 }

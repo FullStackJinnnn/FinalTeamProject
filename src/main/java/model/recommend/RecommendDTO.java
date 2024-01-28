@@ -5,8 +5,8 @@ import java.util.Date;
 public class RecommendDTO {
 	private int recommendNum; // 추천수 테이블 번호
 	private int boardNum; // 게시글 번호
-	private int memberNum; // 회원 번호
-
+	private String id;		// memberNum 및 memberId ID로 변경 - 김도연 2024/01/27
+	
 	public int getRecommendNum() {
 		return recommendNum;
 	}
@@ -23,12 +23,13 @@ public class RecommendDTO {
 		this.boardNum = boardNum;
 	}
 
-	public int getMemberNum() {
-		return memberNum;
+
+	public String getId() {
+		return id;
 	}
 
-	public void setMemberNum(int memberNum) {
-		this.memberNum = memberNum;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

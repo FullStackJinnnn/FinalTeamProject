@@ -14,10 +14,10 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/main.css" />
+	href="/chalKag/assets/css/main.css" />
 
 <noscript>
-	<link rel="stylesheet" href="../assets/css/noscript.css" />
+	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
 </noscript>
 </head>
 
@@ -53,7 +53,7 @@
 							<tr>
 								<td>${data.boardNum}</td>
 								<td><a
-									href="myBoardSelectOnePage.do?boardNum=${data.boardNum}">${data.title}</a></td>
+									href="/chalKag/myBoardSelectOnePage.do?boardNum=${data.boardNum}">${data.title}</a></td>
 								<td>${data.nickname}</td>
 								<td>${data.boardDate}</td>
 								<td>${data.recommandCount}</td>
@@ -80,13 +80,13 @@
 	<stone:copyright />
 
 	<!-- Scripts -->
-	<script src="../assets/js/jquery.min.js"></script>
-	<script src="../assets/js/jquery.scrollex.min.js"></script>
-	<script src="../assets/js/jquery.scrolly.min.js"></script>
-	<script src="../assets/js/browser.min.js"></script>
-	<script src="../assets/js/breakpoints.min.js"></script>
-	<script src="../assets/js/util.js"></script>
-	<script src="../assets/js/main.js"></script>
+	<script src="/chalKag/assets/js/jquery.min.js"></script>
+	<script src="/chalKag/assets/js/jquery.scrollex.min.js"></script>
+	<script src="/chalKag/assets/js/jquery.scrolly.min.js"></script>
+	<script src="/chalKag/assets/js/browser.min.js"></script>
+	<script src="/chalKag/assets/js/breakpoints.min.js"></script>
+	<script src="/chalKag/assets/js/util.js"></script>
+	<script src="/chalKag/assets/js/main.js"></script>
 </body>
 
 </html>

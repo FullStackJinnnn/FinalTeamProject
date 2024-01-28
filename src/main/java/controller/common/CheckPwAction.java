@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import controller.front.Action;
 import controller.front.ActionForward;
@@ -21,21 +22,27 @@ public class CheckPwAction implements Action {
 
 		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
-
-		memberDTO.setMemberPW(request.getParameter("pw"));
-		memberDTO.setSearchCondition("비밀번호확인");
-
+		
+		//비밀번호 변경시 비밀번호 확인에서 로그인로직 재활용
+		
+		HttpSession session = request.getSession();
+		memberDTO.setId((String)session.getAttribute("member"));
+		
+		memberDTO.setMemberPW(request.getParameter("checkPw"));
+		
+		memberDTO.setSearchCondition("비밀번호 확인");
+		
 		memberDTO = memberDAO.selectOne(memberDTO);
 
 		if (memberDTO != null) {
 
-			forward.setPath("common/main.do");
+			forward.setPath("changePwPage.do");
 			forward.setRedirect(true);
 
 		} else {
 
-			forward.setPath("error/alert.jsp");
-			forward.setRedirect(false);
+			forward.setPath("error/alertPage.jsp");
+			forward.setRedirect(false );
 			request.setAttribute("msg", "비밀번호를 잘못 입력하였습니다!");
 		}
 

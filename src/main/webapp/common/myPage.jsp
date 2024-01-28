@@ -15,11 +15,10 @@
 <title>마이페이지</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/main.css" />
+<link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 
 <noscript>
-	<link rel="stylesheet" href="assets/css/noscript.css" />
+	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
 </noscript>
 <style>
 input::-webkit-input-placeholder {
@@ -105,7 +104,6 @@ a {
 #fileInput {
 	display: none;
 }
-
 </style>
 </head>
 
@@ -122,12 +120,13 @@ a {
 					<!-- 프사 -->
 					<div class="field">
 						<div class="photo">
-							<img id="preview" alt="프로필 이미지" src="mimg/${memberDTO.profile}"
-								onload="resizePreviewImage(this, 350, 350)"> 
+						<!-- 브라우저에서 이미지가 캐시에 저장되는 것을 방지하려면 일반적으로 이미지의 URL에 무작위 쿼리 매개변수를 추가하거나, 
+							파일 이름을 변경하여 이미지 URL을 고유하게 만들 수 있다. 이렇게 하면 브라우저가 이미지를 새로운 것으로 간주하고 캐시에 저장하지 않는다.
+							?v=${Math.random()} 부분은 무작위 숫자를 포함하는 쿼리 매개변수를 추가하는 것-->
+							<img id="preview" alt="프로필 이미지"
+								src="memberProfileImages/${memberDTO.profile}?v=${Math.random()}"
+								onload="resizePreviewImage(this, 350, 350)">
 						</div>
-						<button type="button"onclick="location.href='memberBoardSelectAllPage.do?nickname=티모모'">유저 게시글 출력 테스트</button>
-						
-						으아아아아아아아아아아아 작성자 : <a href="memberPage.do?nickname=티모모">티모모</a>
 						<div class="fileUpload">
 							<label for="fileInput" class="imageUpload">이미지 선택 <input
 								type="file" name="file" id="fileInput" form="changeProfile"></label>
@@ -142,7 +141,7 @@ a {
 				<!-- 아이디 -->
 				<div class="field">
 					<label for="myPageID"></label> <input type="text" name="myPageID"
-						id="myPageID" value="${memberDTO.memberID}" readonly />
+						id="myPageID" value="${memberDTO.id}" readonly />
 				</div>
 
 				<!-- 이름 -->
@@ -154,7 +153,7 @@ a {
 
 				<!-- 닉네임 -->
 				<div class="field">
-					<form id="changeNickname" >
+					<form id="changeNickname">
 						<label for="myPageNickname"></label> <input type="text"
 							name="myPageNickname" id="myPageNickname"
 							value="${memberDTO.nickname}" required /> <input type="submit"
@@ -168,7 +167,7 @@ a {
 						<label for="myPagePh"></label> <input type="text" name="myPagePh"
 							id="myPagePh" value="${memberDTO.ph}" readonly />
 						<button type="button" style="margin-left: 30px;"
-							onclick="location.href='#'">전화번호 변경</button>
+							onclick="location.href='/chalKag/changePh.do'">전화번호 변경</button>
 					</form>
 				</div>
 
@@ -176,19 +175,20 @@ a {
 				<div class="field">
 					<form id="myBoard" method="post" action="#">
 						<button type="button"
-							onclick="location.href='myBoardSelectAllPage.do?nickname=${memberDTO.nickname}'">내 작성글로
-							가기</button>
+							onclick="location.href='/chalKag/myBoardSelectAllPage.do?nickname=${memberDTO.nickname}'">내
+							작성글로 가기</button>
 					</form>
 				</div>
 
 				<div class="field"
 					style="display: flex; justify-content: space-between; margin-top: 30px">
 					<div>
-						<button type="button" onclick="location.href='main.do'">변경
+						<button type="button" onclick="location.href='/chalKag/main.do'">변경
 							완료</button>
 					</div>
 					<div style="text-align: right;">
-						<button type="button" onclick="location.href='deleteAccount.do'">회원
+						<button type="button"
+							onclick="location.href='/chalKag/deleteAccount.do'">회원
 							탈퇴</button>
 					</div>
 				</div>
@@ -216,7 +216,7 @@ a {
 		   	  $.ajax({
 		   	    type: "POST",
 		   	    enctype: 'multipart/form-data', 
-		   	    url: "ProfileUpload2.do",
+		   	    url: "profileUpload.do",
 		   	    data: formData,
 		   	    contentType: false,
 		   	    processData: false,
@@ -253,7 +253,7 @@ a {
 	      
 	    	  $.ajax({
 	              type : "POST",
-	              url : "changeNickname2.do",
+	              url : "changeNickname.do",
 	              data : {'myPageNickname' : myPageNickname},
 	              dataType : 'text',
 				  success : function(data){
@@ -462,8 +462,18 @@ a {
 	                        
 	                        // 콜백 함수 호출
 	                        callback(resizedImage);
+	                    } else if (file.type.toLowerCase().includes('webp')) {
+	                        // Support WebP format
+	                        resizedCtx.drawImage(canvas, 0, 0, size, size, 0, 0, maxWidth, maxHeight);
+	                        var resizedImage = resizedCanvas.toDataURL('image/webp');
+	                        callback(resizedImage);
+	                    } else if (file.type.toLowerCase().includes('gif')) {
+	                        // Support WebP format
+	                        resizedCtx.drawImage(canvas, 0, 0, size, size, 0, 0, maxWidth, maxHeight);
+	                        var resizedImage = resizedCanvas.toDataURL('image/gif');
+	                        callback(resizedImage);
 	                    } else {
-	                    	
+	                     	
 	                        // 다른 형식의 파일은 그대로 Data URL을 콜백 함수에 전달
 	                        callback(e.target.result);
 	                    }

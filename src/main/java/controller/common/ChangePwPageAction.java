@@ -19,7 +19,7 @@ public class ChangePwPageAction implements Action {
 		forward.setPath("common/changePwPage.jsp");
 		forward.setRedirect(true);
 
-		return null;
+		return forward;
 	}
 
 }

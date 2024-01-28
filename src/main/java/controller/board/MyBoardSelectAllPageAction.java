@@ -25,7 +25,7 @@ public class MyBoardSelectAllPageAction implements Action {
 
 		BoardDAO boardDAO = new BoardDAO();
 		BoardDTO boardDTO = new BoardDTO();
-		boardDTO.setCategory("내가 작성한 글"); // 카테고리 세팅 안하면 오류남! else문으로 가기위한 더미값 입력
+		boardDTO.setCategory(""); // 카테고리 세팅 안하면 오류남! else문으로 가기위한 더미값 입력
 		boardDTO.setSearchCondision("작성자");
 		boardDTO.setNickname(request.getParameter("nickname"));
 		ArrayList<BoardDTO> boardDatas = boardDAO.selectAll(boardDTO);
@@ -42,4 +42,3 @@ public class MyBoardSelectAllPageAction implements Action {
 	}
 
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

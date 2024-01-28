@@ -2,7 +2,7 @@ package model.member;
 
 public class MemberDTO {
 	private int memberNum;
-	private String memberID;
+	private String id;		// memberNum 및 memberId ID로 변경 - 김도연 2024/01/27
 	private String memberPW;
 	private String name;
 	private String nickname;
@@ -24,12 +24,12 @@ public class MemberDTO {
 		this.memberNum = memberNum;
 	}
 
-	public String getMemberID() {
-		return memberID;
+	public String getId() {
+		return id;
 	}
 
-	public void setMemberID(String memberID) {
-		this.memberID = memberID;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getMemberPW() {
@@ -114,9 +114,9 @@ public class MemberDTO {
 
 	@Override // 디버깅용 .정석진
 	public String toString() {
-		return "MemberDTO [memberNum=" + memberNum + ", memberID=" + memberID + ", memberPW=" + memberPW + ", name="
-				+ name + ", nickname=" + nickname + ", birth=" + birth + ", ph=" + ph + ", profile=" + profile
-				+ ", grade=" + grade + "]";
+		return "MemberDTO [memberNum=" + memberNum + ", ID=" + id + ", memberPW=" + memberPW + ", name=" + name
+				+ ", nickname=" + nickname + ", birth=" + birth + ", ph=" + ph + ", profile=" + profile + ", grade="
+				+ grade + "]";
 	}
 
 }

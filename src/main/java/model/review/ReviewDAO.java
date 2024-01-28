@@ -15,10 +15,10 @@ public class ReviewDAO {
 	private PreparedStatement pstmt;
 
 	// 댓글 출력 댓글 테이블과 회원 테이블을 조인
-	private static final String SELECTALL = "SELECT B.REVIEWNUM, B.BOARDNUM, M.MEMBERNUM, TO_CHAR(B.REVIEWDATE, 'YYYY-MM-DD') AS B.REVIEWDATE, B.REVIEWCONTENTS FROM BOARD B "
+	private static final String SELECTALL = "SELECT B.REVIEWNUM, B.BOARDNUM, M.ID,  TO_CHAR(B.REVIEWDATE, 'YYYY-MM-DD') AS B.REVIEWDATE, B.REVIEWCONTENTS FROM BOARD B "
 			+ "JOIN MEMBER M ON B.MEMBERNUM = M.MEMBERNUM WHERE B.BOARDNUM = ?";
 	// 댓글 상세보기 댓글 테이블과 회원 테이블을 조인
-	private static final String SELECTONE = "SELECT B.REVIEWNUM, B.BOARDNUM, M.MEMBERNUM, TO_CHAR(B.REVIEWDATE, 'YYYY-MM-DD') AS B.REVIEWDATE, B.REVIEWCONTENTS FROM BOARD B "
+	private static final String SELECTONE = "SELECT B.REVIEWNUM, B.BOARDNUM, M.ID, TO_CHAR(B.REVIEWDATE, 'YYYY-MM-DD') AS B.REVIEWDATE, B.REVIEWCONTENTS FROM BOARD B "
 			+ "JOIN MEMBER M ON B.MEMBERNUM = M.MEMBERNUM WHERE B.REVIEWNUM = ?";
 	// 댓글 작성
 	private static final String INSERT = "INSERT INTO REVIEW VALUES((SELECT NVL(MAX(REVIEWNUM),0)+1 FROM REVIEW),?,?,?)";
@@ -41,7 +41,7 @@ public class ReviewDAO {
 				data = new ReviewDTO();
 				data.setReviewNum(rs.getInt("REVIEWNUM"));
 				data.setBoardNum(rs.getInt("BOARDNUM"));
-				data.setMemberNum(rs.getInt("MEMBERNUM"));
+				data.setId(rs.getString("ID"));
 				data.setReviewDate(rs.getString("REVIEWDATE"));
 				data.setReviewContents(rs.getString("REVIEWCONTENTS"));
 				datas.add(data);
@@ -68,7 +68,7 @@ public class ReviewDAO {
 				data = new ReviewDTO();
 				data.setReviewNum(rs.getInt("REVIEWNUM"));
 				data.setBoardNum(rs.getInt("BOARDNUM"));
-				data.setMemberNum(rs.getInt("MEMBERNUM"));
+				data.setId(rs.getString("ID"));
 				data.setReviewDate(rs.getString("REVIEWDATE"));
 				data.setReviewContents(rs.getString("REVIEWCONTENTS"));
 			} else {
@@ -91,7 +91,7 @@ public class ReviewDAO {
 		try {
 			pstmt = conn.prepareStatement(INSERT);
 			pstmt.setInt(1, reviewDTO.getBoardNum());
-			pstmt.setInt(2, reviewDTO.getMemberNum());
+			pstmt.setString(2, reviewDTO.getId());
 			pstmt.setString(3, reviewDTO.getReviewContents());
 			int rs = pstmt.executeUpdate();
 			if (rs <= 0) {

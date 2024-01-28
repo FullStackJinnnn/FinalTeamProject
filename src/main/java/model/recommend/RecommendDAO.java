@@ -12,13 +12,13 @@ public class RecommendDAO {
 	private PreparedStatement pstmt;
 	
 	private static final String INSERT = "INSERT INTO RECOMMEND VALUES ((SELECT NVL(MAX(BOARDNUM),0)+1 FROM RECOMMEND), ?, ?)";
-	private static final String DELETE = "DELETE FROM RECOMMEND WHERE BOARDNUM = ? AND MEMBERNUM = ?";
+	private static final String DELETE = "DELETE FROM RECOMMEND WHERE BOARDNUM = ? AND ID = ?";
 
 	public boolean insert(RecommendDTO recommendDTO) {
 	      conn=JDBCUtil.connect();
 	      try {
 	         pstmt=conn.prepareStatement(INSERT);
-	         pstmt.setInt(1, recommendDTO.getMemberNum());
+	         pstmt.setString(1, recommendDTO.getId());
 	         pstmt.setInt(2, recommendDTO.getBoardNum());
 
 	         int rs=pstmt.executeUpdate();
@@ -39,7 +39,7 @@ public class RecommendDAO {
 	      try {
 	         pstmt=conn.prepareStatement(DELETE);
 	         pstmt.setInt(1, recommendDTO.getBoardNum());
-	         pstmt.setInt(2, recommendDTO.getMemberNum());
+	         pstmt.setString(2, recommendDTO.getId());
 	         int rs=pstmt.executeUpdate();
 	         if(rs<=0) {
 	            return false;

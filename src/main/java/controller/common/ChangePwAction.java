@@ -27,20 +27,20 @@ public class ChangePwAction implements Action {
 		MemberDTO memberDTO = new MemberDTO();
 		
 		HttpSession session = request.getSession();
-		memberDTO.setMemberID((String)session.getAttribute("member"));
-		memberDTO.setPh(request.getParameter("newPw"));
+		memberDTO.setId((String)session.getAttribute("member"));
+		memberDTO.setMemberPW(request.getParameter("newPw"));
 		memberDTO.setSearchCondition("비밀번호변경");
 
 		boolean flag = memberDAO.update(memberDTO);
 
 		if (flag) {
-
-			forward.setPath("common/main.do");
+			session.invalidate();
+			forward.setPath("main.do");
 			forward.setRedirect(true);
 
 		} else {
 
-			forward.setPath("error/alert.jsp");
+			forward.setPath("error/alertPage.jsp");
 			forward.setRedirect(false);
 			request.setAttribute("msg", "비밀번호 변경 실패!");
 

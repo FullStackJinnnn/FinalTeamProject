@@ -21,7 +21,7 @@ public class FindPwAction implements Action {
 
 		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
-		memberDTO.setMemberID(request.getParameter("memberID"));
+		memberDTO.setId(request.getParameter("memberID"));
 		memberDTO.setPh("ph");
 		memberDTO.setSearchCondition("비밀번호찾기");
 

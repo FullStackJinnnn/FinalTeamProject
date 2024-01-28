@@ -16,30 +16,42 @@ public class MemberDAO {
 	private static final String SELECTALL = "";
 
 	// 아이디 찾기 ▶ 이름, 전화번호 받아서 아이디 찾기 .정석진
-	private static final String SELECTONE_FINDID = "SELECT ID" + " FROM MEMBER WHERE NAME=? AND PH=?";
+	private static final String SELECTONE_FINDID = "SELECT ID FROM MEMBER WHERE NAME=? AND PH=?";
 
 	// 비밀번호 찾기 ▶ 아이디, 전화번호 받아서 비밀번호 찾기 .정석진
-	private static final String SELECTONE_FINDPW = "SELECT PW" + " FROM MEMBER WHERE ID=? AND PH=?";
+	private static final String SELECTONE_FINDPW = "SELECT PW FROM MEMBER WHERE ID=? AND PH=?";
 
 	// 로그인 ▶ 로그인시 세션에 memberID만 저장하기 때문에 ID만 가져옴 .정석진
-	private static final String SELECTONE_LOGIN = "SELECT ID" + " FROM MEMBER WHERE ID=? AND PW=?";
+	private static final String SELECTONE_LOGIN = "SELECT ID FROM MEMBER WHERE ID=? AND PW=?";
 
 	// 내 정보 출력 및 다른 유저 정보 출력 ▶
 	// 생년월일 출력 형식은 '1993-09-10' 으로 지정
 	// 자신과 다른유저가 작성한 글 볼때 필요한 BOARDNUM, TITLE을 INNER JOIN으로 가져옴
 	// 아이디자체가 고유값이기 때문에 아이디로 확인해서 정보 가져옴 .정석진
-	private static final String SELECTONE_MYINFO = "SELECT M.MEMBERNUM,ID,PW,NAME,NICKNAME, TO_CHAR(BIRTH,'YYYY-MM-DD') AS BIRTH_DATE,PH,PROFILE,GRADE, BOARDNUM"
-			+ " FROM MEMBER M LEFT JOIN BOARD B ON M.MEMBERNUM = B.MEMBERNUM WHERE ID=?";
-	
-	private static final String SELECTONE_MEMBERINFO = "SELECT M.MEMBERNUM,ID,NICKNAME, PH,PROFILE,GRADE, BOARDNUM"
-			+ " FROM MEMBER M LEFT JOIN BOARD B ON M.MEMBERNUM = B.MEMBERNUM WHERE NICKNAME=?";
+	private static final String SELECTONE_MYINFO = "SELECT MEMBERNUM,M.ID,PW,NAME,NICKNAME, TO_CHAR(BIRTH,'YYYY-MM-DD') AS BIRTH_DATE,PH,PROFILE,GRADE, BOARDNUM"
+			+ " FROM MEMBER M LEFT JOIN BOARD B ON M.ID = B.ID WHERE M.ID=?";
+
+	private static final String SELECTONE_MEMBERINFO = "SELECT MEMBERNUM,M.ID,NICKNAME,PH,PROFILE,GRADE, BOARDNUM"
+			+ " FROM MEMBER M LEFT JOIN BOARD B ON M.ID = B.ID WHERE NICKNAME=?";
 
 	private static final String SELECTONE_REPORT = "SELECT M.MEMBERNUM,ID,NICKNAME, BOARDNUM, TITLE, REPORTCONTENTS"
-			+ " FROM MEMBER M LEFT JOIN BOARD B ON M.MEMBERNUM = B.MEMBERNUM WHERE ID=?";
+			+ "FROM MEMBER M INNER JOIN BOARD B ON M.ID = B.ID WHERE ID=?";
+
+	// 아이디 중복확인 확인용 .노승현
+	private static final String SELECTONE_IDCHECK = "SELECT MEMBERNUM,ID,PW,NAME,NICKNAME,BIRTH,PH,PROFILE,GRADE "
+			+ "FROM MEMBER WHERE ID=?";
+
+	// 닉네임 중복확인 확인용 .노승현
+	private static final String SELECTONE_NICKNAMECHECK = "SELECT MEMBERNUM,ID,PW,NAME,NICKNAME,BIRTH,PH,PROFILE,GRADE "
+			+ "FROM MEMBER WHERE nickname=?";
+
+	// 전화번호 중복확인 확인용 .노승현
+	private static final String SELECTONE_PHCHECK = "SELECT MEMBERNUM,ID,PW,NAME,NICKNAME,BIRTH,PH,PROFILE,GRADE "
+			+ "FROM MEMBER WHERE PH=?";
 
 	// 회원가입 .정석진
 	private static final String INSERT_JOIN = "INSERT INTO MEMBER(MEMBERNUM,ID,PW,NAME,NICKNAME,BIRTH,PH,PROFILE,GRADE)"
-			+ " VALUES((SELECT NVL(MAX(MEMBERNUM),0)+1 FROM MEMBER),?,?,?,?,TO_DATE(?, 'yyyyMMdd'),?,?,'신입')";
+			+ "VALUES((SELECT NVL(MAX(MEMBERNUM),0)+1 FROM MEMBER),?,?,?,?,TO_DATE(?, 'yyyyMMdd'),?,COALESCE(?, 'default.jpg'),'신입')";
 
 	// 비밀번호변경 ▶ 현재 비밀번호입력 후 확인은 SELECTONE_LOGIN으로 진행. 새비밀번호, 새비밀번호확인은 뷰에서 체크 .정석진
 	private static final String UPDATE_CHANGEPW = "UPDATE MEMBER SET PW=? WHERE ID=?";
@@ -49,7 +61,7 @@ public class MemberDAO {
 
 	// 전화번호 변경 ▶ 새롭게 입력받은 전화번호 본인인증 후 변경 .정석진
 	private static final String UPDATE_CHANGEPH = "UPDATE MEMBER SET PH=? WHERE ID=?";
-
+	
 	private static final String UPDATE_CHANGEPROFILE = "UPDATE MEMBER SET PROFILE=? WHERE ID=?";
 
 	// 회원탈퇴 ▶ GRADE '탈퇴'로 변경 .정석진
@@ -74,7 +86,7 @@ public class MemberDAO {
 
 				if (rs.next()) {
 					data = new MemberDTO();
-					data.setMemberID(rs.getString("ID"));
+					data.setId(rs.getString("ID"));
 				}
 				rs.close();
 			} catch (SQLException e) {
@@ -85,7 +97,7 @@ public class MemberDAO {
 		} else if (memberDTO.getSearchCondition().equals("비밀번호찾기")) {
 			try {
 				pstmt = conn.prepareStatement(SELECTONE_FINDPW);
-				pstmt.setString(1, memberDTO.getMemberID());
+				pstmt.setString(1, memberDTO.getId());
 				pstmt.setString(2, memberDTO.getPh());
 				ResultSet rs = pstmt.executeQuery();
 
@@ -102,13 +114,13 @@ public class MemberDAO {
 		} else if (memberDTO.getSearchCondition().equals("로그인")) {
 			try {
 				pstmt = conn.prepareStatement(SELECTONE_LOGIN);
-				pstmt.setString(1, memberDTO.getMemberID());
+				pstmt.setString(1, memberDTO.getId());
 				pstmt.setString(2, memberDTO.getMemberPW());
 				ResultSet rs = pstmt.executeQuery();
 
 				if (rs.next()) {
 					data = new MemberDTO();
-					data.setMemberID(rs.getString("ID"));
+					data.setId(rs.getString("ID"));
 				}
 				rs.close();
 			} catch (SQLException e) {
@@ -119,13 +131,13 @@ public class MemberDAO {
 		} else if (memberDTO.getSearchCondition().equals("내정보출력")) {
 			try {
 				pstmt = conn.prepareStatement(SELECTONE_MYINFO);
-				pstmt.setString(1, memberDTO.getMemberID());
+				pstmt.setString(1, memberDTO.getId());
 				ResultSet rs = pstmt.executeQuery();
 
 				if (rs.next()) {
 					data = new MemberDTO();
 					data.setMemberNum(rs.getInt("MEMBERNUM"));
-					data.setMemberID(rs.getString("ID"));
+					data.setId(rs.getString("ID"));
 					data.setMemberPW(rs.getString("PW"));
 					data.setName(rs.getString("NAME"));
 					data.setNickname(rs.getString("NICKNAME"));
@@ -151,13 +163,61 @@ public class MemberDAO {
 				if (rs.next()) {
 					data = new MemberDTO();
 					data.setMemberNum(rs.getInt("MEMBERNUM"));
-					data.setMemberID(rs.getString("ID"));
+					data.setId(rs.getString("ID"));
 					data.setNickname(rs.getString("NICKNAME"));
 					data.setPh(rs.getString("PH"));
 					data.setProfile(rs.getString("PROFILE"));
 					data.setGrade(rs.getString("GRADE"));
 					data.setBoardNum(rs.getInt("BOARDNUM"));
 
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				JDBCUtil.disconnect(pstmt, conn);
+			}
+		} else if (memberDTO.getSearchCondition().equals("ID중복검사")) {
+			try {
+				pstmt = conn.prepareStatement(SELECTONE_IDCHECK);
+				pstmt.setString(1, memberDTO.getId());
+				ResultSet rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					data = new MemberDTO();
+					data.setId(rs.getString("ID"));
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				JDBCUtil.disconnect(pstmt, conn);
+			}
+		} else if (memberDTO.getSearchCondition().equals("닉네임중복검사")) {
+			try {
+				pstmt = conn.prepareStatement(SELECTONE_NICKNAMECHECK);
+				pstmt.setString(1, memberDTO.getNickname());
+				ResultSet rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					data = new MemberDTO();
+					data.setNickname(rs.getString("nickname"));
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				JDBCUtil.disconnect(pstmt, conn);
+			}
+		} else if (memberDTO.getSearchCondition().equals("전화번호중복검사")) {
+			try {
+				pstmt = conn.prepareStatement(SELECTONE_PHCHECK);
+				pstmt.setString(1, memberDTO.getId());
+				ResultSet rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					data = new MemberDTO();
+					data.setPh(rs.getString("ph"));
 				}
 				rs.close();
 			} catch (SQLException e) {
@@ -175,13 +235,17 @@ public class MemberDAO {
 
 		try {
 			pstmt = conn.prepareStatement(INSERT_JOIN);
-			pstmt.setString(1, memberDTO.getMemberID());
+			pstmt.setString(1, memberDTO.getId());
 			pstmt.setString(2, memberDTO.getMemberPW());
 			pstmt.setString(3, memberDTO.getName());
 			pstmt.setString(4, memberDTO.getNickname());
 			pstmt.setString(5, memberDTO.getBirth());
 			pstmt.setString(6, memberDTO.getPh());
-			pstmt.setString(7, memberDTO.getProfile());
+			// 만약 memberDTO.getProfile()이 null이거나 비어 있다면 기본 값 'default_profile'을 사용하여 프로필
+			// 매개변수 설정
+			pstmt.setString(7,
+					(memberDTO.getProfile() != null && !memberDTO.getProfile().isEmpty()) ? memberDTO.getProfile()
+							: "default.jpg");
 			pstmt.setString(8, memberDTO.getGrade());
 
 			int result = pstmt.executeUpdate();
@@ -204,7 +268,7 @@ public class MemberDAO {
 			try {
 				pstmt = conn.prepareStatement(UPDATE_CHANGEPW);
 				pstmt.setString(1, memberDTO.getMemberPW());
-				pstmt.setString(2, memberDTO.getMemberID());
+				pstmt.setString(2, memberDTO.getId());
 
 				int result = pstmt.executeUpdate();
 				if (result <= 0) {
@@ -219,7 +283,7 @@ public class MemberDAO {
 			try {
 				pstmt = conn.prepareStatement(UPDATE_CHANGENICKNAME);
 				pstmt.setString(1, memberDTO.getNickname());
-				pstmt.setString(2, memberDTO.getMemberID());
+				pstmt.setString(2, memberDTO.getId());
 
 				int result = pstmt.executeUpdate();
 				if (result <= 0) {
@@ -234,7 +298,7 @@ public class MemberDAO {
 			try {
 				pstmt = conn.prepareStatement(UPDATE_CHANGENICKNAME);
 				pstmt.setString(1, memberDTO.getPh());
-				pstmt.setString(2, memberDTO.getMemberID());
+				pstmt.setString(2, memberDTO.getId());
 
 				int result = pstmt.executeUpdate();
 				if (result <= 0) {
@@ -249,7 +313,7 @@ public class MemberDAO {
 			try {
 				pstmt = conn.prepareStatement(UPDATE_CHANGEPROFILE);
 				pstmt.setString(1, memberDTO.getProfile());
-				pstmt.setString(2, memberDTO.getMemberID());
+				pstmt.setString(2, memberDTO.getId());
 
 				int result = pstmt.executeUpdate();
 				if (result <= 0) {
@@ -260,10 +324,10 @@ public class MemberDAO {
 			} finally {
 				JDBCUtil.disconnect(pstmt, conn);
 			}
-		} else if (memberDTO.getSearchCondition().equals("회원탈퇴")) {
+		}else if (memberDTO.getSearchCondition().equals("회원탈퇴")) {
 			try {
 				pstmt = conn.prepareStatement(UPDATE_DELETEACCOUNT);
-				pstmt.setString(1, memberDTO.getMemberID());
+				pstmt.setString(1, memberDTO.getId());
 
 				int result = pstmt.executeUpdate();
 				if (result <= 0) {
@@ -278,7 +342,7 @@ public class MemberDAO {
 			try {
 				pstmt = conn.prepareStatement(UPDATE_DELETEACCOUNT);
 				pstmt.setString(1, memberDTO.getGrade());
-				pstmt.setString(2, memberDTO.getMemberID());
+				pstmt.setString(2, memberDTO.getId());
 
 				int result = pstmt.executeUpdate();
 				if (result <= 0) {

@@ -24,21 +24,22 @@ public class LoginAction implements Action {
 
 		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
-		memberDTO.setMemberID(request.getParameter("memberID"));
+		memberDTO.setId(request.getParameter("memberID"));
 		memberDTO.setMemberPW(request.getParameter("memberPW"));
 		memberDTO.setSearchCondition("로그인");
 		memberDTO = memberDAO.selectOne(memberDTO);
-
+		System.out.println(memberDTO);
+		
 		if (memberDTO != null) { // 로그인 성공시 세션 저장 후 메인으로 이동 , 이동 할 정보 없음
 			HttpSession session = request.getSession();
-			session.setAttribute("member", memberDTO.getMemberID());
+			session.setAttribute("member", memberDTO.getId());
 
-			forward.setPath("main.do");
+			forward.setPath("/chalKag/main.do");
 			forward.setRedirect(true);
+			System.out.println("로그인 성공"+memberDTO.getId());
 		} else { // 로그인 실패시 alert창으로 이동
-
-			forward.setPath("error/alertPage.jsp");
-			forward.setRedirect(true);
+//			forward.setPath("error/alertPage.jsp");
+//			forward.setRedirect(false);
 			request.setAttribute("msg", "로그인 실패!");
 
 		}

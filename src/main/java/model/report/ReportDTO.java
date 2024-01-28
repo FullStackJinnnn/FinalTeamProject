@@ -9,7 +9,7 @@ public class ReportDTO {
 	private String reportDate;
 	private String accountStop;
 	// join 으로 가져올떄 필요한 멤버변수 .정석진
-	private int memberNum;
+	private String id;				// memberNum 및 memberId ID로 변경 - 김도연 2024/01/27
 	private int boardNum;
 	private String title;
 
@@ -61,12 +61,12 @@ public class ReportDTO {
 		this.accountStop = accountStop;
 	}
 
-	public int getMemberNum() {
-		return memberNum;
+	public String getId() {
+		return id;
 	}
 
-	public void setMemberNum(int memberNum) {
-		this.memberNum = memberNum;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public int getBoardNum() {

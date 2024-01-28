@@ -28,7 +28,7 @@ public class ReviewWriteAction implements Action {
 		HttpSession session = request.getSession();
 
 		reviewDTO.setBoardNum((Integer) request.getAttribute("boardNum"));
-		reviewDTO.setMemberNum((Integer) session.getAttribute("member"));
+		reviewDTO.setId((String)session.getAttribute("member"));
 		reviewDTO.setReviewContents(request.getParameter("reviewContents"));
 
 		boolean flag = reviewDAO.insert(reviewDTO);

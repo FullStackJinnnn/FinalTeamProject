@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.front.Action;
 import controller.front.ActionForward;
+import model.board.BoardDAO;
+import model.board.BoardDTO;
 
 public class CameraReviewUpdatePageAction implements Action {
 
@@ -17,10 +19,21 @@ public class CameraReviewUpdatePageAction implements Action {
 			throws ServletException, IOException {
 
 		ActionForward forward = new ActionForward();
-		forward.setPath("board/cameraReviewUpdatePage.jsp");
-		forward.setRedirect(true);
 
-		return null;
+		request.setCharacterEncoding("UTF-8");
+
+		BoardDAO boardDAO = new BoardDAO();
+		BoardDTO boardDTO = new BoardDTO();
+
+		boardDTO.setBoardNum((Integer) request.getAttribute("boardNum"));
+		boardDAO.selectOne(boardDTO);
+		request.setAttribute("boardSelectOne", boardDTO);
+
+		forward.setPath("board/sellBoardUpdatePage.jsp");
+		forward.setRedirect(false);
+
+		return forward;
+
 	}
 
 }

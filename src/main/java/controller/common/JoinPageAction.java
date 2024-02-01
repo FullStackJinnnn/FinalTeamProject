@@ -19,8 +19,6 @@ public class JoinPageAction implements Action {
 		forward.setPath("common/joinPage.jsp");
 		forward.setRedirect(true);
 
-		request.setCharacterEncoding("UTF-8");
-
 		return forward;
 	}
 

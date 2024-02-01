@@ -118,15 +118,18 @@ a {
 				<h1 style="font-size: 150px; text-align: center;">MyPage</h1>
 				<form id="changeProfile">
 					<!-- 프사 -->
-					<div class="field">
+					<div cla
+					.ss="field">
 						<div class="photo">
-						<!-- 브라우저에서 이미지가 캐시에 저장되는 것을 방지하려면 일반적으로 이미지의 URL에 무작위 쿼리 매개변수를 추가하거나, 
-							파일 이름을 변경하여 이미지 URL을 고유하게 만들 수 있다. 이렇게 하면 브라우저가 이미지를 새로운 것으로 간주하고 캐시에 저장하지 않는다.
-							?v=${Math.random()} 부분은 무작위 숫자를 포함하는 쿼리 매개변수를 추가하는 것-->
+							<!-- 브라우저에서 이미지가 캐시에 저장되는 것을 방지하려면 일반적으로 이미지의 URL에 무작위 쿼리 매개변수를 추가하거나, 
+    파일 이름을 변경하여 이미지 URL을 고유하게 만들 수 있다. 이렇게 하면 브라우저가 이미지를 새로운 것으로 간주하고 캐시에 저장하지 않는다.
+    ?v=${Math.random()} 부분은 무작위 숫자를 포함하는 쿼리 매개변수를 추가하는 것-->
 							<img id="preview" alt="프로필 이미지"
 								src="memberProfileImages/${memberDTO.profile}?v=${Math.random()}"
 								onload="resizePreviewImage(this, 350, 350)">
+
 						</div>
+						으아아아아아아아아아아아 작성자 : <a href="/chalKag/memberPage.do?nickname=티모모">티모모</a>
 						<div class="fileUpload">
 							<label for="fileInput" class="imageUpload">이미지 선택 <input
 								type="file" name="file" id="fileInput" form="changeProfile"></label>
@@ -173,11 +176,9 @@ a {
 
 				<!-- 자신이 작성한 글로 이동 -->
 				<div class="field">
-					<form id="myBoard" method="post" action="#">
-						<button type="button"
-							onclick="location.href='/chalKag/myBoardSelectAllPage.do?nickname=${memberDTO.nickname}'">내
-							작성글로 가기</button>
-					</form>
+					<button type="button"
+						onclick="location.href='/chalKag/myboardSelectAllPage.do?id=${memberDTO.id}'">내
+						작성글로 가기</button>
 				</div>
 
 				<div class="field"

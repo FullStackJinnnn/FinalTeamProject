@@ -11,26 +11,6 @@
 	content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 
-<noscript>
-	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
-</noscript>
-<style>
-input::-webkit-input-placeholder {
-	font-family: "Source Sans Pro", Helvetica, sans-serif;
-}
-
-a {
-	font-family: "Source Sans Pro", Helvetica, sans-serif;
-}
-
-.fields {
-	text-align: center;
-}
-
-.field {
-	margin-bottom: 10px;
-}
-</style>
 </head>
 
 <body class="is-preload">
@@ -43,25 +23,15 @@ a {
 			<form id="findId" method="post" action="/chalKag/findIdResultPage.do">
 				<div class="fields">
 
-					<!-- 이름 -->
+					<!-- 이름입력.안승준 -->
 					<div class="field">
-						<label for="name"></label> <input type="text" name="findName"
-							id="findName" placeholder="이름을 입력해주세요" required />
+						<label for="name"></label> <input type="text" name="name"
+							id="name" placeholder="이름을 입력해주세요" required />
 					</div>
 
-					<div class="field">
-						<label for="ph"></label> <input type="text" name="phCheck"
-							id="phCheck" placeholder="전화번호를 입력해주세요" required />
-					</div>
+					<stone:phCheck />
 
-					<!-- 번호 인증 -->
-					<div class="field">
-						<div class="actions" style="text-align: center; margin-top: 10px;">
-							<input type="submit" value="번호 인증" style="width: 250px;" />
-						</div>
-					</div>
-
-					<!--  확인버튼 -->
+					<!-- 아이디 찾기 버튼.안승준 -->
 					<div class="field">
 
 						<div class="actions" style="text-align: center; margin-top: 10px;">
@@ -83,6 +53,11 @@ a {
 	<script src="/chalKag/assets/js/breakpoints.min.js"></script>
 	<script src="/chalKag/assets/js/util.js"></script>
 	<script src="/chalKag/assets/js/main.js"></script>
+	<script src="/chalKag/assets/js/signIn.js"></script>
+	<script src="/chalKag/assets/js/checkID.js"></script>
+	<script src="/chalKag/assets/js/checkNickname.js"></script>
+	<script src="/chalKag/assets/js/smsCheck.js"></script>
+	<script src="/chalKag/assets/js/sendAuthentication.js"></script>
 	
 </body>
 

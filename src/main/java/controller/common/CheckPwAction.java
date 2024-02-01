@@ -28,7 +28,7 @@ public class CheckPwAction implements Action {
 		HttpSession session = request.getSession();
 		memberDTO.setId((String)session.getAttribute("member"));
 		
-		memberDTO.setMemberPW(request.getParameter("checkPw"));
+		memberDTO.setPw(request.getParameter("checkPw"));
 		
 		memberDTO.setSearchCondition("비밀번호 확인");
 		

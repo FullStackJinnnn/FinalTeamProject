@@ -32,7 +32,6 @@ import controller.common.DeleteAccountAction;
 import controller.common.FindIdPageAction;
 import controller.common.FindIdResultPageAction;
 import controller.common.FindPwPageAction;
-import controller.common.FindPwResultPageAction;
 import controller.common.JoinAction;
 import controller.common.JoinPageAction;
 import controller.common.LoginAction;
@@ -82,7 +81,7 @@ public class HandlerMapper {
 		handlerMap.put("/sellBoardSelectAllPage.do", new SellBoardSelectAllPageAction());
 		handlerMap.put("/sellBoardSelectOnePage.do", new SellBoardSelectOnePageAction());
 		handlerMap.put("/cameraReviewSelectAllPage.do", new CameraReviewSelectAllPageAction());
-		handlerMap.put("/cameraReviewSelctOnePage.do", new CameraReviewSelctOnePageAction());
+		handlerMap.put("/cameraReviewSelectOnePage.do", new CameraReviewSelctOnePageAction());
 		handlerMap.put("/freeBoardSelectAllPage.do", new FreeBoardSelectAllPageAction());
 		handlerMap.put("/freeBoardSelectOnePage.do", new FreeBoardSelectOnePageAction());
 		handlerMap.put("/reviewWrite.do", new ReviewWriteAction());
@@ -108,8 +107,9 @@ public class HandlerMapper {
 		handlerMap.put("/errorPage.do", new ErrorPageAction());
 		handlerMap.put("/backPage.do", new BackPageAction());
 		handlerMap.put("/findIdResultPage.do", new FindIdResultPageAction());
-		handlerMap.put("/findPwResultPage.do", new FindPwResultPageAction());
-
+		/*
+		 * handlerMap.put("/priceSearchAction.do", new PriceSearchAction());
+		 */
 	}
 
 	public Action getAction(String commend) {

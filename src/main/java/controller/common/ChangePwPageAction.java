@@ -17,7 +17,8 @@ public class ChangePwPageAction implements Action {
 
 		ActionForward forward = new ActionForward();
 		forward.setPath("common/changePwPage.jsp");
-		forward.setRedirect(true);
+		forward.setRedirect(false);
+		request.setAttribute("id", request.getParameter("id"));
 
 		return forward;
 	}

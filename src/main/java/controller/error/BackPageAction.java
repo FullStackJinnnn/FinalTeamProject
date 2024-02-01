@@ -17,7 +17,6 @@ public class BackPageAction implements Action {
 
 		// 이전 페이지의 URL을 가져옴
 		String referer = request.getHeader("referer");
-		System.out.println("로그 : "+referer);
 
 		// 이전 페이지의 URL이 없을 경우 기본적으로 설정할 URL
 		String defaultUrl = "/chalKag/main.do"; // 예: 메인 페이지로 리디렉션

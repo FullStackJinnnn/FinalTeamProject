@@ -44,7 +44,7 @@ public class FrontController extends HttpServlet {
 
 		Action action = handler.getAction(commend);
 		ActionForward forward = action.execute(request, response);
-		System.out.println(action + ": action");
+
 		if (forward.isRedirect()) {
 			response.sendRedirect(forward.getPath());
 		} else {

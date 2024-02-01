@@ -19,8 +19,6 @@ public class MainAction implements Action {
 		forward.setPath("common/mainPage.jsp");
 		forward.setRedirect(true);
 
-		request.setCharacterEncoding("UTF-8");
-
 		return forward;
 	}
 

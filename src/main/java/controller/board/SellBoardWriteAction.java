@@ -43,8 +43,6 @@ public class SellBoardWriteAction implements Action { // 카메라 판매글 작
 		
 		ActionForward forward = new ActionForward();
 
-		request.setCharacterEncoding("UTF-8");
-
 		BoardDAO boardDAO = new BoardDAO();
 		BoardDTO boardDTO = new BoardDTO();
 		

@@ -20,12 +20,10 @@ public class LoginAction implements Action {
 
 		ActionForward forward = new ActionForward();
 
-		request.setCharacterEncoding("UTF-8");
-
 		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
 		memberDTO.setId(request.getParameter("memberID"));
-		memberDTO.setMemberPW(request.getParameter("memberPW"));
+		memberDTO.setPw(request.getParameter("memberPW"));
 		memberDTO.setSearchCondition("로그인");
 		memberDTO = memberDAO.selectOne(memberDTO);
 		System.out.println(memberDTO);

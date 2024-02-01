@@ -19,7 +19,7 @@ public class ReportDAO {
 	// 신고 상세보기 ▶ 신고된 글을 파악할수 있게 BOARDNUM, TITLE 출력, 신고를 INSERT할때 REPORTER, SUSPECT에
 	// 멤버 ID가 들어가는 거라면 NICNNAME, ID는 필요없을 것 같아 추가 안함 다중조인이 불필요한 것 같기도 함 .정석진
 	private static final String SELECTONE_REPORTMANAGE = "SELECT M.ID, BOARDNUM, TITLE, REPORTNUM, REPORTER, SUSPECT, REPORTCONTENTS, REPORTDATE, ACCOUNTSTOP"
-			+ "FROM REPORT R JOIN MEMBER M ON M.ID = R.ID JOIN BOARD B ON M.ID = B.ID WHERE REPORTNUM=?";
+			+ "FROM REPORT R JOIN MEMBER ON MEMBER.ID = REPORT.ID JOIN BOARD ON MEMBER.ID = BOARD.ID WHERE REPORTNUM=?";
 
 	// 신고하기 ▶ 신고페이지 출력에 필요한 정보는 (게시글 제목, 신고할 유저 정보)
 	// MemberDAO의 SELECTONE_MEMBERINFO사용 .정석진

@@ -11,26 +11,6 @@
 	content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 
-<noscript>
-	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
-</noscript>
-<style>
-input::-webkit-input-placeholder {
-	font-family: "Source Sans Pro", Helvetica, sans-serif;
-}
-
-a {
-	font-family: "Source Sans Pro", Helvetica, sans-serif;
-}
-
-.fields {
-	text-align: center;
-}
-
-.field {
-	margin-bottom: 10px;
-}
-</style>
 </head>
 
 <body class="is-preload">
@@ -42,7 +22,7 @@ a {
 
 			<div class="box">
 										
-				<p style="text-align: center;">노승현 바보~~~~~~~</p>
+				<p style="text-align: center;">${findIdResult}</p>
 		
 			</div>
 

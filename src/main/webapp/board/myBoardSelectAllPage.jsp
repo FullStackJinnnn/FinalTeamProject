@@ -56,7 +56,7 @@
 									href="/chalKag/myBoardSelectOnePage.do?boardNum=${data.boardNum}">${data.title}</a></td>
 								<td>${data.nickname}</td>
 								<td>${data.boardDate}</td>
-								<td>${data.recommandCount}</td>
+								<td>${data.recommendNum}</td>
 								<td>${data.viewCount}</td>
 							</tr>
 						</c:forEach>

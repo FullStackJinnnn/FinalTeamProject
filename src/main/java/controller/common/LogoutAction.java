@@ -17,7 +17,7 @@ public class LogoutAction implements Action {
 			throws ServletException, IOException {
 
 		ActionForward forward = new ActionForward();
-		forward.setPath("/main.do");
+		forward.setPath("/chalKag/main.do");
 		// 이동 할 정보 없음
 		forward.setRedirect(true);
 

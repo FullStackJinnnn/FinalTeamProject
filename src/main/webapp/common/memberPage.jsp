@@ -22,7 +22,8 @@
 	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
 </noscript>
 <style>
-input::-webkit-input-placeholder {
+input::-webkit-input
+-placeholder {
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
 }
 
@@ -73,7 +74,7 @@ a {
 					<!-- 프사 -->
 					<div class="field">
 						<div class="photo">
-							<img id="preview" alt="프로필 이미지" src="memberProfileImages/${memberDTO.profile}?v=${Math.random()}"
+							<img id="preview" alt="프로필 이미지" src="memberProfileImages/${memberDTO.profile}"
 								onload="resizePreviewImage(this, 350, 350)">
 						</div>
 					</div>
@@ -84,7 +85,7 @@ a {
 				<!-- 아이디 -->
 				<div class="field">
 					<label for="myPageID"></label> <input type="text" name="myPageID"
-						id="myPageID" value="${memberDTO.memberID}" readonly />
+						id="myPageID" value="${memberDTO.id}" readonly />
 				</div>
 
 				<!-- 닉네임 -->

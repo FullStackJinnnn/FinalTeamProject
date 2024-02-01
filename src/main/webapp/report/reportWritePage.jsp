@@ -46,7 +46,7 @@
 				</div>
 				<div class="col-6 col-12-xsmall">
 					<input type="email" name="suspectMemberID" id="suspectMemberID"
-						value="${boardDTO.memberID}" placeholder="suspect_ID" />
+						value="${boardDTO.id}" placeholder="suspect_ID" />
 					<!-- 신고대상을 자동으로 받아와야 해요 -->
 				</div>
 				<!-- 신고 내용 입력 -->
@@ -57,7 +57,6 @@
 				<!-- 제출 버튼 -->
 				<div class="col-12" style="text-align: right;">
 					<div class="col-12" style="text-align: right;">
-					<input type="hidden" name="suspectMemberNum" value="${boardDTO.memberNum}">
 					<input type="submit" value="REPORT" id="btnReportSubmit">  
 					<%-- <a href="reportWrite.do?nickname=${boardDTO.boardNum}" class="button">REPORT</a> --%>
 					</div>

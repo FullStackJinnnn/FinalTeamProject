@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import controller.front.Action;
 import controller.front.ActionForward;
 
-public class FindPwPageAction implements Action{
+public class FindPwPageAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
@@ -17,10 +17,8 @@ public class FindPwPageAction implements Action{
 		ActionForward forward = new ActionForward();
 		forward.setPath("common/findPwPage.jsp");
 		forward.setRedirect(true);
-		
+
 		return forward;
 	}
-	
-	
 
 }

@@ -29,9 +29,9 @@ public class CheckID extends HttpServlet {
 		MemberDTO mDTO=new MemberDTO();
 		mDTO.setSearchCondition("ID중복검사");
 		//
-		mDTO.setId(request.getParameter("MemberID"));
+		mDTO.setId(request.getParameter("id"));
 		mDTO=mDAO.selectOne(mDTO);
-		
+		System.out.println("mDTO"+mDTO);
 		int flag=0;
 		if(mDTO==null) {
 			flag=1;

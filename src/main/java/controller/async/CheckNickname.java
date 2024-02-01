@@ -29,7 +29,7 @@ public class CheckNickname extends HttpServlet {
 		MemberDTO mDTO=new MemberDTO();
 		mDTO.setSearchCondition("닉네임중복검사");
 		//
-		mDTO.setNickname(request.getParameter("Nickname"));
+		mDTO.setNickname(request.getParameter("nickname"));
 		mDTO=mDAO.selectOne(mDTO);
 		
 		int flag=0;

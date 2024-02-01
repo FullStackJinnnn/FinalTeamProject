@@ -104,7 +104,7 @@ table.alt tbody tr td {
 			<!-- 게시글 수정, 삭제 -->
 			<div class="col-6 col-12-small" style="text-align:right;">
 				<br>
-				<input type="button" value="Update" onclick="/chalKag/cameraReviewUpdate.do">
+				<input type="button" value="Update" onclick="/chalKag/cameraReviewUpdatePage.do">
 				<input type="button" value="Delete" onclick="/chalKag/cameraDelete.do">			
 			</div>
 			

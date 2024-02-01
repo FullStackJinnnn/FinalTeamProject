@@ -1,9 +1,8 @@
 package model.member;
 
 public class MemberDTO {
-	private int memberNum;
-	private String id;		// memberNum 및 memberId ID로 변경 - 김도연 2024/01/27
-	private String memberPW;
+	private String id; // memberNum 및 memberId ID로 변경 - 김도연 2024/01/27
+	private String pw;
 	private String name;
 	private String nickname;
 	private String birth;
@@ -13,16 +12,9 @@ public class MemberDTO {
 
 	private String searchCondition;
 	// join 으로 가져올떄 필요한 멤버변수 .정석진
+	
 	private int boardNum;
 	private String title;
-
-	public int getMemberNum() {
-		return memberNum;
-	}
-
-	public void setMemberNum(int memberNum) {
-		this.memberNum = memberNum;
-	}
 
 	public String getId() {
 		return id;
@@ -32,12 +24,12 @@ public class MemberDTO {
 		this.id = id;
 	}
 
-	public String getMemberPW() {
-		return memberPW;
+	public String getPw() {
+		return pw;
 	}
 
-	public void setMemberPW(String memberPW) {
-		this.memberPW = memberPW;
+	public void setPw(String pw) {
+		this.pw = pw;
 	}
 
 	public String getName() {
@@ -114,7 +106,7 @@ public class MemberDTO {
 
 	@Override // 디버깅용 .정석진
 	public String toString() {
-		return "MemberDTO [memberNum=" + memberNum + ", ID=" + id + ", memberPW=" + memberPW + ", name=" + name
+		return "MemberDTO [ ID=" + id + ", PW=" + pw + ", name=" + name
 				+ ", nickname=" + nickname + ", birth=" + birth + ", ph=" + ph + ", profile=" + profile + ", grade="
 				+ grade + "]";
 	}

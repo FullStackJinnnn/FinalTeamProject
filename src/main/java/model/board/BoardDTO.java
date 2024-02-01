@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class BoardDTO {
 	private int boardNum; // 게시글 번호
-	private String id; // 게시글을 작성한 회원의 ID			// memberNum 및 memberId ID로 변경 - 김도연 2024/01/27
+	private String id; // 게시글을 작성한 회원의 ID
 	private String nickname; // 게시글을 작성한 회원의 닉네임
 	private String grade; // 게시글을 작성한 회원의 등급
 	private String category; // 게시글의 카테고리
@@ -19,12 +19,13 @@ public class BoardDTO {
 	private String state; // 게시글의 상태(판매, 판매완료)
 	private int viewCount; // 게시글 조회수
 	private int recommendNum; // 게시글과 조인한 추천테이블의 번호
+	private int recommendCNT; // 게시글과 조인한 추천테이블의 번호
 	private int reviewNum; // 게시글과 조인한 댓글테이블의 번호
 	private String reviewDate; // 댓글의 작성일
 	private String reviewContents; // 댓글 내용
 
-	private String searchCondision; // 게시글 목록 검색용 변수
-
+	private String searchCondition; // 게시글 목록 검색용 변수
+	
 	private String updatePage; // 페이지 증가용 확인 변수
 
 	public int getBoardNum() {
@@ -33,6 +34,30 @@ public class BoardDTO {
 
 	public void setBoardNum(int boardNum) {
 		this.boardNum = boardNum;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
 
 	public String getCategory() {
@@ -123,6 +148,22 @@ public class BoardDTO {
 		this.viewCount = viewCount;
 	}
 
+	public int getRecommendNum() {
+		return recommendNum;
+	}
+
+	public void setRecommendNum(int recommendNum) {
+		this.recommendNum = recommendNum;
+	}
+
+	public int getRecommendCNT() {
+		return recommendCNT;
+	}
+
+	public void setRecommendCNT(int recommendCNT) {
+		this.recommendCNT = recommendCNT;
+	}
+
 	public int getReviewNum() {
 		return reviewNum;
 	}
@@ -147,36 +188,12 @@ public class BoardDTO {
 		this.reviewContents = reviewContents;
 	}
 
-	public String getId() {
-		return id;
+	public String getSearchCondition() {
+		return searchCondition;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
-	public String getGrade() {
-		return grade;
-	}
-
-	public void setGrade(String grade) {
-		this.grade = grade;
-	}
-
-	public String getSearchCondision() {
-		return searchCondision;
-	}
-
-	public void setSearchCondision(String searchCondision) {
-		this.searchCondision = searchCondision;
+	public void setSearchCondition(String searchCondition) {
+		this.searchCondition = searchCondition;
 	}
 
 	public String getUpdatePage() {
@@ -187,12 +204,18 @@ public class BoardDTO {
 		this.updatePage = updatePage;
 	}
 
-	public int getRecommendNum() {
-		return recommendNum;
+	@Override
+	public String toString() {
+		return "BoardDTO [boardNum=" + boardNum + ", id=" + id + ", nickname=" + nickname + ", grade=" + grade
+				+ ", category=" + category + ", title=" + title + ", contents=" + contents + ", boardDate=" + boardDate
+				+ ", price=" + price + ", image=" + image + ", productcategory=" + productcategory + ", productName="
+				+ productName + ", company=" + company + ", state=" + state + ", viewCount=" + viewCount
+				+ ", recommendNum=" + recommendNum + ", recommendCNT=" + recommendCNT + ", reviewNum=" + reviewNum
+				+ ", reviewDate=" + reviewDate + ", reviewContents=" + reviewContents + ", searchCondition="
+				+ searchCondition + ", updatePage=" + updatePage + "]";
 	}
 
-	public void setRecommendNum(int recommendNum) {
-		this.recommendNum = recommendNum;
-	}
-
+	
+		
 }
+	

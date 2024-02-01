@@ -21,22 +21,33 @@ public class ChangePwAction implements Action {
 
 		ActionForward forward = new ActionForward();
 		
-		request.setCharacterEncoding("UTF-8");
-
 		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
-		
 		HttpSession session = request.getSession();
-		memberDTO.setId((String)session.getAttribute("member"));
-		memberDTO.setMemberPW(request.getParameter("newPw"));
+		
+		if(session.getAttribute("member") != null) {
+			
+			memberDTO.setId((String)session.getAttribute("member"));
+			
+		} else {
+			
+			memberDTO.setId((String)request.getAttribute("id"));
+			
+		}
+		memberDTO.setPw(request.getParameter("pw"));
 		memberDTO.setSearchCondition("비밀번호변경");
 
 		boolean flag = memberDAO.update(memberDTO);
 
 		if (flag) {
-			session.invalidate();
-			forward.setPath("main.do");
+			
+			if(session.getAttribute("member") != null) {
+				session.invalidate();
+			}
+	
+			forward.setPath("/chalKag/main.do");
 			forward.setRedirect(true);
+			
 
 		} else {
 

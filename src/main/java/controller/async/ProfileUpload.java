@@ -25,27 +25,31 @@ import model.member.MemberDTO;
 @WebServlet("/profileUpload.do")
 public class ProfileUpload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ProfileUpload() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public ProfileUpload() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
@@ -55,8 +59,9 @@ public class ProfileUpload extends HttpServlet {
 		// /C:/eclipse/FinalTeamProject/workspace_infinityStone/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/chalKag/WEB-INF/classes/controller/common/
 		String uploadDir = this.getClass().getResource("").getPath();
 
-		// .metadata 앞까지 문자열잘라서 이미지가 저장되는 폴더인 mimg까지의 절대경로 부여
-		uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata")) + "chalKag/src/main/webapp/memberProfileImages";
+		// .metadata 앞까지 문자열잘라서 이미지가 저장되는 폴더인 memberProfileImages까지의 절대경로 부여
+		uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata"))
+				+ "chalKag/src/main/webapp/memberProfileImages";
 
 		// 총 100M 까지 저장 가능하게 함
 		int maxSize = 1024 * 1024 * 100;
@@ -79,9 +84,13 @@ public class ProfileUpload extends HttpServlet {
 			// encoding: 인코딩 방식
 			// new CustomFileRenamePolicy(Integer.toString(memberDTO.getMemberNum())):
 			// 파일 이름 중복 시 사용할 사용자 정의 파일 리네임 정책 객체를 생성하고 전달 103번라인 참조
-			// 현재 이름을 무조건 현재로그인된 memberNum으로 변경하고 저장
+			// 현재 이름을 무조건 현재로그인된 id로 변경하고 저장
+			String id = memberDTO.getId();
+			int dotIndex = id.indexOf(".");
+			String resultId = id.substring(0, dotIndex) + id.substring(dotIndex + 1);
+
 			MultipartRequest multipartRequest = new MultipartRequest(request, uploadDir, maxSize, encoding,
-					new CustomFileRenamePolicy(Integer.toString(memberDTO.getMemberNum())));
+					new CustomFileRenamePolicy(resultId));
 
 			// memberNum으로 재설정한 이름 newFileName에 대입
 			String newFileName = multipartRequest.getFilesystemName("file");
@@ -110,30 +119,29 @@ public class ProfileUpload extends HttpServlet {
 						// newfile을 existingFile에 덮어씌움
 						Files.copy(newFile.toPath(), existingFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 					} catch (IOException e) {
-						e.printStackTrace();//덮어씌움 실패하면 에러처리 해야함
+						e.printStackTrace();// 덮어씌움 실패하면 에러처리 해야함
+					}
+					// 확장자를 포함한 기존파일과 새로운파일의 이름이 다르고 "default_image.jpg" 가 아니라면 파일삭제
+				} else if (!existingFileName.equals(newFileName)) {
+					if (!existingFileName.equals("default_image.jpg")) {
+						existingFile.delete();
 					}
 				}
-				//확장자를 포함한 기존파일과 새로운파일의 이름이 다르면 
-				else {
-					// 기존 파일을 삭제
-					existingFile.delete();
-				}
+
 			}
-			int outFlag=0;
+			int outFlag = 0;
 			// DB에 변경한 프로필 사진명 저장
 			memberDTO.setProfile(newFileName);
 			memberDTO.setSearchCondition("프로필변경");
 			boolean flag = memberDAO.update(memberDTO);
 			if (flag) {
-				outFlag=1;
+				outFlag = 1;
 			}
-			PrintWriter out=response.getWriter();
+			PrintWriter out = response.getWriter();
 			out.print(outFlag);
-			System.out.println(outFlag);
 
 		}
-	
-		
+
 	}
 
 }

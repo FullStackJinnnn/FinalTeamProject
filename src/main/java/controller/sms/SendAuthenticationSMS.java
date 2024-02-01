@@ -28,8 +28,8 @@ public class SendAuthenticationSMS extends HttpServlet {
 
 		System.out.println("서블릿 들어옴");
 		String ph = request.getParameter("ph");
-		AuthenticationSMS authenticationSMS = new AuthenticationSMS("NCSQBJLGTIO6JCGI",
-				"FIMK9P2RTKY7MDZ6ST3P2NLNXKEDPSGP");
+		AuthenticationSMS authenticationSMS = new AuthenticationSMS("NCSLNBEWWMJ3WPUM",
+				"BK3RMGCYTRSRTKLD8P0NKUR1XZIR6LSV");
 
 		// 인증코드 생성 로직작성
 		// CreateVerificationCode의 인스턴스 생성
@@ -43,7 +43,7 @@ public class SendAuthenticationSMS extends HttpServlet {
 		boolean isSMSSent = authenticationSMS.sendMsg(ph, verificationCode);
 
 		if (isSMSSent) {
-			response.getWriter().write("success");
+			response.getWriter().write(verificationCode);
 			request.setAttribute("result", verificationCode);
 		} else {
 			response.getWriter().write("fail");

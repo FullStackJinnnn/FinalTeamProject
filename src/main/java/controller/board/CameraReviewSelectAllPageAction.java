@@ -27,6 +27,7 @@ public class CameraReviewSelectAllPageAction implements Action {
 		ArrayList<BoardDTO> boardDatas = boardDAO.selectAll(boardDTO);
 		System.out.println(boardDatas);
 		if (boardDatas != null) {
+			// Gson 인스턴스 생성
 			request.setAttribute("boardDatas", boardDatas);
 			forward.setPath("board/cameraReviewSelectAllPage.jsp");
 			forward.setRedirect(false);
@@ -38,4 +39,3 @@ public class CameraReviewSelectAllPageAction implements Action {
 	}
 
 }
-

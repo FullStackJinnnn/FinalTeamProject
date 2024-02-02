@@ -29,6 +29,7 @@ import controller.common.ChangePwPageAction;
 import controller.common.CheckPwAction;
 import controller.common.CheckPwPageAction;
 import controller.common.DeleteAccountAction;
+import controller.common.FilterSearchAction;
 import controller.common.FindIdPageAction;
 import controller.common.FindIdResultPageAction;
 import controller.common.FindPwPageAction;
@@ -107,6 +108,8 @@ public class HandlerMapper {
 		handlerMap.put("/errorPage.do", new ErrorPageAction());
 		handlerMap.put("/backPage.do", new BackPageAction());
 		handlerMap.put("/findIdResultPage.do", new FindIdResultPageAction());
+		handlerMap.put("/filterSearchAction.do", new FilterSearchAction());
+		
 		/*
 		 * handlerMap.put("/priceSearchAction.do", new PriceSearchAction());
 		 */

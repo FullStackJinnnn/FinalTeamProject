@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="model.board.*,java.util.ArrayList"%>
+	pageEncoding="UTF-8"
+	import="model.board.*,java.util.ArrayList,com.google.gson.Gson"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="stone"%>
@@ -20,51 +21,20 @@
 
 <!-- 외부 CSS 파일 링크 -->
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
+<style>
+#filterRemoteContainer {
+    position: fixed; /* sticky 대신 fixed로 변경 */
+    top: 0;
+    left: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    padding: 10px;
+    margin-top: 20px; /* 네비게이션 바 아래 여백 추가 */
+}
+</style>
 </head>
 
 <body class="is-preload">
-
-
-<script>
-    // Java에서 전송한 데이터를 JavaScript에 할당
-    var boardDatas = ${boardDatas};
-
-    function onClickFilter() {
-        var lowerPrice = parseInt(document.getElementById('minAmount').value, 10);
-        var upperPrice = parseInt(document.getElementById('maxAmount').value, 10);
-
-        // 가격 범위에 따라 boardDatas 필터링
-        var filteredData = boardDatas.filter(function (data) {
-            var dataPrice = parseInt(data.price, 10); // data.price를 parseInt로 변환
-            return !isNaN(dataPrice) && lowerPrice <= dataPrice && dataPrice <= upperPrice;
-        });
-
-        // 기존 테이블 본문 내용 지우기
-        var tableBody = document.querySelector('.table-wrapper table tbody');
-        tableBody.innerHTML = '';
-
-        // 필터링된 데이터로 테이블 채우기
-        filteredData.forEach(function (data) {
-            var row = tableBody.insertRow();
-            row.innerHTML = `
-                <td>${data.boardNum}</td>
-                <td><a href="/chalKag/cameraReviewSelectOnePage.do?boardNum=${data.boardNum}">${data.title}</a></td>
-                <td>${data.id}</td>
-                <td>${data.boardDate}</td>
-                <td>${data.recommendNum}</td>
-                <td>${data.viewCount}</td>
-            `;
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        // 버튼 엘리먼트 찾기
-        var filterButton = document.querySelector('button[name="확정"]');
-        
-        // 버튼에 클릭 이벤트 리스너 추가
-        filterButton.addEventListener('click', onClickFilter);
-    });
-</script>
 
 	<!-- 커스텀 태그를 사용하여 네비게이션 포함 -->
 	<stone:printNav member='${member}' />
@@ -74,41 +44,142 @@
 
 		<!-- 카메라 리뷰 게시판 데이터 선택을 위한 폼 -->
 
-
 		<!-- featured 포스트 섹션 -->
-		<div class="post featured"> <header class="major">
-			<h2>
-				camera review board
-				<!-- <a href="#">camera review board</a> -->
-			</h2>
-			<br>
+		<div class="post featured">
+			<header class="major">
+				<h2>
+					camera review board
+					<!-- <a href="#">camera review board</a> -->
+				</h2>
+				<br>
 
-			<p>
-				Discover the world through lenses! 📷 Welcome to our Camera Review
-				Board, <br>where shutterbugs unite to share insights on the
-				latest cameras. <br>Dive into detailed reviews, expert
-				opinions, and community discussions.
-			</p>
-		</header> </div>
+				<p>
+					Discover the world through lenses! 📷 Welcome to our Camera Review
+					Board, <br>where shutterbugs unite to share insights on the
+					latest cameras. <br>Dive into detailed reviews, expert
+					opinions, and community discussions.
+				</p>
+			</header>
+		</div>
 
 		<hr>
-		<!-- 검색 폼 섹션 -->
-		<div class="pricefilter">
-			<label for="minAmount">최소금액:</label> <input type="text"
-				id="minAmount" name="minAmount" placeholder="최소금액을 입력하세요" required>
-			<br> <label for="maxAmount">최대금액:</label> <input type="text"
-				id="maxAmount" name="maxAmount" placeholder="최대금액을 입력하세요" required>
-			<button value="확정" name="확정" onClick="onClickFilter()"></button>
-		</div>
-		
-		
-		<div>
 
+		<div id="filterRemoteContainer">
+			<h4>상품 필터링</h4>
+			<!-- 가격 -->
+			<label for="minPrice">최소 가격:</label> <input type="range"
+				id="minPrice" name="min_price" min="0" max="1000">
+			<output for="minPrice" id="minPriceOutput">0</output>
+			<br> <label for="maxPrice">최대 가격:</label> <input type="range"
+				id="maxPrice" name="max_price" min="0" max="1000">
+			<output for="maxPrice" id="maxPriceOutput">0</output>
+			<br>
+			<!-- 제조사 -->
+			<label>제조사:</label> <input type="checkbox" id="company1"
+				name="company" value="캐논"> <label
+				for="company1">캐논</label> <input type="checkbox"
+				id="company2" name="company" value="소니">
+			<label for="company2">소니</label> <input type="checkbox"
+				id="company3" name="company" value="니콘">
+			<label for="company3">니콘</label> <br>
+			<!-- 카메라 종류 -->
+			<label>카메라 종류:</label> <input type="checkbox" id="productcategory1"
+				name="productcategory" value="productcategory1"> <label for="productcategory1">DSLR</label>
+			<input type="checkbox" id="productcategory2" name="productcategory"
+				value="productcategory2"> <label for="productcategory2">미러리스</label> <input
+				type="checkbox" id="productcategory3" name="productcategory" value="productcategory3">
+			<label for="productcategory3">컴팩트</label> <br>
+			<!-- 게시글 상태 -->
+			<label>게시글 상태:</label> <input type="checkbox" id="selling"
+				name="status" value="selling"> <label for="selling">판매중</label>
+			<input type="checkbox" id="sold" name="status" value="sold">
+			<label for="sold">판매완료</label>
+		</div>
+
+
+
+		<script>
+    // 최소 가격 range input 값 표시
+    const minPriceInput = document.getElementById('minPrice');
+    const minPriceOutput = document.getElementById('minPriceOutput');
+
+    minPriceInput.addEventListener('input', function() {
+        minPriceOutput.textContent = minPriceInput.value;
+    });
+
+    // 최대 가격 range input 값 표시
+    const maxPriceInput = document.getElementById('maxPrice');
+    const maxPriceOutput = document.getElementById('maxPriceOutput');
+
+    maxPriceInput.addEventListener('input', function() {
+        maxPriceOutput.textContent = maxPriceInput.value;
+    });
+    
+    $(document).ready(function() {
+        $('input[type=checkbox][name=company]').change(function() {
+            if ($(this).is(':checked')) {
+                alert(this.value + ' is checked');
+                location.href = "/chalKag/filterSearchAction.do";
+            } else {
+                alert(this.value + ' is unchecked');
+            }
+        });
+    });
+    
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<!-- 검색 폼 섹션 -->
+
+
+		<div>
 			<select name="serchField" style="width: 40%; display: inline-block;">
-				<option value="title">제목</option>
-				<option value="content">작성자</option>
-				<option value="productName">상품명</option>
-				<option value="company">제조사</option>
+				<option value="title">글 제목</option>
+				<option value="content">글 내용</option>
+				<option value="productName">작성자</option>
+				<option value="company">글 제목 + 내용</option>
 			</select> <input type="text" name="search"
 				style="margin-left: 10px; width: 40%; display: inline-block;"
 				placeholder="검색어를 입력해 주세요."> <input type="button"

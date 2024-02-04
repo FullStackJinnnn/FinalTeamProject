@@ -14,16 +14,20 @@ public class BoardDAO {
 	private PreparedStatement pstmt;
 
 	// 게시글 목록 전체 출력. 전미지	
-	private static final String SELECTALL = "SELECT BOARD.BOARDNUM, BOARD.TITLE, MEMBER.ID, MEMBER.NICKNAME, "
-			+ "TO_CHAR(BOARD.BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, BOARD.COMPANY, BOARD.PRICE, RECOMMEND.RECOMMENDNUM, BOARD.VIEWCOUNT, BOARD.STATE, "
-			+ "CASE WHEN RECOMMEND.RECOMMENDNUM IS NOT NULL THEN COUNT(BOARD.BOARDNUM) ELSE 0 END AS RECOMMENDCNT FROM BOARD "
-			+ "JOIN MEMBER ON BOARD.ID = MEMBER.ID "
-			+ "LEFT JOIN RECOMMEND ON BOARD.ID = RECOMMEND.ID AND MEMBER.ID = RECOMMEND.ID "
-			+ "WHERE CATEGORY = ? "
-			+ "GROUP BY BOARD.PRICE, BOARD.BOARDNUM, BOARD.TITLE, MEMBER.ID, MEMBER.NICKNAME, "
-			+ "BOARDDATE, RECOMMEND.RECOMMENDNUM, BOARD.COMPANY, BOARD.VIEWCOUNT, BOARD.STATE "
-			+ "ORDER BY BOARD.BOARDNUM DESC";
-	// 조인한 게시판 테이블 : 회원 테이블, 좋아요 테이블
+	private static final String SELECTALL = "SELECT * FROM (" +
+		    "SELECT FILTER_DATA.*, COALESCE(RECOMMEND_COUNT.RECOMMENDCNT, 0) AS RECOMMENDCNT FROM (" +
+	        "SELECT *" +
+	        " FROM BOARD" +
+	        " WHERE CATEGORY = ?" +
+	    ") FILTER_DATA" +
+	    " LEFT JOIN (" +
+	        "SELECT BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT" +
+	        " FROM RECOMMEND" +
+	        " GROUP BY BOARDNUM" +
+	    ") RECOMMEND_COUNT" +
+	    " ON FILTER_DATA.BOARDNUM = RECOMMEND_COUNT.BOARDNUM ORDER BY FILTER_DATA.BOARDNUM" +
+	") SORT_DATA" +
+	" LEFT JOIN MEMBER ON MEMBER.ID = SORT_DATA.ID";
 	// 사용한 컬럼(보여줄 목록) : 게시글 넘버, 글 제목, 작성자 아이디(회원 테이블), 작성자 닉네임(회원 테이블), 
 	// 작성일, 좋아요 넘버(좋아요 테이블), 조회수, 판매상태, 카운트 함수 사용(좋아요수-좋아요 테이블 / 좋아요 값이 있을 때만 보여짐)
 	// 검색 조건 : 카테고리 검색 (선택한 카테고리의 게시글만 전체 출력 / CATEGORY에 값이 없으면 오류 발생 주의)	
@@ -227,7 +231,6 @@ public class BoardDAO {
 						pstmt.setString(1, boardDTO.getCategory());
 						pstmt.setString(2, boardDTO.getCompany());
 					} else { // 조건 검색을 하지 않을 경우
-						System.out.println("[BoardDAO] line 230 ");
 						pstmt = conn.prepareStatement(SELECTALL);
 						pstmt.setString(1, boardDTO.getCategory());
 //						System.out.println("[로그] boardDAO 리뷰 게시판 SELECTALL 전체 출력 들어옴 2 " + boardDTO);						
@@ -246,11 +249,7 @@ public class BoardDAO {
 						data.setPrice(rs.getInt("PRICE"));
 						data.setCompany(rs.getString("COMPANY"));
 						datas.add(data);
-						System.out.println("[BoardDAO] line 247 " + data);
 					}
-					
-					System.out.println("[BoardDAO] line 250 ");
-
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -258,7 +257,6 @@ public class BoardDAO {
 					JDBCUtil.disconnect(pstmt, conn);
 				}
 			} else { // 자유게시판 선택 시
-//				System.out.println("[로그] boardDAO 자유 게시판 SELECTALL 들어옴 1" + boardDTO);
 				try {
 					if (boardDTO.getSearchCondition().equals("제목")) { // 제목으로 검색
 						pstmt = conn.prepareStatement(SELECTALL_SEARCHTITLE);

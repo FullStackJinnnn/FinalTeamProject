@@ -23,13 +23,13 @@
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 <style>
 #filterRemoteContainer {
-    position: fixed; /* sticky 대신 fixed로 변경 */
-    top: 0;
-    left: 0;
-    width: 200px;
-    background-color: #f1f1f1;
-    padding: 10px;
-    margin-top: 20px; /* 네비게이션 바 아래 여백 추가 */
+	position: fixed; /* sticky 대신 fixed로 변경 */
+	top: 0;
+	left: 0;
+	width: 200px;
+	background-color: #f1f1f1;
+	padding: 10px;
+	margin-top: 20px; /* 네비게이션 바 아래 여백 추가 */
 }
 </style>
 </head>
@@ -68,42 +68,47 @@
 			<h4>상품 필터링</h4>
 			<!-- 가격 -->
 			<label for="minPrice">최소 가격:</label> <input type="range"
-				id="minPrice" name="min_price" min="0" max="1000">
+				id="minPrice" name="minPrice" min="0" max="10000">
 			<output for="minPrice" id="minPriceOutput">0</output>
 			<br> <label for="maxPrice">최대 가격:</label> <input type="range"
-				id="maxPrice" name="max_price" min="0" max="1000">
+				id="maxPrice" name="maxPrice" min="0" max="10000">
 			<output for="maxPrice" id="maxPriceOutput">0</output>
 			<br>
 			<!-- 제조사 -->
 			<label>제조사:</label> <input type="checkbox" id="company1"
-				name="company" value="캐논"> <label
-				for="company1">캐논</label> <input type="checkbox"
-				id="company2" name="company" value="소니">
-			<label for="company2">소니</label> <input type="checkbox"
-				id="company3" name="company" value="니콘">
-			<label for="company3">니콘</label> <br>
+				name="company" value="캐논"> <label for="company1">캐논</label>
+			<input type="checkbox" id="company2" name="company" value="소니">
+			<label for="company2">소니</label> <input type="checkbox" id="company3"
+				name="company" value="니콘"> <label for="company3">니콘</label>
+			<br>
 			<!-- 카메라 종류 -->
 			<label>카메라 종류:</label> <input type="checkbox" id="productcategory1"
-				name="productcategory" value="productcategory1"> <label for="productcategory1">DSLR</label>
-			<input type="checkbox" id="productcategory2" name="productcategory"
-				value="productcategory2"> <label for="productcategory2">미러리스</label> <input
-				type="checkbox" id="productcategory3" name="productcategory" value="productcategory3">
-			<label for="productcategory3">컴팩트</label> <br>
+				name="productcategory" value="DSLR"> <label
+				for="productcategory1">DSLR</label> <input type="checkbox"
+				id="productcategory2" name="productcategory" value="미러리스"> <label
+				for="productcategory2">미러리스</label> <input type="checkbox"
+				id="productcategory3" name="productcategory" value="컴팩트"> <label
+				for="productcategory3">컴팩트</label> <br>
 			<!-- 게시글 상태 -->
 			<label>게시글 상태:</label> <input type="checkbox" id="selling"
-				name="status" value="selling"> <label for="selling">판매중</label>
-			<input type="checkbox" id="sold" name="status" value="sold">
-			<label for="sold">판매완료</label>
+				name="state" value="판매중"> <label for="selling">판매중</label> <input
+				type="checkbox" id="sold" name="state" value="판매완료"> <label
+				for="sold">판매완료</label>
 		</div>
 
 
 
 		<script>
+	$("#minPrice").val($("#minPrice").attr("min"));
+	$("#maxPrice").val($("#maxPrice").attr("min"));	
     // 최소 가격 range input 값 표시
     const minPriceInput = document.getElementById('minPrice');
     const minPriceOutput = document.getElementById('minPriceOutput');
 
     minPriceInput.addEventListener('input', function() {
+        if (parseInt(minPriceInput.value) > parseInt(maxPriceInput.value)) {
+            minPriceInput.value = maxPriceInput.value;
+        }
         minPriceOutput.textContent = minPriceInput.value;
     });
 
@@ -112,24 +117,92 @@
     const maxPriceOutput = document.getElementById('maxPriceOutput');
 
     maxPriceInput.addEventListener('input', function() {
+        if (parseInt(maxPriceInput.value) < parseInt(minPriceInput.value)) {
+            maxPriceInput.value = minPriceInput.value;
+        }
         maxPriceOutput.textContent = maxPriceInput.value;
     });
     
-    $(document).ready(function() {
-        $('input[type=checkbox][name=company]').change(function() {
-            if ($(this).is(':checked')) {
-                alert(this.value + ' is checked');
-                location.href = "/chalKag/filterSearchAction.do";
-            } else {
-                alert(this.value + ' is unchecked');
-            }
+    
+    $(document).ready(function () {
+        var minPrice = null;
+        var maxPrice = null;
+        var selectedCompanies, selectedProductCategories, selectedstates;
+
+        function updateVariables() {
+            minPrice = $("#minPrice").val();
+            maxPrice = $("#maxPrice").val();
+
+            selectedCompanies = $('input[type=checkbox][name=company]:checked').map(function () {
+                return this.value;
+            }).get();
+
+            selectedProductCategories = $('input[type=checkbox][name=productcategory]:checked').map(function () {
+                return this.value;
+            }).get();
+
+            selectedstates = $('input[type=checkbox][name=state]:checked').map(function () {
+                return this.value;
+            }).get();
+        }
+
+        $("#minPrice, #maxPrice").on("mouseup", function () {
+            updateVariables();
+            performAjaxRequest();
         });
+
+        $('input[type=checkbox][name=company], input[type=checkbox][name=productcategory], input[type=checkbox][name=state]').change(function () {
+            updateVariables();
+            performAjaxRequest();
+        });
+
+        function performAjaxRequest() {
+            $.ajax({
+                type: "POST",
+                url: "filterSearchAction2.do",
+                data: {
+                    'minPrice': minPrice,
+                    'maxPrice': maxPrice,
+                    'company': selectedCompanies,
+                    'productcategory': selectedProductCategories,
+                    'state': selectedstates,
+                    'category': '리뷰'
+                },
+                traditional: true,
+                dataType: 'json',
+                success: function (filterDatas) {
+                    var tbody = document.querySelector('.alt tbody');
+                    tbody.innerHTML = '';
+
+                    if (filterDatas.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" align="center">찾으시는 게시글이 없습니다.</td></tr>';
+                    } else {
+                        filterDatas.forEach(function (data) {
+                            var row = document.createElement('tr');
+                            row.innerHTML =
+                                '<td>' + data.boardNum + '</td>' +
+                                '<td><a href="/chalKag/cameraReviewSelectOnePage.do?boardNum=' + data.boardNum + '">' + data.title + '</a></td>' +
+                                '<td>' + data.id + '</td>' +
+                                '<td>' + data.boardDate + '</td>' +
+                                '<td>' + data.recommendCNT + '</td>' +
+                                '<td>' + data.viewCount + '</td>';
+                            tbody.appendChild(row);
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log('에러');
+                    console.log('에러종류: ' + JSON.stringify(error));
+                    alert("fail");
+                }
+            });
+        }
     });
     
 </script>
 
 
-  
+
 
 
 
@@ -197,7 +270,7 @@
 						<th width="*">title</th>
 						<th width="15%">writer</th>
 						<th width="15%">boardDate</th>
-						<th width="10%">recommend</th>
+						<th width="10%">recommendCNT</th>
 						<th width="10%">views</th>
 					</tr>
 				</thead>
@@ -215,13 +288,13 @@
 					<c:if test="${fn:length(boardDatas) > 0}">
 						<c:forEach var="data" items="${boardDatas}">
 							<tr>
-								<td name="boardNum">${data.boardNum}</td>
+								<td>${data.boardNum}</td>
 								<!-- 게시글 상새 페이지로 연결되는 태그 -->
 								<td><a
 									href="/chalKag/cameraReviewSelectOnePage.do?boardNum=${data.boardNum}">${data.title}</a></td>
 								<td>${data.id}</td>
 								<td>${data.boardDate}</td>
-								<td>${data.recommendNum}</td>
+								<td>${data.recommendCNT}</td>
 								<td>${data.viewCount}</td>
 							</tr>
 						</c:forEach>

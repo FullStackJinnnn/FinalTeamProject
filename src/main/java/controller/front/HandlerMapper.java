@@ -109,10 +109,7 @@ public class HandlerMapper {
 		handlerMap.put("/backPage.do", new BackPageAction());
 		handlerMap.put("/findIdResultPage.do", new FindIdResultPageAction());
 		handlerMap.put("/filterSearchAction.do", new FilterSearchAction());
-		
-		/*
-		 * handlerMap.put("/priceSearchAction.do", new PriceSearchAction());
-		 */
+	
 	}
 
 	public Action getAction(String commend) {

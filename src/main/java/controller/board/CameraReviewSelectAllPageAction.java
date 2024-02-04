@@ -25,7 +25,6 @@ public class CameraReviewSelectAllPageAction implements Action {
 		boardDTO.setCategory("리뷰"); // 카테고리 세팅 안하면 오류남! else문으로 가기위한 더미값 입력
 		boardDTO.setSearchCondition("");
 		ArrayList<BoardDTO> boardDatas = boardDAO.selectAll(boardDTO);
-		System.out.println(boardDatas);
 		if (boardDatas != null) {
 			// Gson 인스턴스 생성
 			request.setAttribute("boardDatas", boardDatas);

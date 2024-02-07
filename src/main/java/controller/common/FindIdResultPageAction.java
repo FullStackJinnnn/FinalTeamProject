@@ -18,7 +18,7 @@ public class FindIdResultPageAction implements Action {
 			throws ServletException, IOException {
 
 		ActionForward forward = new ActionForward();
-		forward.setPath("common/findIdResultPage.jsp");
+		forward.setPath("/chalKag/common/findIdResultPage.jsp");
 		forward.setRedirect(false);
 
 		MemberDAO memberDAO = new MemberDAO();

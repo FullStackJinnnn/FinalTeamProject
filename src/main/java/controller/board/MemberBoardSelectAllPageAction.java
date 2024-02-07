@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import controller.front.Action;
 import controller.front.ActionForward;
@@ -21,20 +20,23 @@ public class MemberBoardSelectAllPageAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ActionForward forward = new ActionForward();
-
+		MemberDAO memberDAO = new MemberDAO();
+		MemberDTO memberDTO = new MemberDTO();
 		BoardDAO boardDAO = new BoardDAO();
 		BoardDTO boardDTO = new BoardDTO();
-
-		boardDTO.setCategory("내가 작성한 글"); // 카테고리 세팅 안하면 오류남! else문으로 가기위한 더미값 입력
-		boardDTO.setSearchCondision("작성자");
-		boardDTO.setNickname(request.getParameter("nickname"));
+		memberDTO.setNickname(request.getParameter("nickname"));
+		memberDTO.setSearchCondition("유저정보출력");
+		memberDTO = memberDAO.selectOne(memberDTO);
+		boardDTO.setCategory(""); // 카테고리 세팅 안하면 오류남! else문으로 가기위한 더미값 입력
+		boardDTO.setSearchCondition("유저보드");
+		boardDTO.setId(memberDTO.getId());
 
 		ArrayList<BoardDTO> boardDatas = boardDAO.selectAll(boardDTO);
 
 		if (boardDatas != null) {
 
 			request.setAttribute("boardDatas", boardDatas);
-			forward.setPath("board/myBoardSelectAllPage.jsp");
+			forward.setPath("/chalKag/board/myBoardSelectAllPage.jsp");
 			forward.setRedirect(false);
 
 		} else {
@@ -46,5 +48,5 @@ public class MemberBoardSelectAllPageAction implements Action {
 
 		return forward;
 
-	} 
+	}
 }

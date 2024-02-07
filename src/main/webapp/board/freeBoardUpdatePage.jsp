@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="stone" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE HTML>
 <!--
 	Massively by HTML5 UP
@@ -75,12 +76,12 @@
 
 
 			<!-- Posts -->
-			
-			<form method="post" action="/chalKag/freeBoardUpdate.do">
+			<form method="post" action="/chalKag/freeBoardUpdate.do" enctype="multipart/form-data">
 				<div class="row gtr-uniform">
+					<input type="hidden" name="boardNum" id="boardNum" value="${board.boardNum}" />
 					<!-- 제목 -->
 					<div class="col-12 col-12-xsmall">
-						<input type="text" name="title" id="title" placeholder="Title" value="${data.title}"  required/>
+						<input type="text" name="title" id="title" placeholder="Title" value="${board.title}"  required/>
 					</div>
 					<!-- 이미지 -->
 					<div class="actions" id="uploadDiv">
@@ -92,11 +93,11 @@
 	    			</div> 
 	    			<!-- 이미지 미리보기 -->
 	    			<div class="actions"  id="previewDiv">
-	    				<img id="preview" style="width: 800px;" src="${data.image}"/>
+	    				<img id="preview" style="width: 800px;" src="bimg/${board.image}"/>
 	    			</div>
 					<!-- 내용 -->
 					<div class="col-12">
-						<textarea name="contents" id="contents" placeholder="Enter your message" value="${data.contents}" rows="6" ></textarea>
+						<textarea name="contents" id="contents" placeholder="Enter your message" rows="6" >${board.contents}</textarea>
 					</div>
 					<!-- Break -->
 					<div class="col-12">
@@ -125,7 +126,7 @@
 			<script>
 			
 			var imgFile = $('#fileInput').val();				
-			var fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|pdf)$/;	// 이미지 업로드 제약
+			var fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|webp)$/;	// 이미지 업로드 제약
 			var maxSize = 5 * 1024 * 1024;							// 파일 사이즈 제약
 			var fileSize;
 			const preview = document.querySelector('#preview');		// 이미지 업로드시 미리보기 기능을 담당
@@ -155,7 +156,7 @@
 			  ClassicEditor
 			  	.create( document.querySelector("#contents"), {
 			  	  removePlugins: [ 'Heading',   'Link', 'CKFinder' ],
-			      toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ],
+			      toolbar: [ 'bold', 'bulletedList', 'numberedList', 'blockQuote' ],
 			    language: "ko"
 			  })
 			  .then(editor => {

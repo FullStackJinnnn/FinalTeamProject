@@ -35,21 +35,47 @@ public class FrontController extends HttpServlet {
 	private void doAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String uri = request.getRequestURI();
-		String cp = request.getContextPath();
+		try {
 
-		String commend = uri.substring(cp.length());
+			String uri = request.getRequestURI();
+			String cp = request.getContextPath(); // -> 앞에서 두번째 / 까지는 살리고, 그뒤를 substring으로 자르
 
-		System.out.println("[FrontController] action: " + commend);
+			String command = uri.substring(cp.length());
 
-		Action action = handler.getAction(commend);
-		ActionForward forward = action.execute(request, response);
+			System.out.println("[FrontController] action: " + command);
+			System.out.println("[FrontController] uri : "+uri);
+			System.out.println("[FrontController] cp : "+cp);
+			System.out.println("[FrontController] command : "+command);
 
-		if (forward.isRedirect()) {
-			response.sendRedirect(forward.getPath());
-		} else {
-			RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getPath());
-			dispatcher.forward(request, response);
+			Action action = handler.getAction(command);
+			ActionForward forward = action.execute(request, response);
+			
+			if (forward.isRedirect()) {
+				response.sendRedirect(forward.getPath());
+			} else {
+				RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getPath());
+				dispatcher.forward(request, response);
+			}
+			
+		} catch (Exception e) {
+		
+			// 오류가 발생한 경우, 오류 내용을 콘솔에 출력
+			System.err.println("[FrontController] Error: " + e.getMessage());
+			e.printStackTrace();
+
+			// errorPage.do로 리다이렉트
+			String errorCommand = "/errorPage.do";
+			Action errorAction = handler.getAction(errorCommand);
+			ActionForward errorForward = errorAction.execute(request, response);
+
+			
+			if (errorForward.isRedirect()) {
+				response.sendRedirect(errorForward.getPath());
+			} else {
+				RequestDispatcher errorDispatcher = request.getRequestDispatcher(errorForward.getPath());
+				errorDispatcher.forward(request, response);
+			}
+			
 		}
 
 	}

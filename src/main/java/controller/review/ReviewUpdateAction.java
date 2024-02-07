@@ -1,48 +1,55 @@
 package controller.review;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controller.front.Action;
-import controller.front.ActionForward;
 import model.review.ReviewDAO;
 import model.review.ReviewDTO;
 
-public class ReviewUpdateAction implements Action {
 
-	@Override
-	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+@WebServlet("/reviewUpdateAction.do")
+public class ReviewUpdateAction extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    
+    public ReviewUpdateAction() {
+        super();
+    }
 
-		ActionForward forward = new ActionForward();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
 
-		request.setCharacterEncoding("UTF-8");
 
-		ReviewDAO reviewDAO = new ReviewDAO();
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		ReviewDTO reviewDTO = new ReviewDTO();
-
-		reviewDTO.setReviewContents(request.getParameter("reviewContents"));
-
+		ReviewDAO reviewDAO = new ReviewDAO();
+		
+		reviewDTO.setReviewNum(Integer.parseInt(request.getParameter("reviewNum")));
+		reviewDTO.setReviewContents(request.getParameter("updatedContents"));
+		
+		System.out.println("[로그] " + reviewDTO.getReviewNum());
+		System.out.println("[로그] " + reviewDTO.getReviewContents());
+		
 		boolean flag = reviewDAO.update(reviewDTO);
-
-		if (flag) {
-
-			forward.setPath("main.do");
-			forward.setRedirect(true);
-
-		} else {
-
-			forward.setPath("error/alert.jsp");
-			forward.setRedirect(false);
-			request.setAttribute("msg", "댓글수정실패!");
-
+		
+		if(flag) {
+			System.out.println("업데이트 완료");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out= response.getWriter();
+		    out.print(reviewDTO.getReviewContents());
+		    System.out.println(reviewDTO.getReviewContents());
 		}
-
-		return forward;
+		else {
+			System.out.println("업데이트 실패");
+		}
+		
 	}
 
 }

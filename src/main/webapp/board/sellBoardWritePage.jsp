@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="stone"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE HTML>
 <!--
 	Massively by HTML5 UP
@@ -74,7 +75,7 @@
 	<div id="main">
 
 		<!-- Posts -->
-		<form method="post" action="sellBoardWrite.do"
+		<form method="post" action="/chalKag/sellBoardWrite.do"
 			enctype="multipart/form-data">
 			<div class="row gtr-uniform">
 				<!-- 제목 -->
@@ -94,7 +95,7 @@
 				</div>
 				<!-- 종류 -->
 				<div class="col-12 col-12-xsmall">
-					<input type="text" name="productcategory" id="productcategory"
+					<input type="text" name="productCategory" id="productCategory"
 						placeholder="productcategory" required />
 				</div>
 				<!-- 제조사 -->
@@ -149,7 +150,7 @@
 	<script>
 	
 	var imgFile = $('#fileInput').val();				
-	var fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|pdf)$/;	// 이미지 업로드 제약
+	var fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|webp)$/;	// 이미지 업로드 제약
 	var maxSize = 5 * 1024 * 1024;							// 파일 사이즈 제약
 	var fileSize;
 	const preview = document.querySelector('#preview');		// 이미지 업로드시 미리보기 기능을 담당
@@ -180,7 +181,7 @@
 	ClassicEditor
 	  .create(document.querySelector('#contents'), {
 	    removePlugins: ['Heading', 'Link', 'CKFinder'],
-	    toolbar: ['bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote'],
+	    toolbar: ['bold', 'bulletedList', 'numberedList', 'blockQuote'],
 	    language: 'ko'
 	  })
 	  .then(editor => {

@@ -38,7 +38,7 @@ public class MemberPageAction implements Action {
             request.setAttribute("memberDTO", memberDTO);
 
             // common/memberPage.jsp로 이동
-            forward.setPath("common/memberPage.jsp");
+            forward.setPath("/chalKag/common/memberPage.jsp");
 
             // forward 방식으로 이동
             forward.setRedirect(false);

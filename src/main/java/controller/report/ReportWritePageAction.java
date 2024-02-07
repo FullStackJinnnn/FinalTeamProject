@@ -40,7 +40,7 @@ public class ReportWritePageAction implements Action {
         // 검색된 게시글이 존재하는 경우
         if (boardDTO != null) {
             // reportWritePage.jsp로 이동
-            forward.setPath("report/reportWritePage.jsp");
+            forward.setPath("/chalKag/report/reportWritePage.jsp");
             // forward방식으로 이동
             forward.setRedirect(false);
             // request에 검색된 boardDTO를 저장한다.

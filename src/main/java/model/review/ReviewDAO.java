@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import model.board.BoardDTO;
 import model.common.JDBCUtil;
 
 public class ReviewDAO {
@@ -14,21 +13,25 @@ public class ReviewDAO {
 	private Connection conn;
 	private PreparedStatement pstmt;
 
-	// 댓글 출력 댓글 테이블과 회원 테이블을 조인
-	private static final String SELECTALL = "SELECT BOARD.REVIEWNUM, BOARD.BOARDNUM, MEMBER.ID,  TO_CHAR(BOARD.REVIEWDATE, 'YYYY-MM-DD') AS BOARD.REVIEWDATE, BOARD.REVIEWCONTENTS FROM BOARD"
-			+ "JOIN MEMBER ON BOARD.MEMBERNUM = MEMBER.MEMBERNUM WHERE BOARD.BOARDNUM = ?";
-	// 댓글 상세보기 댓글 테이블과 회원 테이블을 조인
-	private static final String SELECTONE = "SELECT BOARD.REVIEWNUM, BOARD.BOARDNUM, MEMBER.ID, TO_CHAR(BOARD.REVIEWDATE, 'YYYY-MM-DD') AS BOARD.REVIEWDATE, BOARD.REVIEWCONTENTS FROM BOARD"
-			+ "JOIN MEMBER ON BOARD.MEMBERNUM = MEMBER.MEMBERNUM WHERE BOARD.REVIEWNUM = ?";
-	// 댓글 작성
-	private static final String INSERT = "INSERT INTO REVIEW VALUES((SELECT NVL(MAX(REVIEWNUM),0)+1 FROM REVIEW),?,?,?)";
+	// 댓글 출력 댓글 테이블과 게시글 테이블과 멤버 테이블 조인
+	private static final String SELECTALL = "SELECT R.REVIEWNUM, R.BOARDNUM, R.ID, M.NICKNAME, "
+			+ "TO_CHAR(R.REVIEWDATE, 'YYYY-MM-DD HH24:MI') AS REVIEWDATE, R.REVIEWCONTENTS "
+			+ "FROM REVIEW R "
+			+ "JOIN BOARD B ON R.BOARDNUM = B.BOARDNUM "
+			+ "JOIN MEMBER M ON R.ID = M.ID "
+			+ "WHERE R.BOARDNUM=?";
+
+	
+	private static final String INSERT = "INSERT INTO REVIEW (REVIEWNUM, BOARDNUM, ID, REVIEWCONTENTS) "
+			+ "VALUES ((SELECT NVL(MAX(REVIEWNUM), 0) + 1 FROM REVIEW), ?, ?, ?)";
 	// 댓글 수정
-	private static final String UPDATE = "UPDATE REVIEW SET REVIEWCONTENTS=? WHERE REVIEWNUM=?";
+	private static final String UPDATE = "UPDATE REVIEW SET REVIEWCONTENTS = ? WHERE REVIEWNUM = ?";
 	// 댓글 삭제
 	private static final String DELETE = "DELETE FROM REVIEW WHERE REVIEWNUM = ?";
 
 	// 한 게시글의 댓글 전체 목록 출력
 	public ArrayList<ReviewDTO> selectAll(ReviewDTO reviewDTO) {
+		System.out.println("[ReviewDAO] 로그1");
 		ArrayList<ReviewDTO> datas = new ArrayList<ReviewDTO>();
 		ReviewDTO data = null;
 		conn = JDBCUtil.connect();
@@ -42,10 +45,12 @@ public class ReviewDAO {
 				data.setReviewNum(rs.getInt("REVIEWNUM"));
 				data.setBoardNum(rs.getInt("BOARDNUM"));
 				data.setId(rs.getString("ID"));
+				data.setWriter(rs.getString("NICKNAME"));
 				data.setReviewDate(rs.getString("REVIEWDATE"));
 				data.setReviewContents(rs.getString("REVIEWCONTENTS"));
 				datas.add(data);
 			}
+			System.out.println("[ReviewDAO] 로그 2" + data);
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -55,34 +60,6 @@ public class ReviewDAO {
 		return datas;
 	}
 	
-	// 댓글 상세보기
-	protected ReviewDTO selectOne(ReviewDTO reviewDTO) {
-		ReviewDTO data = null;
-		conn = JDBCUtil.connect();
-		
-		try {
-			pstmt = conn.prepareStatement(SELECTONE);
-			pstmt.setInt(1, reviewDTO.getReviewNum());
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				data = new ReviewDTO();
-				data.setReviewNum(rs.getInt("REVIEWNUM"));
-				data.setBoardNum(rs.getInt("BOARDNUM"));
-				data.setId(rs.getString("ID"));
-				data.setReviewDate(rs.getString("REVIEWDATE"));
-				data.setReviewContents(rs.getString("REVIEWCONTENTS"));
-			} else {
-				return null;
-			}
-			rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCUtil.disconnect(pstmt, conn);
-		}
-
-		return reviewDTO;
-	}
 
 	// 댓글 작성
 	public boolean insert(ReviewDTO reviewDTO) {
@@ -90,6 +67,7 @@ public class ReviewDAO {
 		conn = JDBCUtil.connect();
 		try {
 			pstmt = conn.prepareStatement(INSERT);
+//			System.out.println("[로그] insert 접근");
 			pstmt.setInt(1, reviewDTO.getBoardNum());
 			pstmt.setString(2, reviewDTO.getId());
 			pstmt.setString(3, reviewDTO.getReviewContents());
@@ -111,7 +89,7 @@ public class ReviewDAO {
 		try {
 			pstmt = conn.prepareStatement(UPDATE);
 			pstmt.setString(1, reviewDTO.getReviewContents());
-			pstmt.setInt(2, reviewDTO.getBoardNum());
+			pstmt.setInt(2, reviewDTO.getReviewNum());
 			int rs = pstmt.executeUpdate();
 			if (rs <= 0) {
 				return false;

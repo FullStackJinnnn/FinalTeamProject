@@ -30,7 +30,7 @@ public class EncFilter extends HttpFilter implements Filter {
 			throws IOException, ServletException {
 		if (request.getCharacterEncoding() == null) {
 			request.setCharacterEncoding(encoding); // 하드 코딩 : 유지보수 용이성을 망가뜨림
-			System.out.println("[로그] 필터 서블릿 클래스에서 작성한 로그");
+			System.out.println("[EncFilter] 인코딩 UTF-8 완료");
 		}
 
 		chain.doFilter(request, response);

@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -29,22 +30,27 @@ public class FreeBoardWriteAction implements Action{
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-	    // 절대경로를 저장하는 변수
-        String uploadDir = this.getClass().getResource("").getPath();
-       // /workspace 앞까지 문자열잘라서 이미지가 저장되는 폴더인 bimg까지의 절대경로 부여
-        uploadDir = uploadDir.substring(1, uploadDir.indexOf("/workspace")) + "/infinityStone/chalKag/chalKag/src/main/webapp/bimg";
+		//String uploadDir = "D:\\PLZJUN\\workspace_infinityStone\\chalKag\\src\\main\\webapp\\bimg";
+		String uploadDir = this.getClass().getResource("").getPath();
+
+		// .metadata 앞까지 문자열잘라서 이미지가 저장되는 폴더인 memberProfileImages까지의 절대경로 부여
+		uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata"))
+				+ "chalKag/src/main/webapp/bimg";
 		/*
 		 * uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata")) +
 		 * "/chalKag/src/main/webapp/bimg";
 		 */
 
 		ActionForward forward = new ActionForward();
+		HttpSession session = request.getSession();
+		
+		request.setCharacterEncoding("UTF-8");
 		
 		BoardDAO boardDAO = new BoardDAO();
 		BoardDTO boardDTO = new BoardDTO(); 
 		
-		boardDTO.setId("1");
-		boardDTO.setCategory("이미지");
+		boardDTO.setId((String)session.getAttribute("member"));
+		boardDTO.setCategory("자유게시판");
 		
 		// 이미지 업로드 객체 선언(값, 절대경로, 사이즈, 인코딩)
 		MultipartRequest multipartRequest = new MultipartRequest(request, uploadDir, 1024 * 1024 * 10, "UTF-8");
@@ -65,7 +71,7 @@ public class FreeBoardWriteAction implements Action{
 					 * String uploadDir=SAVE_DIRECTORY; System.out.println("확인: "+SAVE_DIRECTORY);
 					 */
 				    String filePath = uploadDir + File.separator + newFilename;		// 위 내용을 전부 통합하여 저장하는 변수
-				    boardDTO.setImage(filePath);
+				    boardDTO.setImage(newFilename);
 				    // 파일 객체 선언 후 파일 위치를 객체에 저장한다.
 				    File newFile = new File(filePath);
 				    // 파일을 새 위치로 이동시킵니다.
@@ -76,7 +82,7 @@ public class FreeBoardWriteAction implements Action{
 
 		if (flag) { // 성공시 메인으로 이동
 
-			forward.setPath("../freeBoardSelectAllPage.do");
+			forward.setPath("/chalKag/freeBoardSelectAllPage.do");
 			forward.setRedirect(true);
 
 		} else { // 실패시 alert 창으로 이동

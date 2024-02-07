@@ -22,8 +22,7 @@
 	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
 </noscript>
 <style>
-input::-webkit-input
--placeholder {
+input::-webkit-input-placeholder {
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
 }
 

@@ -16,7 +16,7 @@ public class LoginPageAction implements Action {
 			throws ServletException, IOException {
 
 		ActionForward forward = new ActionForward();
-		forward.setPath("common/loginPage.jsp");
+		forward.setPath("/chalKag/common/loginPage.jsp");
 		forward.setRedirect(true);
 
 		return forward;

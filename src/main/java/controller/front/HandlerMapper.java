@@ -3,8 +3,8 @@ package controller.front;
 import java.util.HashMap;
 import java.util.Map;
 
-import controller.board.CameraReviewSelctOnePageAction;
 import controller.board.CameraReviewSelectAllPageAction;
+import controller.board.CameraReviewSelectOnePageAction;
 import controller.board.CameraReviewUpdateAction;
 import controller.board.CameraReviewUpdatePageAction;
 import controller.board.CameraReviewWriteAction;
@@ -29,7 +29,6 @@ import controller.common.ChangePwPageAction;
 import controller.common.CheckPwAction;
 import controller.common.CheckPwPageAction;
 import controller.common.DeleteAccountAction;
-import controller.common.FilterSearchAction;
 import controller.common.FindIdPageAction;
 import controller.common.FindIdResultPageAction;
 import controller.common.FindPwPageAction;
@@ -41,16 +40,12 @@ import controller.common.LogoutAction;
 import controller.common.MainAction;
 import controller.common.MemberPageAction;
 import controller.common.MyPageAction;
-import controller.error.BackPageAction;
 import controller.error.ErrorPageAction;
-import controller.recommend.RecommendDownAction;
-import controller.recommend.RecommendUpAction;
 import controller.report.ReportSelectAllPageAction;
 import controller.report.ReportWriteAction;
 import controller.report.ReportWritePageAction;
 import controller.review.ReviewDeleteAction;
 import controller.review.ReviewUpdateAction;
-import controller.review.ReviewWriteAction;
 
 public class HandlerMapper {
 
@@ -82,11 +77,9 @@ public class HandlerMapper {
 		handlerMap.put("/sellBoardSelectAllPage.do", new SellBoardSelectAllPageAction());
 		handlerMap.put("/sellBoardSelectOnePage.do", new SellBoardSelectOnePageAction());
 		handlerMap.put("/cameraReviewSelectAllPage.do", new CameraReviewSelectAllPageAction());
-		handlerMap.put("/cameraReviewSelectOnePage.do", new CameraReviewSelctOnePageAction());
+		handlerMap.put("/cameraReviewSelectOnePage.do", new CameraReviewSelectOnePageAction());
 		handlerMap.put("/freeBoardSelectAllPage.do", new FreeBoardSelectAllPageAction());
 		handlerMap.put("/freeBoardSelectOnePage.do", new FreeBoardSelectOnePageAction());
-		handlerMap.put("/reviewWrite.do", new ReviewWriteAction());
-		handlerMap.put("/reviewUpdate.do", new ReviewUpdateAction());
 		handlerMap.put("/reviewDelete.do", new ReviewDeleteAction());
 		handlerMap.put("/sellBoardWritePage.do", new SellBoardWritePageAction());
 		handlerMap.put("/sellBoardWrite.do", new SellBoardWriteAction());
@@ -103,13 +96,9 @@ public class HandlerMapper {
 		handlerMap.put("/reportWritePage.do", new ReportWritePageAction());
 		handlerMap.put("/reportWrite.do", new ReportWriteAction());
 		handlerMap.put("/reportManagePage.do", new ReportSelectAllPageAction());
-		handlerMap.put("/recommenUp.do", new RecommendUpAction());
-		handlerMap.put("/recommenDown.do", new RecommendDownAction());
 		handlerMap.put("/errorPage.do", new ErrorPageAction());
-		handlerMap.put("/backPage.do", new BackPageAction());
 		handlerMap.put("/findIdResultPage.do", new FindIdResultPageAction());
-		handlerMap.put("/filterSearchAction.do", new FilterSearchAction());
-	
+
 	}
 
 	public Action getAction(String commend) {

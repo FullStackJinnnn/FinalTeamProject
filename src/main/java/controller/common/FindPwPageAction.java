@@ -15,7 +15,7 @@ public class FindPwPageAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ActionForward forward = new ActionForward();
-		forward.setPath("common/findPwPage.jsp");
+		forward.setPath("/chalKag/common/findPwPage.jsp");
 		forward.setRedirect(true);
 
 		return forward;

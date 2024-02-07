@@ -8,6 +8,47 @@
 <meta charset="UTF-8">
 <title>회원가입 페이지</title>
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
+<style>
+#uploadDiv {
+	display: flex;
+	justify-content: center;
+}
+
+#originName {
+	text-align: center;
+	padding-left: 10rem;
+	padding-top: 1rem;
+	font: inherit;
+}
+
+.field {
+	margin-bottom: 50px;
+}
+
+.field input[type="text"] {
+	display: inline-block;
+	width: 60%;
+	font-weight: bold;
+}
+
+.btn-upload {
+	width: 25rem;
+	height: 50px;
+	margin-top: 10px;
+	background: #fff;
+	border: 1px solid gray;
+	border-radius: 10px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn-upload:hover {
+	background: black;
+	color: #fff;
+}
+</style>
 
 </head>
 
@@ -17,8 +58,7 @@
 	<footer id="footer">
 		<section>
 
-			<form id="yourFormId" method="post" action="/chalKag/join.do"
-				onsubmit="return validateForm()">
+			<form id="yourFormId" method="post" action="/chalKag/join.do" enctype="multipart/form-data">
 				<div class="fields">
 					<div class="field">
 						<label for="email">email</label> <input type="email" name="id"
@@ -28,7 +68,8 @@
 					</div>
 					<div class="field">
 						<label for="pw">password</label> <input type="password" name="pw"
-							id="pw" minlength="8" maxlength="16" required />
+							id="pw" minlength="8" maxlength="16"
+							placeholder="비밀번호는 8자 이상 입력해주세요" required />
 					</div>
 					<div class="field">
 						<label for="pwCheck">password check</label> <input type="password"
@@ -50,9 +91,12 @@
 					</div>
 
 					<div class="field">
-						<label for="img">프로필</label> <input type="file" name="file"
-							id="fileInput" />
-						<p id="originName" style="display: inline-block"></p>
+						<div class="actions" id="uploadDiv">
+							<label for="fileInput" class="btn-upload"> 프로필 <input
+								type="file" name="file" id="fileInput" style="display: none;" />
+							</label>
+							<p id="originName" style="display: inline-block"></p>
+						</div>
 					</div>
 
 					<stone:phCheck />
@@ -146,6 +190,7 @@
 							<input type="submit" value="signIn" />
 						</div>
 					</div>
+				</div>
 			</form>
 		</section>
 	</footer>

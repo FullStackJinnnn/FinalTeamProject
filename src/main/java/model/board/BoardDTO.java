@@ -13,7 +13,7 @@ public class BoardDTO {
 	private String boardDate; // 게시글 작성일
 	private int price; // 판매글 및 리뷰 게시글의 상품 가격
 	private String image; // 게시글 이미지 주소
-	private String productcategory; // 판매글 및 리뷰 게시글의 상품의 종류 DSLR, 폴라로이드, 디지털카메라 ETC
+	private String productcategory; // 판매글 및 리뷰 게시글의 상품의 종류
 	private String productName; // 판매글 및 리뷰 게시글의 상품의 종류
 	private String company; // 판매글 및 리뷰 게시글의 상품 제조사
 	private String state; // 게시글의 상태(판매, 판매완료)

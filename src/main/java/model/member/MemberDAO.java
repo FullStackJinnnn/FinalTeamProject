@@ -22,7 +22,7 @@ public class MemberDAO {
 	private static final String SELECTONE_FINDPW = "SELECT PW FROM MEMBER WHERE ID=? AND PH=?";
 
 	// 로그인 ▶ 로그인시 세션에 memberID만 저장하기 때문에 ID만 가져옴 .정석진
-	private static final String SELECTONE_LOGIN = "SELECT ID FROM MEMBER WHERE ID=? AND PW=?";
+	private static final String SELECTONE_LOGIN = "SELECT ID, GRADE FROM MEMBER WHERE ID=? AND PW=?";
 
 	// 내 정보 출력 및 다른 유저 정보 출력 ▶
 	// 생년월일 출력 형식은 '1993-09-10' 으로 지정
@@ -110,6 +110,7 @@ public class MemberDAO {
 			}
 		} else if (memberDTO.getSearchCondition().equals("로그인")) {
 			try {
+				System.out.println("로그인 memberDTO"+memberDTO);
 				pstmt = conn.prepareStatement(SELECTONE_LOGIN);
 				pstmt.setString(1, memberDTO.getId());
 				pstmt.setString(2, memberDTO.getPw());
@@ -118,6 +119,7 @@ public class MemberDAO {
 				if (rs.next()) {
 					data = new MemberDTO();
 					data.setId(rs.getString("ID"));
+					data.setGrade(rs.getString("GRADE"));
 				}
 				rs.close();
 			} catch (SQLException e) {
@@ -130,7 +132,7 @@ public class MemberDAO {
 				pstmt = conn.prepareStatement(SELECTONE_MYINFO);
 				pstmt.setString(1, memberDTO.getId());
 				ResultSet rs = pstmt.executeQuery();
-
+				System.out.println("내정보 출력memberDTO"+memberDTO);
 				if (rs.next()) {
 					data = new MemberDTO();
 					data.setId(rs.getString("ID"));

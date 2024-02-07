@@ -28,6 +28,7 @@ a {
 .field {
 	margin-bottom: 10px;
 }
+
 </style>
 </head>
 
@@ -51,6 +52,18 @@ a {
 						<label for="memberPW"></label> <input type="password"
 							name="memberPW" id="memberPW" maxlength="16"
 							placeholder="비밀번호를 입력해주세요" required />
+					</div>
+					
+					<div>
+					
+					<ul class="icons alt">
+						<li><a href="#" class="icon brands alt fa-twitter" style="margin: 0 10px;"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon brands alt fa-facebook-f" style="margin: 0 10px;"><span class="label">Facebook</span></a></li>
+						<li><a href="#" class="icon brands alt fa-instagram" style="margin: 0 10px;"><span class="label">Instagram</span></a></li>
+						<li><a href="#" class="icon brands alt fa-github" style="margin: 0 10px;"><span class="label">Github</span></a></li>
+						<li><a href="#" class="icon brands alt fa-dribbble" style="margin: 0 10px;"><span class="label">Dribbble</span></a></li>
+					</ul>
+					
 					</div>
 
 					<div class="field">

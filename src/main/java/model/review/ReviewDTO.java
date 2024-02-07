@@ -1,13 +1,29 @@
 package model.review;
 
-import java.sql.Date;
 
 public class ReviewDTO {
 	private int reviewNum;
 	private int boardNum;
-	private String id;			// memberNum 및 memberId ID로 변경 - 김도연 2024/01/27
+	private String id;
 	private String reviewDate;
-	String reviewContents; //
+	private String writer; // 닉네임
+	String reviewContents; 
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
 
 	public int getReviewNum() {
 		return reviewNum;
@@ -25,14 +41,6 @@ public class ReviewDTO {
 		this.boardNum = boardNum;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String iD) {
-		id = iD;
-	}
-
 	public String getReviewDate() {
 		return reviewDate;
 	}
@@ -48,4 +56,11 @@ public class ReviewDTO {
 	public void setReviewContents(String reviewContents) {
 		this.reviewContents = reviewContents;
 	}
+
+	@Override
+	public String toString() {
+		return "ReviewDTO [reviewNum=" + reviewNum + ", boardNum=" + boardNum + ", id=" + id + ", reviewDate="
+				+ reviewDate + ", writer=" + writer + ", reviewContents=" + reviewContents + "]";
+	}
+	
 }

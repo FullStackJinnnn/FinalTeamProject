@@ -28,8 +28,8 @@ public class SendAuthenticationSMS extends HttpServlet {
 
 		System.out.println("서블릿 들어옴");
 		String ph = request.getParameter("ph");
-		AuthenticationSMS authenticationSMS = new AuthenticationSMS("NCSLNBEWWMJ3WPUM",
-				"BK3RMGCYTRSRTKLD8P0NKUR1XZIR6LSV");
+		AuthenticationSMS authenticationSMS = new AuthenticationSMS("NCS8QSCV2PUOXICE",
+				"0HWUXNZ9BQV5I602DXDST5FYO6WAOZRW");
 
 		// 인증코드 생성 로직작성
 		// CreateVerificationCode의 인스턴스 생성

@@ -16,7 +16,7 @@ public class FindIdPageAction implements Action {
 			throws ServletException, IOException {
 
 		ActionForward forward = new ActionForward();
-		forward.setPath("common/findIdPage.jsp");
+		forward.setPath("/chalKag/common/findIdPage.jsp");
 		forward.setRedirect(true);
 
 		return forward;

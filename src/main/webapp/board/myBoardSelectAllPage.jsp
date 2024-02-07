@@ -13,8 +13,7 @@
 <meta charset="utf-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
-<link rel="stylesheet"
-	href="/chalKag/assets/css/main.css" />
+<link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 
 <noscript>
 	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
@@ -39,7 +38,7 @@
 						<th>추천</th>
 						<th>조회수</th>
 						<th></th>
-						
+
 					</tr>
 				</thead>
 				<tbody>
@@ -52,11 +51,10 @@
 						<c:forEach var="data" items="${boardDatas}">
 							<tr>
 								<td>${data.boardNum}</td>
-								<td><a
-									href="/chalKag/myBoardSelectOnePage.do?boardNum=${data.boardNum}">${data.title}</a></td>
+								<td>${data.title}</td>
 								<td>${data.nickname}</td>
 								<td>${data.boardDate}</td>
-								<td>${data.recommendNum}</td>
+								<td>${data.recommendCNT}</td>
 								<td>${data.viewCount}</td>
 							</tr>
 						</c:forEach>

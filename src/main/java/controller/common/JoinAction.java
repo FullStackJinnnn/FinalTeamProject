@@ -20,8 +20,11 @@ import model.member.MemberDTO;
 public class JoinAction implements Action {
 
 	// 이미지 파일 저장되는 경로 바꿔야됨
-	private static final String SAVE_DIRECTORY =
-			"D:\\NSH\\workspace\\chalKag\\src\\main\\webapp\\memberProfileImages";
+//	private static final String SAVE_DIRECTORY =
+//			"D:\\PLZJUN\\workspace_infinityStone\\chalKag\\src\\main\\webapp\\memberProfileImages";
+
+	
+	
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -41,7 +44,15 @@ public class JoinAction implements Action {
 		
 		// 이미지 업로드 객체 선언(값, 절대경로, 사이즈, 인코딩)
 		// form 태그의 multipart/form-data 라면 multipartRequest 로 작성
-		MultipartRequest multipartRequest = new MultipartRequest(request, SAVE_DIRECTORY, 1024 * 1024 * 10, "UTF-8");
+		
+		String uploadDir = this.getClass().getResource("").getPath();
+
+		// .metadata 앞까지 문자열잘라서 이미지가 저장되는 폴더인 memberProfileImages까지의 절대경로 부여
+		uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata"))
+				+ "chalKag/src/main/webapp/memberProfileImages";
+		
+		
+		MultipartRequest multipartRequest = new MultipartRequest(request, uploadDir, 1024 * 1024 * 10, "UTF-8");
 		memberDTO.setId(multipartRequest.getParameter("id"));
 		memberDTO.setPw(multipartRequest.getParameter("pw"));
 		memberDTO.setName(multipartRequest.getParameter("name"));
@@ -61,9 +72,9 @@ public class JoinAction implements Action {
 		    String originalFilename = uploadedFile.getName();		// 파일명 저장하는 변수
 		    String extension = FilenameUtils.getExtension(originalFilename);	// 확장자를 저장하는 변수
 		    String newFilename = UUID.randomUUID().toString() + "." + extension;	// 새로운 파일명과 확장자를 저장하는 변수
-		    System.out.println("확인: "+SAVE_DIRECTORY);
-		    String filePath = SAVE_DIRECTORY + File.separator + newFilename;		// 위 내용을 전부 통합하여 저장하는 변수
-		    memberDTO.setProfile(filePath);
+		    System.out.println("확인: "+uploadDir);
+		    String filePath = uploadDir + File.separator + newFilename;		// 위 내용을 전부 통합하여 저장하는 변수
+		    memberDTO.setProfile(newFilename);
 		    // 파일 객체 선언 후 파일 위치를 객체에 저장한다.
 		    File newFile = new File(filePath);
 		    // 파일을 새 위치로 이동시킵니다.

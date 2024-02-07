@@ -13,8 +13,8 @@ public class AuthenticationSMS {
     private final String api_secret;
 
     public AuthenticationSMS(String api_key, String api_secret) {
-        this.api_key = "NCSLNBEWWMJ3WPUM";
-        this.api_secret = "BK3RMGCYTRSRTKLD8P0NKUR1XZIR6LSV";
+        this.api_key = "NCS8QSCV2PUOXICE";
+        this.api_secret = "0HWUXNZ9BQV5I602DXDST5FYO6WAOZRW";
     }
     								// 수신자 				// 메시지 내용(인증번호)
     public boolean sendMsg(String recipientPhoneNumber, String verificationCode) {
@@ -22,7 +22,7 @@ public class AuthenticationSMS {
 
         HashMap<String, String> params = new HashMap<>();
         params.put("to", recipientPhoneNumber); // 수신자 전화번호
-        params.put("from", "01039757635"); // 발신자 전화번호
+        params.put("from", "01066221689"); // 발신자 전화번호
         params.put("text", "인증 코드는: " + verificationCode); // 메시지 내용
         params.put("type", "sms"); // 메시지 타입
 

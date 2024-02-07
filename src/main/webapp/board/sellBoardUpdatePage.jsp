@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="stone" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE HTML>
 <!--
 	Massively by HTML5 UP
@@ -13,9 +15,9 @@
 <meta charset="utf-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
-<link rel="stylesheet" href="../assets/css/main.css" />
+<link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 <noscript>
-	<link rel="stylesheet" href="../assets/css/noscript.css" />
+	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
 </noscript>
 <style type="text/css">
 
@@ -73,28 +75,29 @@
 
 
 			<!-- Posts -->
-			<form method="post" action="#">
+			<form method="post" action="/chalKag/sellBoardUpdate.do" enctype="multipart/form-data">
 				<div class="row gtr-uniform">
+					<input type="hidden" name="boardNum" id="boardNum" value="${data.boardNum}" />
 					<!-- 제목 -->
 					<div class="col-12 col-12-xsmall">
-						<input type="text" name="title" id="title" placeholder="Title" value="${data.title}"  required/>
+						<input type="text" name="title" id="title" value="${data.title}"  required/>
 					</div>
 					<!-- 상품명 -->
 					<div class="col-6 col-12-xsmall">
-						<input type="text" name="productName" id="productName" placeholder="Name" value="${data.productName}" required/>
+						<input type="text" name="productName" id="productName" value="${data.productName}" required/>
 					</div>
 					<!-- 가격 -->
 					<div class="col-6 col-12-xsmall">
-						<input type="text" name="price" id="price" placeholder="Price" value="${data.price}" required/>
+						<input type="text" name="price" id="price" value="${data.price}" required/>
 					</div>
 					<!-- 종류 -->
 					<div class="col-12 col-12-xsmall">
-						<input type="text" name="productcategory" id="productcategory" value="${data.productcategory}" placeholder="productcategory"  required/>
+						<input type="text" name="productCategory" id="productCategory" value="${data.productCategory}" required/>
 					</div>
 					<!-- 제조사 -->
 					<!-- Break -->
 					<div class="col-12 col-12-xsmall">
-						<input type="text" name="company" id="company" placeholder="Company" value="${data.company}" required/>
+						<input type="text" name="company" id="company" value="${data.company}" required/>
 					</div>
 					<!-- 이미지 -->
 					<div class="actions" id="uploadDiv">
@@ -108,9 +111,13 @@
 	    			<div class="actions"  id="previewDiv">
 	    				<img id="preview" style="width: 800px;" src="${data.image}"/>
 	    			</div>
-					<!-- 내용 -->
+						<!-- 내용 -->
 					<div class="col-12">
-						<textarea name="contents" id="contents" placeholder="Enter your message" value="${data.contents}" rows="6" ></textarea>
+						<textarea name="contents" id="contents" rows="6" >${data.contents}</textarea>
+					</div>
+					<!-- 판매 상태 -->
+					<div  class="col-12 col-12-xsmall">
+						<input type="text" name="state" id="state" value="${data.state}" />
 					</div>
 					<!-- Break -->
 					<div class="col-12">
@@ -126,20 +133,19 @@
 		<!-- Copyright -->
 		<stone:copyright />
 			<!-- Scripts -->
-			<script src="../assets/js/jquery.min.js"></script>
-			<script src="../assets/js/jquery.scrollex.min.js"></script>
-			<script src="../assets/js/jquery.scrolly.min.js"></script>
-			<script src="../assets/js/browser.min.js"></script>
-			<script src="../assets/js/breakpoints.min.js"></script>
-			<script src="../assets/js/util.js"></script>
-			<script src="../assets/js/main.js"></script>
+			<script src="/chalKag/assets/js/jquery.min.js"></script>
+			<script src="/chalKag/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/chalKag/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/chalKag/assets/js/browser.min.js"></script>
+			<script src="/chalKag/assets/js/breakpoints.min.js"></script>
+			<script src="/chalKag/assets/js/util.js"></script>
+			<script src="/chalKag/assets/js/main.js"></script>
 			<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
 			<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
 			<script>
-			
 
-			var imgFile = $('#fileInput').val();				
-			var fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|pdf)$/;	// 이미지 업로드 제약
+			var imgFile = $('#fileInput').val();				 
+			var fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|webp)$/;	// 이미지 업로드 제약
 			var maxSize = 5 * 1024 * 1024;							// 파일 사이즈 제약
 			var fileSize;
 			const preview = document.querySelector('#preview');		// 이미지 업로드시 미리보기 기능을 담당
@@ -169,7 +175,7 @@
 			ClassicEditor
 			  .create(document.querySelector('#contents'), {
 			    removePlugins: ['Heading', 'Link', 'CKFinder'],
-			    toolbar: ['bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote'],
+			    toolbar: ['bold', 'bulletedList', 'numberedList', 'blockQuote'],
 			    language: 'ko'
 			  })
 			  .then(editor => {

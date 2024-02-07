@@ -16,7 +16,7 @@ public class CheckPwPageAction implements Action {
 			throws ServletException, IOException {
 
 		ActionForward forward = new ActionForward();
-		forward.setPath("common/checkPwPage.jsp");
+		forward.setPath("/chalKag/common/checkPwPage.jsp");
 		forward.setRedirect(true);
 
 		return forward;

@@ -7,6 +7,8 @@
 <title>알림</title>
 </head>
 <body>
-
+	<script>
+	alert('${msg}');
+	</script>
 </body>
 </html>

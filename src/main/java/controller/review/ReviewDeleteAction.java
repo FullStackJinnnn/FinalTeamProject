@@ -20,7 +20,7 @@ public class ReviewDeleteAction implements Action{
 			throws ServletException, IOException {
 		ActionForward forward = new ActionForward();
 		
-		System.out.println("[로그] ReviewDeleteAction.do 접근 ");
+		System.out.println("[로그] ReviewDeleteAction 접근 ");
 		
 		forward.setRedirect(false);
 		
@@ -28,12 +28,7 @@ public class ReviewDeleteAction implements Action{
 		ReviewDAO reviewDAO = new ReviewDAO();
 		BoardDTO boardDTO = new BoardDTO();
 		BoardDAO boardDAO = new BoardDAO();
-		
-		boardDTO.setCategory("리뷰");
-		boardDTO.setBoardNum(1);
-		boardDAO.selectOne(boardDTO);
-		
-		String category = boardDTO.getCategory();
+
 		
 		reviewDTO.setReviewNum(Integer.parseInt(request.getParameter("reviewNum")));
 
@@ -44,18 +39,26 @@ public class ReviewDeleteAction implements Action{
 			System.out.println("[로그] 댓글 삭제 성공");
 		}
 		else {
-//			System.out.println("[로그] 댓글 삭제 실패");
+			System.out.println("[로그] 댓글 삭제 실패");
 			forward.setPath("errorPage.do");
 		}
 		
-		if(category.equals("리뷰")) { 
-			forward.setPath("board/cameraReviewSelectOnePage.jsp");
+		boardDTO.setBoardNum(Integer.parseInt(request.getParameter("boardNum")));
+		boardDTO.setCategory(request.getParameter("category"));
+		boardDTO.setUpdatePage("");
+
+		boardDAO.selectOne(boardDTO);
+		
+		String category = boardDTO.getCategory();
+		
+		if(category.equals("자유게시판")) {
+			forward.setPath("freeBoardSelectOnePage.do");
 		}
-		else if(category.equals("자유")) {
-			forward.setPath("board/freeBoardSelectOnePage.jsp");
+		else if(category.equals("판매게시판")) {
+			forward.setPath("SellBoardSelectOnePage.do");
 		}
-		else if(category.equals("판매")) {
-			forward.setPath("board/sellBoardSelectOnePage.jsp");
+		else if(category.equals("리뷰게시판")) {
+			forward.setPath("cameraReviewBoardSelectOnePage.do");
 		}
 		else {
 			forward.setPath("errorPage.do");

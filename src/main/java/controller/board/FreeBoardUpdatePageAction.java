@@ -20,8 +20,6 @@ public class FreeBoardUpdatePageAction implements Action {
 		System.out.println("자유게시글 수정 페이지로 이동하는 지 확인용");
 		ActionForward forward = new ActionForward();
 
-		request.setCharacterEncoding("UTF-8");
-
 		BoardDAO boardDAO = new BoardDAO();
 		BoardDTO boardDTO = new BoardDTO();
 		boardDTO.setCategory("자유게시판");
@@ -37,7 +35,7 @@ public class FreeBoardUpdatePageAction implements Action {
 //			String relativePath = boardDTO.getImage().replace(prefix, "");		// 절대경로를 bimg/이미지.확장자로 줄인다.
 //			boardDTO.setImage(relativePath); // 상대 경로로 변경된 주소를 image에 저장한 뒤에 V로 전달한다.
 //			System.out.println("상대경로 확인용 : " + relativePath);
-			request.setAttribute("board", boardDTO);
+			request.setAttribute("boardData", boardDTO);
 			
 			forward.setPath("/chalKag/board/freeBoardUpdatePage.jsp");
 			forward.setRedirect(false);

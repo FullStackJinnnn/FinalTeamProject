@@ -23,7 +23,7 @@ public class ReportDAO {
 
 	// 신고하기 ▶ 신고페이지 출력에 필요한 정보는 (게시글 제목, 신고할 유저 정보)
 	// MemberDAO의 SELECTONE_MEMBERINFO사용 .정석진
-	private static final String INSERT_REPORT = "INSERT INTO REPORT(REPORTNUM, ID, SUSPECT, REPORTER, REPORTCONTENTS"
+	private static final String INSERT_REPORT = "INSERT INTO REPORT(REPORTNUM, ID, SUSPECT, REPORTER, REPORTCONTENTS)"
 			+ "VALUES((SELECT NVL(MAX(REPORTNUM),0)+1 FROM REPORT),?,?,?,?)";
 
 	private static final String UPDATE = "";

@@ -25,91 +25,12 @@ public class BoardDAO {
 	// 사용한 컬럼(보여줄 목록) : 게시글 넘버, 글 제목, 작성자 아이디(회원 테이블), 작성자 닉네임(회원 테이블),
 	// 작성일, 좋아요 넘버(좋아요 테이블), 조회수, 판매상태, 카운트 함수 사용(좋아요수-좋아요 테이블 / 좋아요 값이 있을 때만 보여짐)
 	// 검색 조건 : 카테고리 검색 (선택한 카테고리의 게시글만 전체 출력 / CATEGORY에 값이 없으면 오류 발생 주의)
-
-	// 게시글 검색 기능 - 제목(TITLE)으로 검색. 전미지
-	/*
-	 * private static final String SELECTALL_SEARCHTITLE =
-	 * "SELECT BOARD.BOARDNUM, BOARD.TITLE, MEMBER.ID, MEMBER.NICKNAME, " +
-	 * "TO_CHAR(BOARD.BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, RECOMMEND.RECOMMENDNUM, BOARD.VIEWCOUNT, BOARD.STATE, "
-	 * +
-	 * "CASE WHEN RECOMMEND.RECOMMENDNUM IS NOT NULL THEN COUNT(BOARD.BOARDNUM) ELSE 0 END AS RECOMMENDCNT FROM BOARD "
-	 * + "JOIN MEMBER ON BOARD.ID = MEMBER.ID " +
-	 * "LEFT JOIN RECOMMEND ON BOARD.ID = RECOMMEND.ID AND MEMBER.ID = RECOMMEND.ID "
-	 * + "WHERE CATEGORY = ? AND BOARD.TITLE LIKE '%'||?||'%' " +
-	 * "GROUP BY BOARD.BOARDNUM, BOARD.TITLE, MEMBER.ID, MEMBER.NICKNAME, " +
-	 * "BOARDDATE, RECOMMEND.RECOMMENDNUM, BOARD.VIEWCOUNT, BOARD.STATE " +
-	 * "ORDER BY BOARD.BOARDNUM DESC";
-	 */
-	// 조인한 게시판 테이블 : 회원 테이블, 좋아요 테이블
-	// 사용한 컬럼(보여줄 목록) : 게시글 넘버, 글 제목, 작성자 아이디(회원 테이블), 작성자 닉네임(회원 테이블),
-	// 작성일, 좋아요 넘버(좋아요 테이블), 조회수, 판매상태, 카운트 함수 사용(좋아요수-좋아요 테이블 / 좋아요 값이 있을 때만 보여짐)
-	// 검색 조건 : 카테고리 + 제목 검색 (선택한 카테고리의 게시글만 전체 출력 / CATEGORY와 TITLE 값이 없으면 오류 발생 주의)
-
-	// 게시글 검색 기능 - 작성자(NICKNAME)로 검색. 전미지
-	/*
-	 * private static final String SELECTALL_SEARCHWRITER =
-	 * "SELECT BOARD.BOARDNUM, BOARD.TITLE,  MEMBER.ID, MEMBER.NICKNAME, " +
-	 * "TO_CHAR(BOARD.BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, RECOMMEND.RECOMMENDNUM, BOARD.VIEWCOUNT, BOARD.STATE, "
-	 * +
-	 * "CASE WHEN RECOMMEND.RECOMMENDNUM IS NOT NULL THEN COUNT(BOARD.BOARDNUM) ELSE 0 END AS RECOMMENDCNT FROM BOARD "
-	 * + "JOIN MEMBER ON BOARD.ID = MEMBER.ID " +
-	 * "LEFT JOIN RECOMMEND ON BOARD.ID = RECOMMEND.ID AND MEMBER.ID = RECOMMEND.ID "
-	 * + "WHERE CATEGORY = ? AND MEMBER.NICKNAME LIKE '%'||?||'%' " +
-	 * "GROUP BY BOARD.BOARDNUM, BOARD.TITLE, MEMBER.ID, MEMBER.NICKNAME, " +
-	 * "BOARDDATE, RECOMMEND.RECOMMENDNUM, BOARD.VIEWCOUNT, BOARD.STATE " +
-	 * "ORDER BY BOARD.BOARDNUM DESC";
-	 */
-	// 조인한 게시판 테이블 : 회원 테이블, 좋아요 테이블
-	// 사용한 컬럼(보여줄 목록) : 게시글 넘버, 글 제목, 작성자 아이디(회원 테이블), 작성자 닉네임(회원 테이블),
-	// 작성일, 좋아요 넘버(좋아요 테이블), 조회수, 판매상태, 카운트 함수 사용(좋아요수-좋아요 테이블 / 좋아요 값이 있을 때만 보여짐)
-	// 검색 조건 : 카테고리 + 작성자 검색 (선택한 카테고리 & 작성자와 동일한 조건의 게시글만 전체 출력 / CATEGORY와
-	// NICKNAME 값이 없으면 오류 발생 주의)
-
-	// 게시글 검색 기능 - 상품명(PRODUCTNAME)으로 검색. 전미지
-	/*
-	 * private static final String SELECTALL_SEARCHPRODUCTNAME =
-	 * "SELECT BOARD.BOARDNUM, BOARD.TITLE, MEMBER.ID, MEMBER.NICKNAME, " +
-	 * "TO_CHAR(BOARD.BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, RECOMMEND.RECOMMENDNUM, BOARD.VIEWCOUNT, BOARD.STATE, "
-	 * +
-	 * "CASE WHEN RECOMMEND.RECOMMENDNUM IS NOT NULL THEN COUNT(BOARD.BOARDNUM) ELSE 0 END AS RECOMMENDCNT FROM BOARD "
-	 * + "JOIN MEMBER ON BOARD.ID = MEMBER.ID " +
-	 * "LEFT JOIN RECOMMEND ON BOARD.ID = RECOMMEND.ID AND MEMBER.ID = RECOMMEND.ID "
-	 * + "WHERE CATEGORY = ?  AND BOARD.PRODUCTNAME LIKE '%'||?||'%' " +
-	 * "GROUP BY BOARD.BOARDNUM, BOARD.TITLE, MEMBER.ID, MEMBER.NICKNAME, " +
-	 * "BOARDDATE, RECOMMEND.RECOMMENDNUM, BOARD.VIEWCOUNT, BOARD.STATE " +
-	 * "ORDER BY BOARD.BOARDNUM DESC";
-	 */
-	// 조인한 게시판 테이블 : 회원 테이블, 좋아요 테이블
-	// 사용한 컬럼(보여줄 목록) : 게시글 넘버, 글제목, 작성자 아이디(회원 테이블), 작성자 닉네임(회원 테이블),
-	// 작성일, 좋아요 넘버(좋아요 테이블), 조회수, 판매상태, 카운트 함수 사용(좋아요수-좋아요 테이블 / 좋아요 값이 있을 때만 보여짐)
-	// 검색 조건 : 카테고리 + 상품명 검색 (선택한 카테고리 & 상품명과 동일한 조건의 게시글만 전체 출력 / CATEGORY와
-	// PRODUCTNAME 값이 없으면 오류 발생 주의)
-
-	// 게시글 검색 기능 - 제조사(COMPANY)로 검색. 전미지
-	/*
-	 * private static final String SELECTALL_SEARCHCOMPANY=
-	 * "SELECT BOARD.BOARDNUM, BOARD.TITLE, MEMBER.ID, MEMBER.NICKNAME, " +
-	 * "TO_CHAR(BOARD.BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, RECOMMEND.RECOMMENDNUM, BOARD.VIEWCOUNT, BOARD.STATE, "
-	 * +
-	 * "CASE WHEN RECOMMEND.RECOMMENDNUM IS NOT NULL THEN COUNT(BOARD.BOARDNUM) ELSE 0 END AS RECOMMENDCNT FROM BOARD "
-	 * + "JOIN MEMBER ON BOARD.ID = MEMBER.ID " +
-	 * "LEFT JOIN RECOMMEND ON BOARD.ID = RECOMMEND.ID AND MEMBER.ID = RECOMMEND.ID "
-	 * + "WHERE CATEGORY = ? AND BOARD.COMPANY LIKE '%'||?||'%' " +
-	 * "GROUP BY BOARD.BOARDNUM, BOARD.TITLE, MEMBER.ID, MEMBER.NICKNAME, " +
-	 * "BOARDDATE, RECOMMEND.RECOMMENDNUM, BOARD.VIEWCOUNT, BOARD.STATE " +
-	 * "ORDER BY BOARD.BOARDNUM DESC";
-	 */
-	// 조인한 게시판 테이블 : 회원 테이블, 좋아요 테이블
-	// 사용한 컬럼(보여줄 목록) : 게시글 넘버, 글제목, 작성자 아이디(회원 테이블), 작성자 닉네임(회원 테이블),
-	// 작성일, 좋아요 넘버(좋아요 테이블), 조회수, 판매상태, 카운트 함수 사용(좋아요수-좋아요 테이블 / 좋아요 값이 있을 때만 보여짐)
-	// 검색 조건 : 카테고리 + 제조사 검색 (선택한 카테고리 & 상품명과 동일한 조건의 게시글만 전체 출력 / CATEGORY와 COMPANY
-	// 값이 없으면 오류 발생 주의)
-
+	
 	// 본인이 작성한 게시글 또는 타 유저가 작성한 게시글 목록 전체 출력. 전미지
 	private static final String SELECTALL_MEMBER = "SELECT FINAL_DATA.*, MEMBER.NICKNAME "
 			+ "FROM (SELECT BOARD_DATA.*, COALESCE(RECOMMEND_DATA.RECOMMENDCNT, 0) AS RECOMMENDCNT "
 			+ "FROM (SELECT BOARDNUM, ID, TITLE, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, "
-			+ "VIEWCOUNT FROM BOARD "
+			+ "VIEWCOUNT, CATEGORY FROM BOARD "
 			+ "ORDER BY BOARDNUM DESC) BOARD_DATA LEFT JOIN (SELECT BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
 			+ "FROM RECOMMEND GROUP BY BOARDNUM) RECOMMEND_DATA ON BOARD_DATA.BOARDNUM = RECOMMEND_DATA.BOARDNUM) "
 			+ "FINAL_DATA JOIN MEMBER ON MEMBER.ID = FINAL_DATA.ID " + "WHERE MEMBER.ID = ?";
@@ -206,6 +127,7 @@ public class BoardDAO {
 					data.setRecommendCNT(rs.getInt("RECOMMENDCNT"));
 					data.setViewCount(rs.getInt("VIEWCOUNT"));
 					data.setState(rs.getString("STATE"));
+					data.setCategory(rs.getString("CATEGORY"));
 					datas.add(data); // 게시글의 정보를 담은 'data'를'datas'에 담아줌
 				}
 
@@ -235,6 +157,7 @@ public class BoardDAO {
 					data.setBoardDate(rs.getString("BOARDDATE"));
 					data.setRecommendCNT(rs.getInt("RECOMMENDCNT"));
 					data.setViewCount(rs.getInt("VIEWCOUNT"));
+					data.setCategory(rs.getString("CATEGORY"));
 					datas.add(data);
 				}
 
@@ -266,6 +189,7 @@ public class BoardDAO {
 					data.setBoardDate(rs.getString("BOARDDATE"));
 					data.setRecommendCNT(rs.getInt("RECOMMENDCNT"));
 					data.setViewCount(rs.getInt("VIEWCOUNT"));
+					data.setCategory(rs.getString("CATEGORY"));
 					datas.add(data);
 				}
 
@@ -338,7 +262,7 @@ public class BoardDAO {
 					data.setImage(rs.getString("IMAGE"));
 					data.setBoardDate(rs.getString("BOARDDATE"));
 					data.setState(rs.getString("STATE"));
-					data.setProductcategory(rs.getString("PRODUCTCATEGORY"));
+					data.setProductCategory(rs.getString("PRODUCTCATEGORY"));
 					data.setProductName(rs.getString("PRODUCTNAME"));
 					data.setCompany(rs.getString("COMPANY"));
 					data.setPrice(rs.getInt("PRICE"));		
@@ -369,7 +293,7 @@ public class BoardDAO {
 			pstmt.setInt(5, boardDTO.getPrice());
 			pstmt.setString(6, boardDTO.getImage());
 			pstmt.setString(7, boardDTO.getProductName());
-			pstmt.setString(8, boardDTO.getProductcategory());
+			pstmt.setString(8, boardDTO.getProductCategory());
 			pstmt.setString(9, boardDTO.getCompany());
 			pstmt.setString(10, boardDTO.getState());
 			int rs = pstmt.executeUpdate();
@@ -411,7 +335,7 @@ public class BoardDAO {
 				pstmt.setString(2, boardDTO.getContents());
 				pstmt.setString(3, boardDTO.getImage());
 				pstmt.setInt(4, boardDTO.getPrice());
-				pstmt.setString(5, boardDTO.getProductcategory());
+				pstmt.setString(5, boardDTO.getProductCategory());
 				pstmt.setString(6, boardDTO.getProductName());
 				pstmt.setString(7, boardDTO.getCompany());
 				pstmt.setString(8, boardDTO.getState());

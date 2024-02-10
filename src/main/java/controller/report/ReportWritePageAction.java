@@ -24,27 +24,29 @@ public class ReportWritePageAction implements Action {
 
         // 클라이언트에서 전달된 boardNum 파라미터를 가져와서 boardDTO에 설정한다.
         boardDTO.setBoardNum(Integer.parseInt(request.getParameter("boardNum")));
+        
 
         // request의 인코딩을 UTF-8로 설정한다.
         request.setCharacterEncoding("UTF-8");
 
         // 카테고리를 세팅하지 않으면 오류를 방지하기 위한 더미값 입력
+        boardDTO.setUpdatePage("");
         boardDTO.setCategory("");
 
         // boardDAO를 통해 boardDTO에 해당하는 게시글을 검색한다.
-        boardDTO = boardDAO.selectOne(boardDTO);
+        BoardDTO boardData = boardDAO.selectOne(boardDTO);
 
         // 검색된 boardDTO를 콘솔에 출력한다.
-        System.out.println(boardDTO);
+        System.out.println("[로그]" + boardData);
 
         // 검색된 게시글이 존재하는 경우
-        if (boardDTO != null) {
+        if (boardData != null) {
             // reportWritePage.jsp로 이동
-            forward.setPath("/chalKag/report/reportWritePage.jsp");
+            forward.setPath("report/reportWritePage.jsp");
             // forward방식으로 이동
             forward.setRedirect(false);
             // request에 검색된 boardDTO를 저장한다.
-            request.setAttribute("boardDTO", boardDTO);
+            request.setAttribute("boardData", boardData);
         } else {
             // alertPage.jsp로 이동
             forward.setPath("error/alertPage.jsp");

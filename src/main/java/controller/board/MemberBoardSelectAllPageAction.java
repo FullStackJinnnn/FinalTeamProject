@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import controller.front.Action;
 import controller.front.ActionForward;
 import model.board.BoardDAO;
@@ -30,13 +32,19 @@ public class MemberBoardSelectAllPageAction implements Action {
 		boardDTO.setCategory(""); // 카테고리 세팅 안하면 오류남! else문으로 가기위한 더미값 입력
 		boardDTO.setSearchCondition("유저보드");
 		boardDTO.setId(memberDTO.getId());
+		
+		
 
 		ArrayList<BoardDTO> boardDatas = boardDAO.selectAll(boardDTO);
 
 		if (boardDatas != null) {
 
-			request.setAttribute("boardDatas", boardDatas);
-			forward.setPath("/chalKag/board/myBoardSelectAllPage.jsp");
+			//request.setAttribute("boardDatas", boardDatas);
+			Gson gson = new Gson();
+			String jsonBoardDatas = gson.toJson(boardDatas);
+			request.setAttribute("jsonBoardDatas", jsonBoardDatas);
+			request.setAttribute("nickname",memberDTO.getNickname());
+			forward.setPath("board/myBoardSelectAllPage.jsp");
 			forward.setRedirect(false);
 
 		} else {

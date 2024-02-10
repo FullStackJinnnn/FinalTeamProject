@@ -33,8 +33,6 @@ public class FreeBoardUpdateAction implements Action {
 
 		ActionForward forward = new ActionForward();
 
-		request.setCharacterEncoding("UTF-8");
-
 		BoardDAO boardDAO = new BoardDAO();
 		BoardDTO boardDTO = new BoardDTO();
 

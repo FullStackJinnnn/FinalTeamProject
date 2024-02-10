@@ -21,15 +21,19 @@ public class ReportWriteAction implements Action {
 		ReportDAO reportDAO = new ReportDAO();
 		ReportDTO reportDTO = new ReportDTO();
 		HttpSession session = request.getSession();
-		reportDTO.setId((request.getParameter("suspectId")));
-		reportDTO.setReporter((String)session.getAttribute("member"));
-		reportDTO.setSuspect(request.getParameter("suspectId")); // 카테고리 세팅 안하면 오류남! else문으로 가기위한 더미값 입력
-		reportDTO.setReportContents(request.getParameter("reportContents"));
-
+		reportDTO.setId((request.getParameter("suspectMemberID"))); //신고 당한사람 ID
+		reportDTO.setReporter((String)session.getAttribute("member")); //신고자 ID
+		reportDTO.setSuspect(request.getParameter("suspectMemberID")); //신고 당한사람 ID
+		reportDTO.setReportContents(request.getParameter("reportContents")); //신고내용 
+		String URL = request.getParameter("reportPageURL");
+        String[] parts = URL.split("/", 5);
+        System.out.println(parts[4]);
+        String reportPageURL = parts[4];
+        
 		boolean flag = reportDAO.insert(reportDTO);
 		System.out.println(reportDTO);
 		if (flag) {
-			forward.setPath("main.do");
+			forward.setPath(reportPageURL);
 			forward.setRedirect(false);
 		} else {
 			forward.setPath("error/alertPage.jsp");

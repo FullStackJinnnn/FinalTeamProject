@@ -25,6 +25,7 @@ public class LoginAction implements Action {
 		memberDTO.setId(request.getParameter("memberID"));
 		memberDTO.setPw(request.getParameter("memberPW"));
 		memberDTO.setSearchCondition("로그인");
+		memberDTO.setSnsLoginCondition("");
 		memberDTO = memberDAO.selectOne(memberDTO);
 		
 		if (memberDTO != null) { // 로그인 성공시 세션 저장 후 메인으로 이동 , 이동 할 정보 없음
@@ -35,6 +36,7 @@ public class LoginAction implements Action {
 				forward.setPath("/chalKag/main.do");
 				request.setAttribute("msg", "로그인 성공");
 				forward.setRedirect(true);
+				
 			} else {
 				forward.setPath("/chalKag/main.do");
 				request.setAttribute("msg", "이미 탈퇴한 회원의 아이디입니다.");
@@ -43,6 +45,8 @@ public class LoginAction implements Action {
 		} else{ 
 			forward.setRedirect(false);
 		}
+		
+		
 		
 
 		return forward;

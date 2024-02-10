@@ -14,7 +14,22 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
+<style>
 
+th.sortable {
+	cursor: pointer;
+}
+
+th.sortable.highlight {
+	color: blue; /* 원하는 글자 색상으로 변경해주세요 */
+	background-color: #F0F0F0; /* 원하는 배경색으로 변경해주세요 */
+}
+
+.page.active {
+	background: #7abbf0;
+	color: #fff;
+}
+</style>
 <noscript>
 	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
 </noscript>
@@ -25,52 +40,42 @@
 
 	<!-- Main -->
 	<div id="main">
+		<c:if test="${sessionScope.member != null}">
+			<h2>내가 작성한 게시글</h2>
+		</c:if>
+		<c:if test="${sessionScope.member == null}">
+			<h2>${nickname}의 작성 게시글</h2>
+		</c:if>
 		<!-- Featured Post -->
-		<div class="table-wrapper">
-
-			<table class="alt">
+		<!-- 리뷰 게시판 데이터를 테이블로 표시하는 섹션 -->
+		<div class="table-wrapper" style="margin-top: 20px;">
+			<table class="alt" style="margin-top: 30px;">
 				<thead>
 					<tr>
-						<th>번호</th>
-						<th>제목</th>
-						<th>작성자</th>
-						<th>날짜</th>
-						<th>추천</th>
-						<th>조회수</th>
-						<th></th>
-
+						<th width="10%" class="sortable" data-column="boardNum">boardNum</th>
+						<th width="*" class="sortable" data-column="title">title</th>
+						<th width="15%" class="sortable" data-column="writer">writer</th>
+						<th width="15%" class="sortable" data-column="boardDate">boardDate</th>
+						<th width="10%" class="sortable" data-column="recommendCNT">recommendCNT</th>
+						<th width="10%" class="sortable" data-column="views">views</th>
 					</tr>
 				</thead>
+
+				<!-- JSTL forEach를 사용하여 카메라 리뷰 데이터 반복 처리하여 출력-->
 				<tbody>
-					<c:if test="${fn:length(boardDatas) <= 0}">
-						<tr>
-							<td colspan="7">내가 작성한 게시글이 없습니다.</td>
-						</tr>
-					</c:if>
-					<c:if test="${fn:length(boardDatas) > 0}">
-						<c:forEach var="data" items="${boardDatas}">
-							<tr>
-								<td>${data.boardNum}</td>
-								<td>${data.title}</td>
-								<td>${data.nickname}</td>
-								<td>${data.boardDate}</td>
-								<td>${data.recommendCNT}</td>
-								<td>${data.viewCount}</td>
-							</tr>
-						</c:forEach>
-					</c:if>
+					<!-- pagination 으로 동적으로 채워질 테이블 공간 -->
 				</tbody>
 			</table>
 		</div>
 
-		<!-- Footer -->
+		<div id="dataContainer" data-jsonBoardDatas='${jsonBoardDatas}'
+			data-id='${sessionScope.member}' data-nickname='${nickname}'></div>
+
+
+		<!-- 페이징을 포함한 푸터 섹션 -->
 		<footer>
-			<div class="pagination">
-				<!--<a href="#" class="previous">Prev</a>-->
-				<a href="#" class="page active">1</a> <a href="#" class="page">2</a>
-				<a href="#" class="page">3</a> <span class="extra">&hellip;</span> <a
-					href="#" class="page">8</a> <a href="#" class="page">9</a> <a
-					href="#" class="page">10</a> <a href="#" class="next">Next</a>
+			<div id="paginationContainer" class="pagination">
+				<!-- 페이징 버튼이 동적으로 생성될 부분 -->
 			</div>
 		</footer>
 	</div>
@@ -85,6 +90,8 @@
 	<script src="/chalKag/assets/js/breakpoints.min.js"></script>
 	<script src="/chalKag/assets/js/util.js"></script>
 	<script src="/chalKag/assets/js/main.js"></script>
+	<script src="/chalKag/assets/js/pagination.js"></script>
+	<script src="/chalKag/assets/js/filterSearch.js"></script>
 </body>
 
 </html>

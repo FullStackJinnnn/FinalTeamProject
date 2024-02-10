@@ -45,7 +45,7 @@ import controller.report.ReportSelectAllPageAction;
 import controller.report.ReportWriteAction;
 import controller.report.ReportWritePageAction;
 import controller.review.ReviewDeleteAction;
-import controller.review.ReviewUpdateAction;
+import controller.review.ReviewWriteAction;
 
 public class HandlerMapper {
 
@@ -98,6 +98,7 @@ public class HandlerMapper {
 		handlerMap.put("/reportManagePage.do", new ReportSelectAllPageAction());
 		handlerMap.put("/errorPage.do", new ErrorPageAction());
 		handlerMap.put("/findIdResultPage.do", new FindIdResultPageAction());
+		handlerMap.put("/reviewWrite.do", new ReviewWriteAction());
 
 	}
 

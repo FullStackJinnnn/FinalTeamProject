@@ -3,17 +3,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="stone"%>
 
-<% // session.setAttribute("member", "kim");%>
 <section>
-			<form method="post" action="/chalKag/reviewWrite.do">
+			<form id="reviewWriteForm" method="post" action="/chalKag/reviewWrite.do">
 				<div class="fields">
 					<div class="field">
 						<label for="message">Write Contents</label>
+						<c:if test="${member==null}">
+						<textarea disabled name="reviewContents" id="reviewContents" rows="3">로그인 후 댓글을 작성해주세요!</textarea>
+						</c:if>
+						<c:if test="${member!=null}">
 						<textarea name="reviewContents" id="reviewContents" rows="3"></textarea>
+						</c:if>
 					</div>
 				</div>
+				<input type="hidden" name="boardNum" id="boardNum" value="${boardData.boardNum}">
+				<input type="hidden" name="category" id="category" value="${boardData.category}">
 				<ul class="actions">
+					<c:if test="${member!=null}">
 					<li><input type="submit" value="leaving a comment" /></li>
+					</c:if>
 				</ul>
 				<br>
 			</form>
@@ -21,47 +29,47 @@
 
 		<hr />
 
-		<c:if test="${fn:length(reviews) <= 0}">
+		<c:if test="${fn:length(reviewDatas) <= 0}">
 			<h4>댓글이 없습니다. 가장 먼저 댓글을 남겨보세요!</h4>
 		</c:if>
 
-		<c:if test="${fn:length(reviews) > 0 }">
+		<c:if test="${fn:length(reviewDatas) > 0 }">
 			<div class="table-wrapper">
 				<table class="alt">
 					<thead>
 						<tr>
-							<th>reviews : ${fn:length(reviews)}</th>
+							<th>reviews : ${fn:length(reviewDatas)}</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="review" items="${reviews}">
+						<c:forEach var="reviewData" items="${reviewDatas}">
 						
 
 							<tr>
 								<!-- 본인이 쓴 댓글이면 수정/삭제 표시 -->
 
-								<c:if test="${review.id == member}">
+								<c:if test="${reviewData.id == member}">
 									<td>
-										<div>${review.writer}</div>
-										<div id="reviewContents_${review.reviewNum}">
-											${review.reviewContents}</div>
+										<div><h4>${reviewData.writer}</h4></div>
+										<div style="font-family: Malgun Gothic;" id="reviewContents_${reviewData.reviewNum}">
+											${reviewData.reviewContents}</div>
 										<div style="text-align: right;">
 											<a class="updateContents" href="javascript:void(0);"
-												onclick="toggleEdit(${review.reviewNum}, '${review.reviewContents}', event)">수정</a>
+												onclick="toggleEdit(${reviewData.reviewNum}, '${reviewData.reviewContents}', event)">수정</a>
 												
 											<!-- GET 으로 댓글 삭제 -->
-											<a href="/chalKag/reviewDelete.do?reviewNum=${review.reviewNum}">삭제</a>
-											<div>${review.reviewDate}</div>
+											<a href="/chalKag/reviewDelete.do?reviewNum=${reviewData.reviewNum}&boardNum=${boardData.boardNum}&category=${boardData.category}">삭제</a>
+											<div>${reviewData.reviewDate}</div>
 										</div>
 									</td>
 								</c:if>
 
 								<!-- 본인이 쓴 댓글이 아니라면 내용만 표시 -->
-								<c:if test="${review.id!=member}">
+								<c:if test="${reviewData.id!=member}">
 
-									<td><div>${review.writer}</div>
-										<div>${review.reviewContents}</div>
-										<div style="text-align: right;">${review.reviewDate}</div></td>
+									<td><div><h4>${reviewData.writer}</h4></div>
+										<div style="font-family: Malgun Gothic;">${reviewData.reviewContents}</div>
+										<div style="text-align: right;">${reviewData.reviewDate}</div></td>
 								</c:if>
 							</tr>
 
@@ -76,7 +84,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
+	
 	
 	// 댓글 수정 비동기처리 작성자 | 김성민
     function toggleEdit(reviewNum, reviewContents, event) {

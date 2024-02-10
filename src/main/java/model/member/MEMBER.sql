@@ -11,7 +11,7 @@ CREATE TABLE MEMBER(
 )
 
 INSERT INTO MEMBER(ID,PW,NAME,NICKNAME,BIRTH,PH,PROFILE,GRADE)
-	VALUES('plzjun0731@naver.com','qpalzm0619!','안승준','야채안먹는편',(TO_DATE('19990731','YYYY-MM-DD')),'01039757635','default.jpg','일반');
+	VALUES('c@c.c','123123123','안승준','야채안먹는편',(TO_DATE('19990731','YYYY-MM-DD')),'01039757635','default.jpg','일반');
 
 -------------------------------QUERY TEST---------------------------------
 
@@ -23,3 +23,4 @@ DROP FROM MEMBER WHERE NAME ='아이언맨';
 DROP 
 SELECT * FROM MEMBER;
 DROP TABLE member;
+DELETE FROM MEMBER;

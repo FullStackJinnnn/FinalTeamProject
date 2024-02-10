@@ -4,6 +4,17 @@ function checkPassword() {
 	var confirmPassword = document.getElementById("pwCheck").value;
 	var errorElement = document.getElementById("pwError");
 
+
+	// 비밀번호 형식 검사
+    var pwRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    
+     if (!pwRegex.test(password)) {
+        errorElement.textContent = "비밀번호는 최소 8자 이상이며, 영문과 숫자를 포함해야 합니다."; // 에러 메시지 표시
+        errorElement.style.color = "red";
+        return false;
+    }
+    
+    
 	// 비밀번호와 비밀번호 확인이 일치하는지 확인
 	if (password === confirmPassword) {
 		errorElement.textContent = "비밀번호가 일치합니다."; // 에러 메시지를 초기화

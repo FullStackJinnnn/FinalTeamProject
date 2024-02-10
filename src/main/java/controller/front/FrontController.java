@@ -38,7 +38,7 @@ public class FrontController extends HttpServlet {
 		try {
 
 			String uri = request.getRequestURI();
-			String cp = request.getContextPath(); // -> 앞에서 두번째 / 까지는 살리고, 그뒤를 substring으로 자르
+			String cp = request.getContextPath(); 
 
 			String command = uri.substring(cp.length());
 

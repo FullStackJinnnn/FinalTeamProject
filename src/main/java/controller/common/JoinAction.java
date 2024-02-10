@@ -51,12 +51,13 @@ public class JoinAction implements Action {
 		uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata"))
 				+ "chalKag/src/main/webapp/memberProfileImages";
 		
-		
+		// String 타입과 file 의 정보를 저장해야 하기 때문에 multipartRequest 사용					.노승현
 		MultipartRequest multipartRequest = new MultipartRequest(request, uploadDir, 1024 * 1024 * 10, "UTF-8");
 		memberDTO.setId(multipartRequest.getParameter("id"));
 		memberDTO.setPw(multipartRequest.getParameter("pw"));
 		memberDTO.setName(multipartRequest.getParameter("name"));
 		memberDTO.setNickname(multipartRequest.getParameter("nickname"));
+		// db 저장 시 생년월일을 하나의 String 타입으로 받기 때문에 하나의 String 타입으로 변환 시켜줌		.노승현
 		String year = multipartRequest.getParameter("year");
 		String month = multipartRequest.getParameter("month");
 		String day = multipartRequest.getParameter("day");
@@ -68,25 +69,30 @@ public class JoinAction implements Action {
 		// 이미지 업로드를 처리하는 기능
 		File uploadedFile = multipartRequest.getFile("file");
 		System.out.println("확인: "+uploadedFile);
+		// 업로드 파일이 존재할 때
 		if (uploadedFile != null && uploadedFile.exists()) {
-		    String originalFilename = uploadedFile.getName();		// 파일명 저장하는 변수
-		    String extension = FilenameUtils.getExtension(originalFilename);	// 확장자를 저장하는 변수
+		    String originalFilename = uploadedFile.getName();						// 파일명 저장하는 변수
+		    String extension = FilenameUtils.getExtension(originalFilename);		// 확장자를 저장하는 변수
 		    String newFilename = UUID.randomUUID().toString() + "." + extension;	// 새로운 파일명과 확장자를 저장하는 변수
 		    System.out.println("확인: "+uploadDir);
-		    String filePath = uploadDir + File.separator + newFilename;		// 위 내용을 전부 통합하여 저장하는 변수
-		    memberDTO.setProfile(newFilename);
+		    String filePath = uploadDir + File.separator + newFilename;				// 위 내용을 전부 통합하여 저장하는 변수
+		    memberDTO.setProfile(filePath);
 		    // 파일 객체 선언 후 파일 위치를 객체에 저장한다.
 		    File newFile = new File(filePath);
 		    // 파일을 새 위치로 이동시킵니다.
 		    uploadedFile.renameTo(newFile);
+		}
+		else {
+			// 업로드할 파일이 존재하지 않을 때
 		}
 
 		boolean flag = memberDAO.insert(memberDTO);
 
 		if (flag) { // 성공시 메인으로 이동
 
-			forward.setPath("/chalKag/main.do");
-			forward.setRedirect(true);
+			forward.setPath("error/alertPage.jsp");
+			forward.setRedirect(false);
+			request.setAttribute("status","success");
 			request.setAttribute("msg","회원가입 성공!");
 
 		} else { // 실패시 alert 창으로 이동

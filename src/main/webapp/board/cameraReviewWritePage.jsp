@@ -72,7 +72,6 @@ i, em {
    height: 50px; border-collapse : collapse;
    border: 1px solid black;
    border-collapse: collapse;
-   solid : 1px;
 }
 
 
@@ -148,7 +147,7 @@ i, em {
 		<script src="/chalKag/assets/js/breakpoints.min.js"></script>
 		<script src="/chalKag/assets/js/util.js"></script>
 		<script src="/chalKag/assets/js/main.js"></script>
-			<script
+			   <script
       src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
    <script
       src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>

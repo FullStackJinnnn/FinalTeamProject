@@ -10,9 +10,12 @@ public class MemberDTO {
 	private String profile;
 	private String grade;
 
+	// sns로 로그인을 하는지 파악할 경우에 사용되는 변수
+	private String snsLoginCondition;
+
 	private String searchCondition;
 	// join 으로 가져올떄 필요한 멤버변수 .정석진
-	
+
 	private int boardNum;
 	private String title;
 
@@ -104,11 +107,18 @@ public class MemberDTO {
 		this.title = title;
 	}
 
+	public String getSnsLoginCondition() {
+		return snsLoginCondition;
+	}
+
+	public void setSnsLoginCondition(String snsLoginCondition) {
+		this.snsLoginCondition = snsLoginCondition;
+	}
+
 	@Override // 디버깅용 .정석진
 	public String toString() {
-		return "MemberDTO [ ID=" + id + ", PW=" + pw + ", name=" + name
-				+ ", nickname=" + nickname + ", birth=" + birth + ", ph=" + ph + ", profile=" + profile + ", grade="
-				+ grade + "]";
+		return "MemberDTO [ ID=" + id + ", PW=" + pw + ", name=" + name + ", nickname=" + nickname + ", birth=" + birth
+				+ ", ph=" + ph + ", profile=" + profile + ", grade=" + grade + "]";
 	}
 
 }

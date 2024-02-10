@@ -58,7 +58,7 @@
 	<footer id="footer">
 		<section>
 
-			<form id="yourFormId" method="post" action="/chalKag/join.do" enctype="multipart/form-data">
+			<form id="yourFormId" method="post" action="/chalKag/join.do" enctype="multipart/form-data" onsubmit="checkEmptyInput()">
 				<div class="fields">
 					<div class="field">
 						<label for="email">email</label> <input type="email" name="id"
@@ -69,7 +69,7 @@
 					<div class="field">
 						<label for="pw">password</label> <input type="password" name="pw"
 							id="pw" minlength="8" maxlength="16"
-							placeholder="비밀번호는 8자 이상 입력해주세요" required />
+							placeholder="비밀번호는 숫자 영어 포함한 8글자 이상으로 작성해주세요." required />
 					</div>
 					<div class="field">
 						<label for="pwCheck">password check</label> <input type="password"
@@ -89,7 +89,7 @@
 							value="닉네임 중복확인" onclick="checkNickname()" /> <span
 							id="nicknameErrMsg" class="error"></span>
 					</div>
-
+					
 					<div class="field">
 						<div class="actions" id="uploadDiv">
 							<label for="fileInput" class="btn-upload"> 프로필 <input
@@ -100,7 +100,7 @@
 					</div>
 
 					<stone:phCheck />
-
+					
 					<div class="field">
 						<label for="birth">birth</label> <select id="year" name="year"></select>
 						<label for="year">year</label> <select id="month" name="month"></select>
@@ -109,7 +109,7 @@
 					</div>
 
 
-					<div class="field">
+					<div class="field" style="justify-content:center;">
 						<div class="terms">
 							<div class="field">
 								<input type="checkbox" id="agreeTerms" name="agreeTerms1">
@@ -210,6 +210,7 @@
 	<script src="/chalKag/assets/js/sendAuthentication.js"></script>
 	<script src="/chalKag/assets/js/profile.js"></script>
 	<script src="/chalKag/assets/js/pwCheck.js"></script>
+	<script src="/chalKag/assets/js/joinValidation.js"></script>
 </body>
 
 </html>

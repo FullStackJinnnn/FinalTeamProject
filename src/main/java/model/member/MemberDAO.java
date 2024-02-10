@@ -23,6 +23,9 @@ public class MemberDAO {
 
 	// 로그인 ▶ 로그인시 세션에 memberID만 저장하기 때문에 ID만 가져옴 .정석진
 	private static final String SELECTONE_LOGIN = "SELECT ID, GRADE FROM MEMBER WHERE ID=? AND PW=?";
+	
+	// SNS 로그인 ▶ 카카오톡, 네이버 등 API로 로그인 할 수 있는 쿼리문 .김도연
+	private static final String SELECTONE_SNS_LOGIN = "SELECT ID, GRADE FROM MEMBER WHERE ID=?";
 
 	// 내 정보 출력 및 다른 유저 정보 출력 ▶
 	// 생년월일 출력 형식은 '1993-09-10' 으로 지정
@@ -31,10 +34,10 @@ public class MemberDAO {
 	private static final String SELECTONE_MYINFO = "SELECT MEMBER.ID,PW,NAME,NICKNAME, TO_CHAR(BIRTH,'YYYY-MM-DD') AS BIRTH_DATE,PH,PROFILE,GRADE, BOARDNUM"
 			+ " FROM MEMBER LEFT JOIN BOARD ON MEMBER.ID = BOARD.ID WHERE MEMBER.ID=?";
 
-	private static final String SELECTONE_MEMBERINFO = "SELECT ID,NICKNAME, PH,PROFILE,GRADE, BOARDNUM"
+	private static final String SELECTONE_MEMBERINFO = "SELECT MEMBER.ID,NICKNAME, PH, PROFILE, GRADE, BOARDNUM"
 			+ " FROM MEMBER LEFT JOIN BOARD ON MEMBER.ID = BOARD.ID WHERE NICKNAME=?";
 
-	private static final String SELECTONE_REPORT = "SELECT ID,NICKNAME, BOARDNUM, TITLE, REPORTCONTENTS"
+	private static final String SELECTONE_REPORT = "SELECT MEMBER.ID,NICKNAME, BOARDNUM, TITLE, REPORTCONTENTS"
 			+ "FROM MEMBER INNER JOIN BOARD ON MEMEBER.ID = BOARD.ID WHERE MEMBER.ID=?";
 
 	// 아이디 중복확인 확인용 .노승현
@@ -111,9 +114,14 @@ public class MemberDAO {
 		} else if (memberDTO.getSearchCondition().equals("로그인")) {
 			try {
 				System.out.println("로그인 memberDTO"+memberDTO);
-				pstmt = conn.prepareStatement(SELECTONE_LOGIN);
-				pstmt.setString(1, memberDTO.getId());
-				pstmt.setString(2, memberDTO.getPw());
+				if (memberDTO.getSnsLoginCondition().equals("SNS로그인")) {
+					pstmt = conn.prepareStatement(SELECTONE_SNS_LOGIN);
+					pstmt.setString(1, memberDTO.getId());
+				} else {
+					pstmt = conn.prepareStatement(SELECTONE_LOGIN);
+					pstmt.setString(1, memberDTO.getId());
+					pstmt.setString(2, memberDTO.getPw());
+				}
 				ResultSet rs = pstmt.executeQuery();
 
 				if (rs.next()) {

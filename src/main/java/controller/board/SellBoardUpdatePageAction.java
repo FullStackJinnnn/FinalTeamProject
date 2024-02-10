@@ -19,11 +19,9 @@ public class SellBoardUpdatePageAction implements Action { // 카메라 판매�
 
 		ActionForward forward = new ActionForward();
 
-		request.setCharacterEncoding("UTF-8");
-
 		BoardDAO boardDAO = new BoardDAO();
 		BoardDTO boardDTO = new BoardDTO();
-		boardDTO.setCategory("판매");
+		boardDTO.setCategory("판매게시판");
 		boardDTO.setUpdatePage("수정");
 
 		boardDTO.setBoardNum(Integer.parseInt(request.getParameter("boardNum")));
@@ -35,7 +33,7 @@ public class SellBoardUpdatePageAction implements Action { // 카메라 판매�
 //			String relativePath = boardDTO.getImage().replace(prefix, "");		// 절대경로를 bimg/이미지.확장자로 줄인다.
 //			boardDTO.setImage(relativePath); // 상대 경로로 변경된 주소를 image에 저장한 뒤에 V로 전달한다.
 //			System.out.println("상대경로 확인용 : " + relativePath);
-			request.setAttribute("data", boardDTO);
+			request.setAttribute("boardData", boardDTO);
 			
 			forward.setPath("/chalKag/board/sellBoardUpdatePage.jsp");
 			forward.setRedirect(false);

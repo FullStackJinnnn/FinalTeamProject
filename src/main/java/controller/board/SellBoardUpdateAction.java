@@ -33,8 +33,6 @@ public class SellBoardUpdateAction implements Action { // 카메라 판매글 �
 
 		ActionForward forward = new ActionForward();
 
-		request.setCharacterEncoding("UTF-8");
-
 		BoardDAO boardDAO = new BoardDAO();
 		BoardDTO boardDTO = new BoardDTO();
 
@@ -49,7 +47,7 @@ public class SellBoardUpdateAction implements Action { // 카메라 판매글 �
 				boardDTO.setTitle(multipartRequest.getParameter("title"));
 				boardDTO.setContents(multipartRequest.getParameter("contents"));
 				boardDTO.setProductName(multipartRequest.getParameter("productName"));
-				boardDTO.setProductcategory(multipartRequest.getParameter("productCategory"));
+				boardDTO.setProductCategory(multipartRequest.getParameter("productCategory"));
 				boardDTO.setCompany(multipartRequest.getParameter("company"));
 				boardDTO.setPrice(Integer.parseInt(multipartRequest.getParameter("price")));
 				

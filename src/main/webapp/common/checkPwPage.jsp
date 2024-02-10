@@ -11,10 +11,6 @@
 	content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 
-<noscript>
-	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
-</noscript>
-
 <style>
 
 style>input::-webkit-input-placeholder {

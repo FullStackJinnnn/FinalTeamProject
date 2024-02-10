@@ -21,59 +21,64 @@ public class ReviewWriteAction implements Action {
 			throws ServletException, IOException {
 
 		ActionForward forward = new ActionForward();
-
-		request.setCharacterEncoding("UTF-8");
-
+		
+		
+		forward.setRedirect(false);
+		
 		ReviewDAO reviewDAO = new ReviewDAO();
 		ReviewDTO reviewDTO = new ReviewDTO();
-		
 		BoardDTO boardDTO = new BoardDTO();
 		BoardDAO boardDAO = new BoardDAO();
+
+		// 세션에 있는 정보를 가져오기 위해 HttpSession 인터페이스를 사용
+
+		HttpSession session = request.getSession();
+
+		// 현재 로그인한 유저의 ID와 request 객체에 있는 Parameter를 가져옴
+		// Parameter에는 게시글 번호(boardNum)와 댓글 내용(reviewContents)이 존재
+
+		reviewDTO.setBoardNum(Integer.parseInt(request.getParameter("boardNum")));
+		reviewDTO.setId((String) session.getAttribute("member"));
+		reviewDTO.setReviewContents(request.getParameter("reviewContents"));
+
+		boolean flag = reviewDAO.insert(reviewDTO);
 		
-		boardDTO.setCategory("리뷰");
-		boardDTO.setBoardNum(1);
+		// 댓글 추가 실행 후 결과를 boolean타입으로 받아서 로그 확인
+		if (flag) {
+			System.out.println("[로그] 댓글 작성 성공");
+		} else {
+			System.out.println("[로그] 댓글 작성 실패");
+		}
+
+		boardDTO.setBoardNum(Integer.parseInt(request.getParameter("boardNum")));
+		boardDTO.setCategory(request.getParameter("category"));
+		boardDTO.setUpdatePage("");
+
 		boardDAO.selectOne(boardDTO);
+		
+		System.out.println("[로그] boardNum : " + boardDTO.getBoardNum());
 		
 		String category = boardDTO.getCategory();
 		
-
-		if(category.equals("리뷰")) { 
-			forward.setPath("board/cameraReviewSelectOnePage.jsp");
+		if(category.equals("자유게시판")) {
+			forward.setPath("freeBoardSelectOnePage.do");
 		}
-		else if(category.equals("자유")) {
-			forward.setPath("board/freeBoardSelectOnePage.jsp");
+		else if(category.equals("판매게시판")) {
+			forward.setPath("sellBoardSelectOnePage.do");
 		}
-		else if(category.equals("판매")) {
-			forward.setPath("board/sellBoardSelectOnePage.jsp");
+		else if(category.equals("리뷰게시판")) {
+			forward.setPath("cameraReviewBoardSelectOnePage.do");
 		}
 		else {
 			forward.setPath("errorPage.do");
-			return forward;
 		}
-		
-		HttpSession session = request.getSession();
-		
-		// boardNum과 id는 각각 DTO와 세션에 존재하는 것이기 때문에 getAttribute로 가져옴
-		// reviewContents는 사용자의 입력값이기 때문에 getParameter로 가져옴
 
-		reviewDTO.setBoardNum(1);
-		reviewDTO.setId((String)session.getAttribute("member"));
-		reviewDTO.setReviewContents(request.getParameter("reviewContents"));
-		
 		// 로그 작성자 | 김성민
 //		System.out.println("[로그]" + reviewDTO.getBoardNum());
 //		System.out.println("[로그]" + reviewDTO.getId());
 //		System.out.println("[로그]" + reviewDTO.getReviewContents());
-		
-		
-		boolean flag = reviewDAO.insert(reviewDTO);
-		
-		if(flag) {
-			System.out.println("성공");
-		}else {
-			System.out.println("실패");
-		}
 
+		
 
 		return forward;
 	}

@@ -1,3 +1,7 @@
+<%@page import="java.math.BigInteger"%>
+<%@page import="java.util.Random"%>
+<%@page import="java.security.SecureRandom"%>
+<%@page import="java.net.URLEncoder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="stone"%>
@@ -12,7 +16,6 @@
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 
 <style>
-
 input::-webkit-input-placeholder {
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
 }
@@ -28,7 +31,6 @@ a {
 .field {
 	margin-bottom: 10px;
 }
-
 </style>
 </head>
 
@@ -43,47 +45,56 @@ a {
 
 					<!-- 이메일 -->
 					<div class="field">
-						<label for="memberID"></label> <input type="email" name="memberID"
-							id="memberID" placeholder="이메일을 입력해주세요" required />
+						<label for="id"></label> <input type="email" name="id"
+							id="id" placeholder="이메일을 입력해주세요" required />
 					</div>
 
 					<!-- 비밀번호 -->
 					<div class="field">
-						<label for="memberPW"></label> <input type="password"
-							name="memberPW" id="memberPW" maxlength="16"
+						<label for="pw"></label> <input type="password"
+							name="pw" id="pw" maxlength="16"
 							placeholder="비밀번호를 입력해주세요" required />
 					</div>
+
+					<div id="social_login">
 					
-					<div>
+					<%
+						String clientId = "2jGYcIGym6EzQohgHOcs";//애플리케이션 클라이언트 아이디값";
+						String redirectURI = URLEncoder.encode("http://localhost:8088/chalKag/naverLogin.do", "UTF-8");
+						SecureRandom random = new SecureRandom();
+						String state = new BigInteger(130, random).toString();
+						String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code" + "&client_id=" + clientId
+							+ "&redirect_uri=" + redirectURI + "&state=" + state;
+						session.setAttribute("state", state);
+					%>
 					
-					<ul class="icons alt">
-						<li><a href="#" class="icon brands alt fa-twitter" style="margin: 0 10px;"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon brands alt fa-facebook-f" style="margin: 0 10px;"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon brands alt fa-instagram" style="margin: 0 10px;"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon brands alt fa-github" style="margin: 0 10px;"><span class="label">Github</span></a></li>
-						<li><a href="#" class="icon brands alt fa-dribbble" style="margin: 0 10px;"><span class="label">Dribbble</span></a></li>
-					</ul>
-					
+						<a href="<%=apiURL%>"><img height="50"
+							src="http://static.nid.naver.com/oauth/small_g_in.PNG" /></a>
+
+						
+						<a href="javascript:kakaoLogin();"><img height="50"
+							src="/chalKag/images/kakao_login_small.png" alt="카카오계정 로그인" /></a>
+
 					</div>
 
 					<div class="field">
-						<a href="/chalKag/findIdPage.do">아이디 찾기</a> 
-						<b> / </b>  
-						<a href="/chalKag/findPwPage.do">비밀번호 찾기</a> 
-						<b> / </b> 
-						<a href="/chalKag/joinPage.do">회원가입</a>
+						<a href="/chalKag/findIdPage.do">아이디 찾기</a> <b> / </b> <a
+							href="/chalKag/findPwPage.do">비밀번호 찾기</a> <b> / </b> <a
+							href="/chalKag/joinPage.do">회원가입</a>
 
 						<div class="actions" style="text-align: center; margin-top: 10px;">
-							<input type="submit" value="로그인" style="width: 250px;" />
+							<input type="button" value="로그인" style="width: 250px;" onclick="loginAlert()"/>
 						</div>
 					</div>
 				</div>
 			</form>
 		</section>
 	</div>
-	
+
 	<stone:copyright />
-	
+
+
+
 	<script src="/chalKag/assets/js/jquery.min.js"></script>
 	<script src="/chalKag/assets/js/jquery.scrollex.min.js"></script>
 	<script src="/chalKag/assets/js/jquery.scrolly.min.js"></script>
@@ -91,7 +102,12 @@ a {
 	<script src="/chalKag/assets/js/breakpoints.min.js"></script>
 	<script src="/chalKag/assets/js/util.js"></script>
 	<script src="/chalKag/assets/js/main.js"></script>
-	
+	<script src="/chalKag/assets/js/loginAlert.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script type="text/javascript"
+		src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+	<script type="text/javascript" src="/chalKag/assets/js/kakaoLogin.js"></script>
+
 </body>
 
 </html>

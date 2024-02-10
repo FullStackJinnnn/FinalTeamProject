@@ -61,7 +61,7 @@ public class CameraReviewWriteAction implements Action {
 		boardDTO.setTitle(multipartRequest.getParameter("title"));
 		boardDTO.setContents(multipartRequest.getParameter("contents"));
 		boardDTO.setProductName(multipartRequest.getParameter("productName"));
-		boardDTO.setProductcategory(multipartRequest.getParameter("productcategory"));
+		boardDTO.setProductCategory(multipartRequest.getParameter("productCategory"));
 		boardDTO.setCompany(multipartRequest.getParameter("company"));
 		boardDTO.setPrice(Integer.parseInt(multipartRequest.getParameter("price")));
 

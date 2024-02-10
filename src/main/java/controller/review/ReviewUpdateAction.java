@@ -34,8 +34,8 @@ public class ReviewUpdateAction extends HttpServlet {
 		reviewDTO.setReviewNum(Integer.parseInt(request.getParameter("reviewNum")));
 		reviewDTO.setReviewContents(request.getParameter("updatedContents"));
 		
-		System.out.println("[로그] " + reviewDTO.getReviewNum());
-		System.out.println("[로그] " + reviewDTO.getReviewContents());
+		System.out.println("[로그] reviewNum : " + reviewDTO.getReviewNum());
+		System.out.println("[로그] reviewContents : " + reviewDTO.getReviewContents());
 		
 		boolean flag = reviewDAO.update(reviewDTO);
 		
@@ -44,7 +44,6 @@ public class ReviewUpdateAction extends HttpServlet {
 			response.setCharacterEncoding("UTF-8");
 			PrintWriter out= response.getWriter();
 		    out.print(reviewDTO.getReviewContents());
-		    System.out.println(reviewDTO.getReviewContents());
 		}
 		else {
 			System.out.println("업데이트 실패");

@@ -23,8 +23,9 @@
 		<article class="post featured">
 			<header class="major">
 				<h3>
-					The moment the shutter sound echoes, <br>here is where
-					creation and emotion converge.
+					The moment the shutter sound echoes, 
+					<br>
+					here is where creation and emotion converge.
 				</h3>
 				<a href="/chalKag/main.do" class="image main"><img
 					src="/chalKag/images/mainImage.png" alt="" /></a>

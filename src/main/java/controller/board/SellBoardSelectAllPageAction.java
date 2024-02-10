@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import controller.front.Action;
 import controller.front.ActionForward;
 import model.board.BoardDAO;
@@ -40,16 +42,19 @@ public class SellBoardSelectAllPageAction implements Action { // 카메라 판�
 		
 		if (boardDatas != null) { // 게시글 정보(boardDatas)가 있다면
 			// 가져온 게시글 정보(boardDatas)를 request 객체에 "board1DTO"라는 이름으로 저장
-			request.setAttribute("sellBoardDTO", boardDatas);
+			//request.setAttribute("boardDatas", boardDatas);
 //			System.out.println("[로그] SellBoardSelectAllPageAction 4 " + boardDatas);
-			
+			Gson gson = new Gson();
+			String jsonBoardDatas = gson.toJson(boardDatas);
+			request.setAttribute("jsonBoardDatas", jsonBoardDatas);
+			request.setAttribute("category", boardDTO.getCategory());
 			// 데이터를 보내줄 페이지와 데이터 전송 방식
 			forward.setPath("board/sellBoardSelectAllPage.jsp");
 			// 데이터를 sellBoardSelectAllPage.jsp로 보냄
 			forward.setRedirect(false);
 			// 데이터를 보낼 때 리다이렉트(==데이터 없음)가 아니라면 (결과적을 데이터가 있다면) 포워드 방식(==데이터 있음)으로 보냄
 		} else { // 게시글 정보(boardDatas)가 없다면
-			request.setAttribute("message", "등록된 글이 없습니다! 가장 먼저 새 글을 작성해 주세요!");
+			request.setAttribute("msg", "등록된 글이 없습니다! 가장 먼저 새 글을 작성해 주세요!");
 			// '등록된 글이 없습니다! 가장 먼저 새 글을 작성해 주세요!'라는 에러 메시지를 request 객체에 'messages' 라는 이름으로 저장
 
 			// 데이터를 보내줄 페이지와 데이터 전송 방식

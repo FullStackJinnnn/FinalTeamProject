@@ -19,7 +19,8 @@ public class ReviewDAO {
 			+ "FROM REVIEW R "
 			+ "JOIN BOARD B ON R.BOARDNUM = B.BOARDNUM "
 			+ "JOIN MEMBER M ON R.ID = M.ID "
-			+ "WHERE R.BOARDNUM=?";
+			+ "WHERE R.BOARDNUM=? "
+			+ "ORDER BY R.REVIEWDATE ASC";
 
 	
 	private static final String INSERT = "INSERT INTO REVIEW (REVIEWNUM, BOARDNUM, ID, REVIEWCONTENTS) "

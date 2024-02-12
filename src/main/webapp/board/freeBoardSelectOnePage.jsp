@@ -105,7 +105,8 @@
             <div>
                 <pre> Content : </pre>
                 <!-- Attached image -->
-                <img src="bimg/${boardData.image}"> <br>
+                <img src="bimg/${boardData.image}">이미지 출력 위치 <br>
+                
                 <pre>${boardData.contents} 내용 출력 위치 </pre>
             </div>
 

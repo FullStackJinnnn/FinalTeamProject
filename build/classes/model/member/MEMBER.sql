@@ -11,8 +11,9 @@ CREATE TABLE MEMBER(
 )
 
 INSERT INTO MEMBER(ID,PW,NAME,NICKNAME,BIRTH,PH,PROFILE,GRADE)
-	VALUES('c@c.c','123123123','안승준','야채안먹는편',(TO_DATE('19990731','YYYY-MM-DD')),'01039757635','default.jpg','일반');
-
+	VALUES('plzjun0731@naver.com','qpalzm0619!','안승준','야채안먹는편',(TO_DATE('19990731','YYYY-MM-DD')),'01039757635','default.jpg','일반');
+INSERT INTO MEMBER(ID,PW,NAME,NICKNAME,BIRTH,PH,PROFILE,GRADE)
+	VALUES('a@a.c','123123123','ㅌ1모'','오소리',(TO_DATE('19990731','YYYY-MM-DD')),'01039757635','default.jpg','일반');
 -------------------------------QUERY TEST---------------------------------
 
 INSERT INTO MEMBER(ID,PW,NAME,NICKNAME,BIRTH,PH,PROFILE,GRADE)

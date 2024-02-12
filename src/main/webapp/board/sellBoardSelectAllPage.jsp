@@ -140,7 +140,7 @@
                         <th width="15%" class="sortable" data-column="boardDate">boardDate</th>
                         <th width="10%" class="sortable" data-column="recommendCNT">recommendCNT</th>
                         <th width="10%" class="sortable" data-column="views">views</th>
-                        <th width="10%" class="sortable" data-column="state">state</th>
+                        <th width="10%" class="notSortable" data-column="state">state</th>
                     </tr>
                 </thead>
                 <!-- JSTL forEach를 사용하여 카메라 리뷰 데이터 반복 처리하여 출력-->

@@ -24,34 +24,23 @@ public class MyPageAction implements Action {
         MemberDAO memberDAO = new MemberDAO();
         MemberDTO memberDTO = new MemberDTO();
 
-        // 세션에서 회원 아이디를 가져와서 MemberDTO에 설정
+        // 내 정보를 보기 위한 값 설정
         memberDTO.setId((String) session.getAttribute("member"));
-
-        // 검색조건을 '내정보출력'으로 설정
         memberDTO.setSearchCondition("내정보출력");
 
-        // MemberDAO를 이용하여 MemberDTO에 해당하는 회원 정보를 데이터베이스에서 검색
-        memberDTO = memberDAO.selectOne(memberDTO);
-        System.out.println(memberDTO);
-        // 검색 결과가 존재하면
-        if (memberDTO != null) {
-            // 검색 결과인 memberDTO를 request 속성에 설정
-            request.setAttribute("memberDTO", memberDTO);
-
-            // common/myPage.jsp로 이동
+        // memberDAO.selectOne 메서드로 해당 ID을 가지고 있는 유저의 정보 가져옴
+        MemberDTO memberData = memberDAO.selectOne(memberDTO);
+        
+        if (memberData != null) {
+        	
+            // 찾은 정보를 클라이언트에게 응답
+            request.setAttribute("memberData", memberData);
             forward.setPath("common/myPage.jsp");
-
-            // forward 방식으로 이동
             forward.setRedirect(false);
         } else {
-            // error/alertPage.jsp로 이동
             forward.setPath("error/alertPage.jsp");
-
-            // Redirect 방식으로 이동
             forward.setRedirect(true);
         }
-
-        // 생성한 ActionForward 객체 반환
         return forward;
     }
 }

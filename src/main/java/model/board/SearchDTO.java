@@ -5,29 +5,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SearchDTO {
+	
     // Input 태그의 checkbox를 사용해서 중복 선택을 할 수 있음으로 리스트 형태로 저장
     private ArrayList<String> companyList = new ArrayList<>();
     private ArrayList<String> productcategoryList = new ArrayList<>();
     private ArrayList<String> stateList = new ArrayList<>();
 
-    // 게시판 이동시 검색할 가격 초기값을 설정할 변수
+    // 가격 조건 검색을 저장할 변수
     private int minPrice;
     private int maxPrice;
-    private String priceSort;
-
+    
+    // 일반 검색을 저장할 변수
     private String searchField;
     private String searchInput;
 
-
-	private String nickname; // 멤버보드를 위한 변수
-    private String id;
-
-    // 정렬 데이터가 저장될 변수
+    // 정렬기준과 방향이 저장될 변수
     private Map<String, String> orderColumnDirection = new HashMap<>();
-
+    
+    // 가격정렬 방향을 저장할 변수
+    private String priceSort;
+    
     // 어떤 카테고리에 있는지 저장하기 위한 변수
     private String category;
-
+    
+    // 유저가 작성한 게시글, 내가 작성한 게시글일 경우 카테고리와 상관없이 전부 출력해주기 위한 변수
+    private String id;
+    
+    
     public Map<String, String> getOrderColumnDirection() {
         return orderColumnDirection;
     }
@@ -104,17 +108,11 @@ public class SearchDTO {
         return maxPrice;
     }
 
-    public void setMaxPrice(int maxPrice) {
+
+	public void setMaxPrice(int maxPrice) {
         this.maxPrice = maxPrice;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     public String getId() {
         return id;
@@ -127,14 +125,7 @@ public class SearchDTO {
     public String toString() {
     	return "SearchDTO [companyList=" + companyList + ", productcategoryList=" + productcategoryList + ", stateList="
     			+ stateList + ", minPrice=" + minPrice + ", maxPrice=" + maxPrice + ", priceSort=" + priceSort
-    			+ ", searchField=" + searchField + ", searchInput=" + searchInput + ", nickname=" + nickname + ", id="
-    			+ id + ", orderColumnDirection=" + orderColumnDirection + ", category=" + category
-    			+ ", getOrderColumnDirection()=" + getOrderColumnDirection() + ", getPriceSort()=" + getPriceSort()
-    			+ ", getSearchField()=" + getSearchField() + ", getSearchInput()=" + getSearchInput()
-    			+ ", getCategory()=" + getCategory() + ", getCompanyList()=" + getCompanyList()
-    			+ ", getProductcategoryList()=" + getProductcategoryList() + ", getStateList()=" + getStateList()
-    			+ ", getMinPrice()=" + getMinPrice() + ", getMaxPrice()=" + getMaxPrice() + ", getNickname()="
-    			+ getNickname() + ", getId()=" + getId() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-    			+ ", toString()=" + super.toString() + "]";
+    			+ ", searchField=" + searchField + ", searchInput=" + searchInput + ", id=" + id
+    			+ ", orderColumnDirection=" + orderColumnDirection + ", category=" + category + "]";
     }
 }

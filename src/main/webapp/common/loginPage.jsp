@@ -56,21 +56,10 @@ a {
 							placeholder="비밀번호를 입력해주세요" required />
 					</div>
 
+	
 					<div id="social_login">
 					
-					<%
-						String clientId = "2jGYcIGym6EzQohgHOcs";//애플리케이션 클라이언트 아이디값";
-						String redirectURI = URLEncoder.encode("http://localhost:8088/chalKag/naverLogin.do", "UTF-8");
-						SecureRandom random = new SecureRandom();
-						String state = new BigInteger(130, random).toString();
-						String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code" + "&client_id=" + clientId
-							+ "&redirect_uri=" + redirectURI + "&state=" + state;
-						session.setAttribute("state", state);
-					%>
-					
-						<a href="<%=apiURL%>"><img height="50"
-							src="http://static.nid.naver.com/oauth/small_g_in.PNG" /></a>
-
+						<a id="naverLoginLink" href="#"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG" /></a>
 						
 						<a href="javascript:kakaoLogin();"><img height="50"
 							src="/chalKag/images/kakao_login_small.png" alt="카카오계정 로그인" /></a>
@@ -103,6 +92,7 @@ a {
 	<script src="/chalKag/assets/js/util.js"></script>
 	<script src="/chalKag/assets/js/main.js"></script>
 	<script src="/chalKag/assets/js/loginAlert.js"></script>
+	<script src="/chalKag/assets/js/naverLogin.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script type="text/javascript"
 		src="https://developers.kakao.com/sdk/js/kakao.js"></script>

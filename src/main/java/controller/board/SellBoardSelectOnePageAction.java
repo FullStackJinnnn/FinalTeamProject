@@ -70,9 +70,9 @@ public class SellBoardSelectOnePageAction implements Action { // 카메라 판�
 //		}
 
 		// 절대 경로를 상대경로로 치환하기 위한 로직_ 2024.01.31_김도연
-//		String prefix = "D:\\PLZJUN\\workspace_infinityStone\\chalKag\\src\\main\\webapp\\bimg\\";
-//		String relativePath = boardDTO.getImage().replace(prefix, ""); // 절대경로를 bimg/이미지.확장자로 줄인다.
-//		boardDTO.setImage(relativePath); // 상대 경로로 변경된 주소를 image에 저장한 뒤에 V로 전달한다.
+		String prefix = "D:\\PLZJUN\\workspace_infinityStone\\chalKag\\src\\main\\webapp\\bimg\\";
+		String relativePath = boardDTO.getImage().replace(prefix, ""); // 절대경로를 bimg/이미지.확장자로 줄인다.
+		boardDTO.setImage(relativePath); // 상대 경로로 변경된 주소를 image에 저장한 뒤에 V로 전달한다.
 		// System.out.println("상대경로 확인용 : " + relativePath);
 
 		// 게시글 정보와 해당 게시글의 댓글들을 전송

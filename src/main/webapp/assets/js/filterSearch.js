@@ -86,19 +86,19 @@ function updateVariables() {
 // 검색 버튼 클릭 이벤트
 $("#searchButton").on("click", function() {
     updateVariables();
-    performAjaxRequest();
+    filterSearch();
 });
 
 // 가격 입력값 변경 이벤트
 $("#minPrice, #maxPrice").on("mouseup", function() {
     updateVariables();
-    performAjaxRequest();
+    filterSearch();
 });
 
 // 체크박스 변경 이벤트
 $('input[type=checkbox]').change(function() {
     updateVariables();
-    performAjaxRequest();
+    filterSearch();
 });
 
 $("#priceAscButton, #priceDescButton").on("click", function() {
@@ -114,7 +114,7 @@ $("#priceAscButton, #priceDescButton").on("click", function() {
     $(this).addClass('highlight');
 
     updateVariables();
-    performAjaxRequest();
+    filterSearch();
 });
 
 // 테이블 헤더 정렬 클릭 이벤트
@@ -142,11 +142,11 @@ $('th.sortable').on('click', function() {
     $(this).addClass('highlight');
 
     updateVariables();
-    performAjaxRequest();
+    filterSearch();
 });
 
 // Ajax 요청을 수행하는 함수
-function performAjaxRequest() {
+function filterSearch() {
     $.ajax({
         type: "GET",
         url: "filterSearch.do",
@@ -159,8 +159,7 @@ function performAjaxRequest() {
             'category': category, //게시판에 맞는 게시글 출력을 위한 변수
             'searchField': searchField,
             'searchInput': searchInput,
-            'nickname': nickname,
-            'id': id,
+            'id': id, //
             'priceSort': priceSort,
             'jsonOrderColumnDirection': JSON.stringify(selectedOrderDirection)
         },

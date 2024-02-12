@@ -37,6 +37,8 @@ public class NaverLoginAction extends HttpServlet {
 
 		String code = request.getParameter("code");
 		String state = request.getParameter("state");
+		System.out.println("code = ["+code+"]");
+		System.out.println("state = ["+state+"]");
 
 		String redirectURI = URLEncoder.encode("http://localhost:8088/chalKag/naverLogin.do", "UTF-8");
 		String apiURL;

@@ -5,9 +5,8 @@ var jsonFilteredBoardDatas;
 var loadReviewData;
 const dataContainer = document.getElementById('dataContainer');
 const jsonBoardDatas = JSON.parse(dataContainer.getAttribute('data-jsonBoardDatas'));
-const nickname = dataContainer.getAttribute('data-nickname');
-const id = dataContainer.getAttribute("data-id");
-
+var id = dataContainer.getAttribute("data-id");
+console.log('[로그]id= ' + id);
 $(document).ready(function() {
 
 	// 페이징 버튼 클릭 이벤트
@@ -40,35 +39,33 @@ $(document).ready(function() {
 				// 성공 시 처리
 				displayReviewData(jsonPaginationDatas);
 				displayPagination(jsonPaginationDatas);
-				alert("데이터가 성공적으로 로드되었습니다!"); // 성공 시 알림
+				//alert("데이터가 성공적으로 로드되었습니다!"); // 성공 시 알림
 			},
 			error: function() {
 				// 에러 처리
 				console.error("데이터 로딩 중 에러 발생");
-				alert("데이터 로딩 중 에러 발생!"); // 에러 시 알림
+				//alert("데이터 로딩 중 에러 발생!"); // 에러 시 알림
 			}
 		});
 	}
 
 	function displayReviewData(jsonPaginationDatas) {
-		console.log('[로그]' + boardData.category);
-		console.log('id= ' + id);
-		console.log('nickname= ' + nickname);
+
 		var tbody = document.querySelector('.alt tbody');
 		var thead = document.querySelector('.alt thead');
 		var thCnt = thead.getElementsByTagName('th');
 		var maxColspan = thCnt.length;
 		tbody.innerHTML = '';
 		// 결과가 없을 경우 메시지 출력
-		if (jsonPaginationDatas.data.length === 0) {
-			tbody.innerHTML = '<tr><td colspan="' + maxColspan + '" align="center">찾으시는 게시글이 없습니다.</td></tr>';
+		if (jsonPaginationDatas.boardDatas.length === 0) {
+			tbody.innerHTML = '<tr><td colspan="' + maxColspan + '" align="center">등록된 글이 없습니다. 새 글을 작성해주세요.</td></tr>';
 		} else {
 			// 결과가 있을 경우 테이블에 데이터 추가
-			jsonPaginationDatas.data.forEach(function(boardData) {
+			jsonPaginationDatas.boardDatas.forEach(function(boardData) {
 				var row = document.createElement('tr');
 
 				// boardData.category에 따라 다른 출력을 하도록 조건문 추가
-				if (id !== null || boardData.nickname === nickname) {
+				if (id === boardData.id) {
 					console.log('[로그] myBoard & memberBoard');
 					row.innerHTML =
 						'<td>' + boardData.boardNum + '</td>' +
@@ -127,9 +124,9 @@ $(document).ready(function() {
 
 		// 이전 페이지 그룹으로 이동하는 버튼 추가
 		if (startPage > 1) {
-			var prevGroupPage = startPage - 1;
-			var prevGroupLink = "<a href='#' class='page' data-page='" + prevGroupPage + "'>&laquo;</a>";
-			paginationContainer.append(prevGroupLink);
+		    var prevGroupPage = startPage - 1;
+		    var prevGroupLink = "<a href='#' class='page' data-page='" + prevGroupPage + "'>&laquo; PREV</a>";
+		    paginationContainer.append(prevGroupLink);
 		}
 
 		// 페이지 버튼 추가
@@ -141,9 +138,9 @@ $(document).ready(function() {
 
 		// 다음 페이지 그룹으로 이동하는 버튼 추가
 		if (endPage < jsonPaginationDatas.totalPages) {
-			var nextGroupPage = endPage + 1;
-			var nextGroupLink = "<a href='#' class='page' data-page='" + nextGroupPage + "'>&raquo;</a>";
-			paginationContainer.append(nextGroupLink);
+		    var nextGroupPage = endPage + 1;
+		    var nextGroupLink = "<a href='#' class='page' data-page='" + nextGroupPage + "'>NEXT &raquo;</a>";
+		    paginationContainer.append(nextGroupLink);
 		}
 	}
 	loadReviewData(1);

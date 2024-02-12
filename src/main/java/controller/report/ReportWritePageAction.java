@@ -21,36 +21,24 @@ public class ReportWritePageAction implements Action {
 
         BoardDAO boardDAO = new BoardDAO();
         BoardDTO boardDTO = new BoardDTO();
-
-        // 클라이언트에서 전달된 boardNum 파라미터를 가져와서 boardDTO에 설정한다.
-        boardDTO.setBoardNum(Integer.parseInt(request.getParameter("boardNum")));
         
-
-        // request의 인코딩을 UTF-8로 설정한다.
-        request.setCharacterEncoding("UTF-8");
-
-        // 카테고리를 세팅하지 않으면 오류를 방지하기 위한 더미값 입력
+        // 신고하는 게시글의 정보를 찾기 위한 값 설정
+        boardDTO.setBoardNum(Integer.parseInt(request.getParameter("boardNum")));
         boardDTO.setUpdatePage("");
         boardDTO.setCategory("");
-
-        // boardDAO를 통해 boardDTO에 해당하는 게시글을 검색한다.
+        
+        // boardDAO.selectOne 메서드로 해당 boardNum을 가지고 있는 게시글의 정보를 가져옴
         BoardDTO boardData = boardDAO.selectOne(boardDTO);
 
-        // 검색된 boardDTO를 콘솔에 출력한다.
-        System.out.println("[로그]" + boardData);
-
-        // 검색된 게시글이 존재하는 경우
+        // System.out.println("[로그] boardData: " + boardData);
         if (boardData != null) {
-            // reportWritePage.jsp로 이동
-            forward.setPath("report/reportWritePage.jsp");
-            // forward방식으로 이동
-            forward.setRedirect(false);
-            // request에 검색된 boardDTO를 저장한다.
+        	
+            // 찾은 정보를 클라이언트에게 응답
             request.setAttribute("boardData", boardData);
+            forward.setPath("report/reportWritePage.jsp");
+            forward.setRedirect(false);
         } else {
-            // alertPage.jsp로 이동
             forward.setPath("error/alertPage.jsp");
-            // Redirect방식으로 이동
             forward.setRedirect(true);
         }
         return forward;

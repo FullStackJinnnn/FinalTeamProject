@@ -40,10 +40,10 @@ th.sortable.highlight {
 
 	<!-- Main -->
 	<div id="main">
-		<c:if test="${sessionScope.member != null}">
+		<c:if test="${sessionScope.member == id}">
 			<h2>내가 작성한 게시글</h2>
 		</c:if>
-		<c:if test="${sessionScope.member == null}">
+		<c:if test="${sessionScope.member != id}">
 			<h2>${nickname}의 작성 게시글</h2>
 		</c:if>
 		<!-- Featured Post -->
@@ -68,8 +68,8 @@ th.sortable.highlight {
 			</table>
 		</div>
 
-		<div id="dataContainer" data-jsonBoardDatas='${jsonBoardDatas}'
-			data-id='${sessionScope.member}' data-nickname='${nickname}'></div>
+<div id="dataContainer" data-jsonBoardDatas='${jsonBoardDatas}'
+    data-id='${id}' ></div>
 
 
 		<!-- 페이징을 포함한 푸터 섹션 -->

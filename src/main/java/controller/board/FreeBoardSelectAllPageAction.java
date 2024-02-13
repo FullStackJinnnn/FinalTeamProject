@@ -37,6 +37,7 @@ public class FreeBoardSelectAllPageAction implements Action { // 자유게시판
 
 		// selectAll 메서드를 통해 데이터 베이스에서 모든 게시글 정보를 가져와서 boardDatas에 저장
 		boardDatas = boardDAO.selectAll(boardDTO);
+		System.out.println(boardDatas);
 //		System.out.println("[로그] FreeBoardSelectAllPageAction 2" + boardDTO)
 //		System.out.println("[로그] FreeBoardSelectAllPageAction 3" + boardDatas);
 		

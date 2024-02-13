@@ -16,10 +16,10 @@ public class BoardDAO {
 	// 게시글 목록 전체 출력. 전미지
 	private static final String SELECTALL = "SELECT FINAL_DATA.*, MEMBER.NICKNAME, MEMBER.ID "
 			+ "FROM (SELECT BOARD_DATA.*, COALESCE(RECOMMEND_DATA.RECOMMENDCNT, 0) AS RECOMMENDCNT "
-			+ "FROM (SELECT BOARDNUM, ID, CATEGORY, TITLE, CONTENTS, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, "
+			+ "FROM (SELECT ROWNUM, BOARDNUM, ID, CATEGORY, TITLE, CONTENTS, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, "
 			+ "PRICE, PRODUCTCATEGORY, COMPANY, STATE, VIEWCOUNT FROM BOARD WHERE CATEGORY = ? "
-			+ "ORDER BY BOARDNUM DESC) BOARD_DATA LEFT JOIN (SELECT BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
-			+ "FROM RECOMMEND GROUP BY BOARDNUM) RECOMMEND_DATA ON BOARD_DATA.BOARDNUM = RECOMMEND_DATA.BOARDNUM) "
+			+ "ORDER BY BOARDNUM ASC) BOARD_DATA LEFT JOIN (SELECT BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
+			+ "FROM RECOMMEND GROUP BY BOARDNUM) RECOMMEND_DATA ON BOARD_DATA.BOARDNUM = RECOMMEND_DATA.BOARDNUM ORDER BY BOARD_DATA.BOARDNUM DESC) "
 			+ "FINAL_DATA JOIN MEMBER ON MEMBER.ID = FINAL_DATA.ID";
 	// 조인한 게시판 테이블 : 회원 테이블, 좋아요 테이블
 	// 사용한 컬럼(보여줄 목록) : 게시글 넘버, 글 제목, 작성자 아이디(회원 테이블), 작성자 닉네임(회원 테이블),
@@ -29,10 +29,10 @@ public class BoardDAO {
 	// 본인이 작성한 게시글 또는 타 유저가 작성한 게시글 목록 전체 출력. 전미지
 	private static final String SELECTALL_MEMBER = "SELECT FINAL_DATA.*, MEMBER.NICKNAME "
 			+ "FROM (SELECT BOARD_DATA.*, COALESCE(RECOMMEND_DATA.RECOMMENDCNT, 0) AS RECOMMENDCNT "
-			+ "FROM (SELECT BOARDNUM, ID, TITLE, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, "
+			+ "FROM (SELECT ROWNUM, BOARDNUM, ID, TITLE, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, "
 			+ "VIEWCOUNT, CATEGORY FROM BOARD "
-			+ "ORDER BY BOARDNUM DESC) BOARD_DATA LEFT JOIN (SELECT BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
-			+ "FROM RECOMMEND GROUP BY BOARDNUM) RECOMMEND_DATA ON BOARD_DATA.BOARDNUM = RECOMMEND_DATA.BOARDNUM) "
+			+ "ORDER BY BOARDNUM ASC) BOARD_DATA LEFT JOIN (SELECT BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
+			+ "FROM RECOMMEND GROUP BY BOARDNUM) RECOMMEND_DATA ON BOARD_DATA.BOARDNUM = RECOMMEND_DATA.BOARDNUM ORDER BY BOARD_DATA.BOARDNUM DESC) "
 			+ "FINAL_DATA JOIN MEMBER ON MEMBER.ID = FINAL_DATA.ID " + "WHERE MEMBER.ID = ?";
 	// 조인한 게시판 테이블 : 회원 테이블, 좋아요 테이블
 	// 사용한 컬럼(보여줄 목록) : 게시글 넘버, 글제목, 작성자 아이디(회원 테이블), 작성자 닉네임(회원 테이블),
@@ -120,11 +120,13 @@ public class BoardDAO {
 					data = new BoardDTO();// 새로운 BoardDTO 객체 생성
 					// ResultSet에서 읽은 각 열의 값을 해당 객체에 담음
 					data.setBoardNum(rs.getInt("BOARDNUM"));
+					data.setRownum(rs.getInt("ROWNUM"));
 					data.setTitle(rs.getString("TITLE"));
 					data.setId(rs.getString("ID"));
 					data.setNickname(rs.getString("NICKNAME"));
 					data.setBoardDate(rs.getString("BOARDDATE"));
 					data.setRecommendCNT(rs.getInt("RECOMMENDCNT"));
+					data.setPrice(rs.getInt("PRICE"));
 					data.setViewCount(rs.getInt("VIEWCOUNT"));
 					data.setState(rs.getString("STATE"));
 					data.setCategory(rs.getString("CATEGORY"));
@@ -137,9 +139,9 @@ public class BoardDAO {
 			} finally {
 				JDBCUtil.disconnect(pstmt, conn); // 데이터베이스 연결 해제
 			}
-		} else if (boardDTO.getCategory().equals("리뷰게시판"))
+		} else if (boardDTO.getCategory().equals("리뷰게시판")) {
 
-		{ // 리뷰게시판 선택 시
+		 // 리뷰게시판 선택 시
 //				System.out.println("[로그] boardDAO 리뷰 게시판 SELECTALL 들어옴 1" + boardDTO);
 			try {
 
@@ -151,11 +153,13 @@ public class BoardDAO {
 				while (rs.next()) {
 					data = new BoardDTO();
 					data.setBoardNum(rs.getInt("BOARDNUM"));
+					data.setRownum(rs.getInt("ROWNUM"));
 					data.setTitle(rs.getString("TITLE"));
 					data.setId(rs.getString("ID"));
 					data.setNickname(rs.getString("NICKNAME"));
 					data.setBoardDate(rs.getString("BOARDDATE"));
 					data.setRecommendCNT(rs.getInt("RECOMMENDCNT"));
+					data.setPrice(rs.getInt("PRICE"));
 					data.setViewCount(rs.getInt("VIEWCOUNT"));
 					data.setCategory(rs.getString("CATEGORY"));
 					datas.add(data);
@@ -183,6 +187,7 @@ public class BoardDAO {
 				while (rs.next()) { // 유저에게 보여줄 게시글의 데이터들을 'data'라는 변수에 담아줌
 					data = new BoardDTO();
 					data.setBoardNum(rs.getInt("BOARDNUM"));
+					data.setRownum(rs.getInt("ROWNUM"));
 					data.setTitle(rs.getString("TITLE"));
 					data.setId(rs.getString("ID"));
 					data.setNickname(rs.getString("NICKNAME"));

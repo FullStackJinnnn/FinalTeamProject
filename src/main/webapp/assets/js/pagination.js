@@ -5,7 +5,9 @@ var jsonFilteredBoardDatas;
 var loadReviewData;
 const dataContainer = document.getElementById('dataContainer');
 const jsonBoardDatas = JSON.parse(dataContainer.getAttribute('data-jsonBoardDatas'));
-var id = dataContainer.getAttribute("data-id");
+const id = dataContainer.getAttribute("data-id");
+var index;
+
 console.log('[로그]id= ' + id);
 $(document).ready(function() {
 
@@ -14,7 +16,7 @@ $(document).ready(function() {
 		event.preventDefault();
 		var page = $(this).data("page");
 		loadReviewData(page);
-		console.log(page);
+		//console.log("[로그] page :" page);
 	});
 
 	loadReviewData = function(page) {
@@ -28,7 +30,7 @@ $(document).ready(function() {
 			dataToSend.jsonFilteredBoardDatas = JSON.stringify(jsonFilteredBoardDatas);
 		}
 
-		console.log(dataToSend);
+		//console.log("[로그] 총 데이터 :"dataToSend);
 
 		$.ajax({
 			url: "pagination.do",
@@ -37,6 +39,7 @@ $(document).ready(function() {
 			dataType: 'json',
 			success: function(jsonPaginationDatas) {
 				// 성공 시 처리
+				
 				displayReviewData(jsonPaginationDatas);
 				displayPagination(jsonPaginationDatas);
 				//alert("데이터가 성공적으로 로드되었습니다!"); // 성공 시 알림
@@ -50,25 +53,24 @@ $(document).ready(function() {
 	}
 
 	function displayReviewData(jsonPaginationDatas) {
-
+		console.log("[로그]" + jsonPaginationDatas);
 		var tbody = document.querySelector('.alt tbody');
 		var thead = document.querySelector('.alt thead');
 		var thCnt = thead.getElementsByTagName('th');
 		var maxColspan = thCnt.length;
 		tbody.innerHTML = '';
 		// 결과가 없을 경우 메시지 출력
-		if (jsonPaginationDatas.boardDatas.length === 0) {
+		if (jsonPaginationDatas.data.length === 0) {
 			tbody.innerHTML = '<tr><td colspan="' + maxColspan + '" align="center">등록된 글이 없습니다. 새 글을 작성해주세요.</td></tr>';
 		} else {
-			// 결과가 있을 경우 테이블에 데이터 추가
-			jsonPaginationDatas.boardDatas.forEach(function(boardData) {
-				var row = document.createElement('tr');
-
-				// boardData.category에 따라 다른 출력을 하도록 조건문 추가
+		  // 결과가 있을 경우 테이블에 데이터 추가
+        jsonPaginationDatas.data.forEach(function(boardData) {
+            var row = document.createElement('tr');
+            // boardData.category에 따라 다른 출력을 하도록 조건문 추가
 				if (id === boardData.id) {
 					console.log('[로그] myBoard & memberBoard');
 					row.innerHTML =
-						'<td>' + boardData.boardNum + '</td>' +
+						'<td>' + boardData.rownum + '</td>' +
 						'<td>' + boardData.title + '</td>' +
 						'<td>' + boardData.nickname + '</td>' +
 						'<td>' + boardData.boardDate + '</td>' +
@@ -76,36 +78,40 @@ $(document).ready(function() {
 						'<td>' + boardData.viewCount + '</td>';
 				} else if (boardData.category === '판매게시판') {
 					row.innerHTML =
-						'<td>' + boardData.boardNum + '</td>' +
+						'<td>' + boardData.rownum + '</td>' +
 						'<td><a href="/chalKag/sellBoardSelectOnePage.do?boardNum=' + boardData.boardNum + '">' + boardData.title + '</a></td>' +
 						'<td><a href="/chalKag/memberPage.do?nickname=' + boardData.nickname + '">' + boardData.nickname + '</a></td>' +
 						'<td>' + boardData.boardDate + '</td>' +
-						'<td>' + boardData.recommendCNT + '</td>' +
+						'<td>' + numberWithCommas(boardData.price) + '원</td>' +
 						'<td>' + boardData.viewCount + '</td>' +
 						'<td>' + boardData.state + '</td>';
 						console.log('[로그]' + boardData.state);
 				} else if (boardData.category === '리뷰게시판') {
 					row.innerHTML =
-						'<td>' + boardData.boardNum + '</td>' +
+						'<td>' + boardData.rownum + '</td>' +
 						'<td><a href="/chalKag/cameraReviewSelectOnePage.do?boardNum=' + boardData.boardNum + '">' + boardData.title + '</a></td>' +
 						'<td><a href="/chalKag/memberPage.do?nickname=' + boardData.nickname + '">' + boardData.nickname + '</a></td>' +
 						'<td>' + boardData.boardDate + '</td>' +
 						'<td>' + boardData.recommendCNT + '</td>' +
+						'<td>' + numberWithCommas(boardData.price) + '원</td>' +
 						'<td>' + boardData.viewCount + '</td>';
 				} else {
 					row.innerHTML =
-						'<td>' + boardData.boardNum + '</td>' +
+						'<td>' + boardData.rownum + '</td>' +
 						'<td><a href="/chalKag/freeBoardSelectOnePage.do?boardNum=' + boardData.boardNum + '">' + boardData.title + '</a></td>' +
 						'<td><a href="/chalKag/memberPage.do?nickname=' + boardData.nickname + '">' + boardData.nickname + '</a></td>' +
 						'<td>' + boardData.boardDate + '</td>' +
 						'<td>' + boardData.recommendCNT + '</td>' +
 						'<td>' + boardData.viewCount + '</td>';
 				}
-
 				tbody.appendChild(row);
 			});
 		}
 	}
+	// 가격을 3자리마다 컴마로 구분하는 함수
+function numberWithCommas(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 	function displayPagination(jsonPaginationDatas) {
 		// 페이징 버튼 등을 표시하는 로직

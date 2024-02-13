@@ -45,18 +45,6 @@
             font-family: "Source Sans Pro", Helvetica, sans-serif;
         }
 
-        table tbody tr {
-            border-color: #eeeeee;
-        }
-
-        table tbody tr:nth-child(2n+1) {
-            background-color: white;
-        }
-
-        table.alt tbody tr td {
-            border-color: white;
-        }
-
         .actions {
             float: right;
         }
@@ -122,37 +110,47 @@
                 <pre>${boardData.contents} 내용 출력 위치 </pre>
             </div>
 
-            <!-- '글 수정', '글 삭제', '글 작성', '현재 카테고리 목록으로' 버튼 생성 -->
-            <div class="col-6 col-12-small" style="margin-top: 45px; text-align: right;">
-                <!-- 로그인 상태인 경우 '글 수정', '글 삭제' 버튼 활성화 -->
-                <c:if test="${member!=null}">
-                    <button type="button" onclick="location.href='/chalKag/sellBoardUpdatePage.do'">Update</button>
-                    <button type="button" onclick="location.href='/chalKag/sellBoardDeletePage.do'">Delete</button>
-                </c:if>            
-                <!-- '글 작성', '현재 카테고리 목록으로' 버튼 생성 -->
-                <c:if test="${member == null}">
-                    <button type="button" onclick="location.href='/chalKag/sellBoardWritePage.do'">Write</button>
-                    <button type="button" onclick="location.href='/chalKag/sellBoardSelectAllPage.do'">Tolist</button>
-                </c:if>        
-            </div>
-
             <!-- 게시글 좋아요 -->
-            <div class="col-6 col-12-small" style="text-align:center;">
+            <div class="col-6 col-12-small" style="text-align: center; margin-bottom: 40px;">
                 <br>
                 <c:if test="${member != null}">
-                    <c:if test="${member == recommendData.id}">
-                        <input class="button primary" type="button" id="recommendBtn" value="좋아요" />
-                    </c:if>
-                    <c:if test="${member != recommendData.id}">
-                        <input type="button" id="recommendBtn" value="좋아요" />
-                    </c:if>
-                </c:if>
-                <c:if test="${member == null}">
-                    <input type="button" id="recommendBtn" value="좋아요" disabled />
-                </c:if>
+                  <c:if test="${member == recommendData.id}">
+                     <input class="button primary" type="button" id="recommendBtn" value="Recommend" />
+                  </c:if>
+                  <c:if test="${member != recommendData.id}">
+                     <input type="button" id="recommendBtn" value="Recommend" />
+                  </c:if>
+                 </c:if>
+                   <c:if test="${member == null}">
+                     <input type="button" id="recommendBtn" value="Recommend" disabled />
+                 </c:if>
             </div>
 
-            <hr>
+			<hr style="margin-top: 10px; margin-bottom: 10px; background: Lightgrey; height: 2px; border: 0;">
+
+			<!-- '글 수정', '글 삭제', '글 작성', '현재 카테고리 목록으로' 버튼 생성 -->
+			<div class="col-6 col-12-small" style="margin-top: 45px; text-align: right;">
+				<!-- 로그인 상태인 경우 '글 수정', '글 삭제' 버튼 활성화 -->
+				<c:if test="${member == boardData.id}">
+					<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/sellBoardUpdatePage.do?boardNum=${boardData.boardNum}'">Update</button>
+					<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/boardDelete.do?boardNum=${boardData.boardNum}&category=${boardData.category}'">Delete</button>
+				</c:if>	
+							
+				<!-- '글 작성', '현재 카테고리 목록으로' 버튼 생성 -->
+				<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/sellBoardWritePage.do'">Write</button>
+				<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/sellBoardSelectAllPage.do'">List</button>
+			</div>
+		
+             <!-- '글 신고하기' 버튼 생성 -->
+			 <div class="col-6 col-12-small" style="margin-top: 45px; margin-bottom: 40px; text-align: right;">
+                 <c:if test="${sessionScope.member != null && sessionSzope.member != boardData.id}">
+                     <button id="report"
+                         onClick="location.href='/chalKag/reportWritePage.do?boardNum=${boardData.boardNum}&reportPageURL='+window.location.href"
+                         style="border: 0; color: white;">Report</button>
+                 </c:if>
+             </div>
+             
+			<hr style="margin-top: 10px; margin-bottom: 10px; background: Lightgrey; height: 2px; border: 0;">
 
             <!-- 댓글 -->
             <stone:review />

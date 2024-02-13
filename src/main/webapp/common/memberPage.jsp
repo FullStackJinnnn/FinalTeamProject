@@ -24,6 +24,7 @@ input::-webkit-input-placeholder {
 
 a {
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
+	border-bottom: none;
 }
 
 .field {
@@ -69,7 +70,8 @@ a {
 					<!-- 프사 -->
 					<div class="field">
 						<div class="photo">
-							<img id="preview" alt="프로필 이미지" src="memberProfileImages/${memberData.profile}">
+							<img id="preview" alt="프로필 이미지" src="memberProfileImages/${memberData.profile}"
+								onload="resizePreviewImage(this, 350, 350)">
 						</div>
 					</div>
 				</form>

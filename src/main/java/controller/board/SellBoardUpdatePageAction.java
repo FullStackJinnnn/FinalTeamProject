@@ -23,19 +23,17 @@ public class SellBoardUpdatePageAction implements Action { // 카메라 판매�
 		BoardDTO boardDTO = new BoardDTO();
 		boardDTO.setCategory("판매게시판");
 		boardDTO.setUpdatePage("수정");
+		System.out.println("[SellBoardUpdatePageAction]진입 로그");
 
 		boardDTO.setBoardNum(Integer.parseInt(request.getParameter("boardNum")));
 		boardDTO = boardDAO.selectOne(boardDTO);
 
 		if(boardDTO != null){
-			// 절대 경로를 상대경로로 치환하기 위한 로직_ 2024.01.31_김도연
-//			String prefix = "D:/PLZJUN/workspace_infinityStone/chalKag/src/main/webapp";
-//			String relativePath = boardDTO.getImage().replace(prefix, "");		// 절대경로를 bimg/이미지.확장자로 줄인다.
-//			boardDTO.setImage(relativePath); // 상대 경로로 변경된 주소를 image에 저장한 뒤에 V로 전달한다.
-//			System.out.println("상대경로 확인용 : " + relativePath);
+
 			request.setAttribute("boardData", boardDTO);
+			System.out.println("[SellBoardUpdatePageAction]boardDTO 로그 = ["+boardDTO+"]");
 			
-			forward.setPath("/chalKag/board/sellBoardUpdatePage.jsp");
+			forward.setPath("/board/sellBoardUpdatePage.jsp");
 			forward.setRedirect(false);
 		} else {
 			request.setAttribute("msg", "없거나 볼 수 없는 글입니다!");

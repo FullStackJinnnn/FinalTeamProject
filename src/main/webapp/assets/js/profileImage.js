@@ -4,6 +4,7 @@
 const dataContainer = document.getElementById('dataContainer');
 const ph = dataContainer.getAttribute('data-ph');
 
+$(document).ready(function(){
 	      $("#btnImageSubmit").on("click",function(event){
 	    	//preventDefault 는 기본으로 정의된 이벤트를 작동하지 못하게 하는 메서드이다. submit을 막음 
 	    	//아마 submit type 말고 button을 쓰는게 나은듯..
@@ -41,8 +42,10 @@ const ph = dataContainer.getAttribute('data-ph');
 		   	});
 	          
 	      });
+	   });
 	
 	
+ $(document).ready(function(){
 	      $("#btnNicknameSubmit").on("click",function(event){
 	    	  event.preventDefault();
 	    	   var myPageNickname = $('#myPageNickname').val();
@@ -78,6 +81,7 @@ const ph = dataContainer.getAttribute('data-ph');
 				  }
 	    	    });
 	      });
+	   });
 	
 	    
 	
@@ -163,14 +167,8 @@ const ph = dataContainer.getAttribute('data-ph');
 	        imageResized = true;
 	    }
 	    
-	        // 이미지 로드 후에 resizePreviewImage 함수 호출
-    window.onload = function() {
-        var img = document.getElementById('preview');
-        resizePreviewImage(img, 350, 350);
-    };
-    
-	    
-	  
+	    // 화면이 모두 로드되면 실행되는 함수
+	    $(document).ready(function () {
 	    	
 	        // 유저가 파일을 선택했을때 실행되는 이벤트 핸들러 등록
 	        $("#fileInput").on("change", function () {
@@ -286,4 +284,4 @@ const ph = dataContainer.getAttribute('data-ph');
 	            // 파일을 Data URL로 읽기 시작
 	            reader.readAsDataURL(file);
 	        }
-	  
+	    });

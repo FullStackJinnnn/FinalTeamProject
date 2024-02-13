@@ -67,7 +67,7 @@ public class ReviewWriteAction implements Action {
 			forward.setPath("sellBoardSelectOnePage.do");
 		}
 		else if(category.equals("리뷰게시판")) {
-			forward.setPath("cameraReviewBoardSelectOnePage.do");
+			forward.setPath("cameraReviewSelectOnePage.do");
 		}
 		else {
 			forward.setPath("errorPage.do");

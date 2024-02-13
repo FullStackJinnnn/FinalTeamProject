@@ -14,38 +14,33 @@ import model.report.ReportDTO;
 
 public class ReportWriteAction implements Action {
 
-    @Override
-    public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        ActionForward forward = new ActionForward();
-        HttpSession session = request.getSession();
-        
-        ReportDAO reportDAO = new ReportDAO();
-        ReportDTO reportDTO = new ReportDTO();
-        
-        // 신고를 하기 위한 값 설정
-        reportDTO.setId(request.getParameter("suspectMemberID")); // 신고 당한 사람 ID
-        reportDTO.setReporter((String)session.getAttribute("member")); // 신고자 ID
-        reportDTO.setSuspect(request.getParameter("suspectMemberID")); // 신고 당한 사람 ID
-        reportDTO.setReportContents(request.getParameter("reportContents")); // 신고 내용
-        
-        // 신고 후 신고한 페이지로 돌아가기
-        String URL = request.getParameter("reportPageURL");
+	@Override
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		ActionForward forward = new ActionForward();
+		ReportDAO reportDAO = new ReportDAO();
+		ReportDTO reportDTO = new ReportDTO();
+		HttpSession session = request.getSession();
+		reportDTO.setId((request.getParameter("suspectMemberID"))); //신고 당한사람 ID
+		reportDTO.setReporter((String)session.getAttribute("member")); //신고자 ID
+		reportDTO.setSuspect(request.getParameter("suspectMemberID")); //신고 당한사람 ID
+		reportDTO.setReportContents(request.getParameter("reportContents")); //신고내용 
+		String URL = request.getParameter("reportPageURL");
         String[] parts = URL.split("/", 5);
+        System.out.println(parts[4]);
         String reportPageURL = parts[4];
         
-        // System.out.println("로그 parts[4] : " + parts[4]);
-        // cameraReviewSelectOnePage.do?boardNum=46
-        
-        boolean flag = reportDAO.insert(reportDTO);
-        
-        if (flag) {
-            forward.setPath(reportPageURL);
-            forward.setRedirect(false);
-        } else {
-            forward.setPath("error/alertPage.jsp");
-            forward.setRedirect(true);
-        }
-        return forward;
-    }
+		boolean flag = reportDAO.insert(reportDTO);
+		System.out.println(reportDTO);
+		if (flag) {
+			forward.setPath(reportPageURL);
+			forward.setRedirect(false);
+		} else {
+			forward.setPath("error/alertPage.jsp");
+			forward.setRedirect(true);
+		}
+		return forward;
+
+	}
+
 }

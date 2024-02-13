@@ -10,7 +10,11 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
-
+<style>
+a {
+	border-bottom: none;
+}
+</style>
 </head>
 
 <body>

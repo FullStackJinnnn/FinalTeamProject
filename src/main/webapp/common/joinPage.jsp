@@ -9,6 +9,9 @@
 <title>회원가입 페이지</title>
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 <style>
+a {
+	border-bottom: none;
+}
 #uploadDiv {
 	display: flex;
 	justify-content: center;

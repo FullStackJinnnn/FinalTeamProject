@@ -16,7 +16,11 @@
 <noscript>
 	<link rel="stylesheet" href="/chalKag/assets/css/noscript.css" />
 </noscript>
-
+<style>
+a {
+	border-bottom: none;
+}
+</style>
 </head>
 
 <body class="is-preload">

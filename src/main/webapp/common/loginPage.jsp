@@ -22,6 +22,7 @@ input::-webkit-input-placeholder {
 
 a {
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
+	border-bottom: none;
 }
 
 .fields {

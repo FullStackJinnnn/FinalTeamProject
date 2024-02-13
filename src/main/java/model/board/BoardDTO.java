@@ -1,7 +1,5 @@
 package model.board;
 
-import java.sql.Date;
-
 public class BoardDTO {
 	private int boardNum; // 게시글 번호
 	private String id; // 게시글을 작성한 회원의 ID
@@ -23,11 +21,20 @@ public class BoardDTO {
 	private int reviewNum; // 게시글과 조인한 댓글테이블의 번호
 	private String reviewDate; // 댓글의 작성일
 	private String reviewContents; // 댓글 내용
+	private int rownum;
+
 
 	private String searchCondition; // 게시글 목록 검색용 변수
 	
 	private String updatePage; // 페이지 증가용 확인 변수
 
+	public int getRownum() {
+		return rownum;
+	}
+	
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
 	public int getBoardNum() {
 		return boardNum;
 	}

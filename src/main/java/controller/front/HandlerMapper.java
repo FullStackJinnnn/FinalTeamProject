@@ -3,6 +3,7 @@ package controller.front;
 import java.util.HashMap;
 import java.util.Map;
 
+import controller.board.BoardDeleteAction;
 import controller.board.CameraReviewSelectAllPageAction;
 import controller.board.CameraReviewSelectOnePageAction;
 import controller.board.CameraReviewUpdateAction;
@@ -99,6 +100,7 @@ public class HandlerMapper {
 		handlerMap.put("/errorPage.do", new ErrorPageAction());
 		handlerMap.put("/findIdResultPage.do", new FindIdResultPageAction());
 		handlerMap.put("/reviewWrite.do", new ReviewWriteAction());
+		handlerMap.put("/boardDelete.do", new BoardDeleteAction());
 
 	}
 

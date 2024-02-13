@@ -15,7 +15,9 @@
 	content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 <style>
-
+a {
+	border-bottom: none;
+}
 th.sortable {
 	cursor: pointer;
 }
@@ -68,8 +70,8 @@ th.sortable.highlight {
 			</table>
 		</div>
 
-<div id="dataContainer" data-jsonBoardDatas='${jsonBoardDatas}'
-    data-id='${id}' ></div>
+		<div id="dataContainer" data-jsonBoardDatas='${jsonBoardDatas}'
+			data-id='${id}' ></div>
 
 
 		<!-- 페이징을 포함한 푸터 섹션 -->

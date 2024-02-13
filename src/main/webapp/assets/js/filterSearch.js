@@ -20,7 +20,7 @@ var selectedCompanies, selectedProductCategories, selectedstates;
 var searchField;
 var searchInput;
 var column;
-var priceSort;
+
 
 // 초기 상태 정렬 방향
 const defaultOrderColumnDirection = {
@@ -29,7 +29,8 @@ const defaultOrderColumnDirection = {
     writer: 'ASC',
     boardDate: 'DESC',
     recommendCNT: 'DESC',
-    views: 'DESC'
+    views: 'DESC',
+    price: 'DESC'
 };
 
 // 현재 정렬 방향
@@ -86,40 +87,24 @@ function updateVariables() {
 // 검색 버튼 클릭 이벤트
 $("#searchButton").on("click", function() {
     updateVariables();
-    filterSearch();
+    performAjaxRequest();
 });
 
 // 가격 입력값 변경 이벤트
 $("#minPrice, #maxPrice").on("mouseup", function() {
     updateVariables();
-    filterSearch();
+    performAjaxRequest();
 });
 
 // 체크박스 변경 이벤트
 $('input[type=checkbox]').change(function() {
     updateVariables();
-    filterSearch();
+    performAjaxRequest();
 });
 
-$("#priceAscButton, #priceDescButton").on("click", function() {
-    column = null;
-    var id = $(this).attr('id');
-    priceSort = id === 'priceAscButton' ? 'asc' : 'desc';
-
-    // 테이블 헤더 정렬의 하이라이트 상태 초기화
-    $('th.sortable').removeClass('highlight');
-
-    // 가격 정렬 버튼의 하이라이트 상태 초기화 및 적용
-    $("#priceAscButton, #priceDescButton").removeClass('highlight');
-    $(this).addClass('highlight');
-
-    updateVariables();
-    filterSearch();
-});
 
 // 테이블 헤더 정렬 클릭 이벤트
 $('th.sortable').on('click', function() {
-    priceSort = null;
     column = $(this).data('column');
 
     // 동일 헤더를 클릭하면 정렬 방향을 토글
@@ -134,19 +119,24 @@ $('th.sortable').on('click', function() {
     selectedOrderDirection = {};
     selectedOrderDirection[column] = orderColumnDirection[column];
 
-    // 가격 정렬 버튼의 하이라이트 상태 초기화
-    $("#priceAscButton, #priceDescButton").removeClass('highlight');
-
     // 테이블 헤더 정렬의 하이라이트 상태 초기화 및 적용
-    $('th.sortable').removeClass('highlight');
+    $('th.sortable').removeClass('highlight').each(function() {
+        $(this).html($(this).html().split(" ")[0]); // 화살표 제거
+    });
     $(this).addClass('highlight');
-
+	
+    // 화살표 방향 변경 (활성화된 헤더에만 적용)
+    if(orderColumnDirection[column] === 'ASC') {
+        $(this).html($(this).html() + " ↑");
+    } else {
+        $(this).html($(this).html() + " ↓");
+    }
     updateVariables();
-    filterSearch();
+    performAjaxRequest();
 });
 
 // Ajax 요청을 수행하는 함수
-function filterSearch() {
+function performAjaxRequest() {
     $.ajax({
         type: "GET",
         url: "filterSearch.do",
@@ -159,15 +149,14 @@ function filterSearch() {
             'category': category, //게시판에 맞는 게시글 출력을 위한 변수
             'searchField': searchField,
             'searchInput': searchInput,
-            'id': id, //
-            'priceSort': priceSort,
+            'id': id,
             'jsonOrderColumnDirection': JSON.stringify(selectedOrderDirection)
         },
         traditional: true,
         dataType: 'json',
-        success: function(jsonFilteredBoardDatas) {
-            if (jsonFilteredBoardDatas != null) { // filterDatas가 존재하는 경우
-                window.jsonFilteredBoardDatas = jsonFilteredBoardDatas; // 서버에서 받은 데이터를 변수에 할당
+        success: function(jsonFilterBoardDatas) {
+            if (jsonFilterBoardDatas != null) { // filterDatas가 존재하는 경우
+                window.jsonFilteredBoardDatas = jsonFilterBoardDatas; // 서버에서 받은 데이터를 변수에 할당
                 console.log(jsonFilteredBoardDatas); // 데이터 확인
                 isFiltered = true; // 데이터가 존재하므로 isFiltered를 true로 설정
                 loadReviewData(1);

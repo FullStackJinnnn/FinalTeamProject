@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import controller.front.Action;
 import controller.front.ActionForward;
@@ -21,28 +22,34 @@ public class MemberPageAction implements Action {
 
         MemberDAO memberDAO = new MemberDAO();
         MemberDTO memberDTO = new MemberDTO();
-        
-        // 유저의 정보를 보기 위한 값 설정
-        memberDTO.setNickname(request.getParameter("nickname"));
-        memberDTO.setSearchCondition("유저정보출력");
-        
-        // memberDAO.selectOne 메서드로 해당 닉네임을 가지고 있는 유저의 정보 가져옴
-        MemberDTO memberData = memberDAO.selectOne(memberDTO);
 
+        // 사용자의 닉네임을 받아와서 MemberDTO에 설정
+        memberDTO.setNickname(request.getParameter("nickname"));
+
+        // 검색조건을 '유저정보출력'으로 설정
+        memberDTO.setSearchCondition("유저정보출력");
+
+        // MemberDAO를 이용하여 MemberDTO에 해당하는 회원 정보를 데이터베이스에서 검색
+        MemberDTO memberData= memberDAO.selectOne(memberDTO);
+
+        // 검색 결과가 존재하면
         if (memberData != null) {
-        	
-            // 찾은 정보를 클라이언트에게 응답
+            // 검색 결과인 memberDTO를 request 속성에 설정
             request.setAttribute("memberData", memberData);
+
+            // common/memberPage.jsp로 이동
             forward.setPath("common/memberPage.jsp");
+
+            // forward 방식으로 이동
             forward.setRedirect(false);
         } else {
+            // error/alertPage.jsp로 이동
             forward.setPath("error/alertPage.jsp");
+
+            // Redirect 방식으로 이동
             forward.setRedirect(true);
+
         }
         return forward;
     }
 }
-
-
-
-

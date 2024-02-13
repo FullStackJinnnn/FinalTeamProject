@@ -23,6 +23,7 @@ input::-webkit-input-placeholder {
 
 a {
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
+	border-bottom: none;
 }
 
 .field {
@@ -120,7 +121,9 @@ a {
     파일 이름을 변경하여 이미지 URL을 고유하게 만들 수 있다. 이렇게 하면 브라우저가 이미지를 새로운 것으로 간주하고 캐시에 저장하지 않는다.
     ?v=${Math.random()} 부분은 무작위 숫자를 포함하는 쿼리 매개변수를 추가하는 것-->
 							<img id="preview" alt="프로필 이미지"
-								src="/chalKag/memberProfileImages/${memberData.profile}?v=${Math.random()}">
+								src="/chalKag/memberProfileImages/${memberData.profile}?v=${Math.random()}"
+								onload="resizePreviewImage(this, 350, 350)">
+
 						</div>
 
 						<div class="fileUpload">

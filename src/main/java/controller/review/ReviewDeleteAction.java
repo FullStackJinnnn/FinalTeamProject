@@ -55,10 +55,10 @@ public class ReviewDeleteAction implements Action{
 			forward.setPath("freeBoardSelectOnePage.do");
 		}
 		else if(category.equals("판매게시판")) {
-			forward.setPath("SellBoardSelectOnePage.do");
+			forward.setPath("sellBoardSelectOnePage.do");
 		}
 		else if(category.equals("리뷰게시판")) {
-			forward.setPath("cameraReviewBoardSelectOnePage.do");
+			forward.setPath("cameraReviewSelectOnePage.do");
 		}
 		else {
 			forward.setPath("errorPage.do");

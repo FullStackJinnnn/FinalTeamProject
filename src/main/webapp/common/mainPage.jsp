@@ -11,23 +11,27 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
-
+<style>
+a {
+	border-bottom: none;
+}
+</style>
 </head>
 
-<body class="is-preload">
+<body class="is-preload" >
 	<stone:printNav member='${member}' />
 	<!-- Main -->
 	<div id="main">
 
 		<!-- Featured Post -->
-		<article class="post featured">
-			<header class="major">
-				<h3>
+		<article class="post featured" style="padding-bottom: 40px;">
+			<header class="major" style="margin-top: 50px;">
+				<h3 >
 					The moment the shutter sound echoes, 
 					<br>
 					here is where creation and emotion converge.
 				</h3>
-				<a href="/chalKag/main.do" class="image main"><img
+				<a href="/chalKag/main.do" class="image main"style="margin-top: 70px;"><img
 					src="/chalKag/images/mainImage.png" alt="" /></a>
 			</header>
 

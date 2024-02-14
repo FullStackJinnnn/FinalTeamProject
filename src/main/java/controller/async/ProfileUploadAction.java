@@ -88,9 +88,14 @@ public class ProfileUploadAction extends HttpServlet {
 			String id = memberDTO.getId();
 			int dotIndex = id.indexOf(".");
 			String resultId = id.substring(0, dotIndex) + id.substring(dotIndex + 1);
-
+			
+			// 이 클래스는 cos.jar 라이브러리에 포함되어 있으며,
+			// 클라이언트로부터 전송받은 데이터가 여러 부분으로 구성되어 있을 때
+			// 이를 처리하는 데 사용
+			// 이렇게 MultipartRequest 객체를 생성하면,
+			// 사용자가 업로드한 파일을 서버에 저장하고, 이 파일에 대한 정보를 처리 가능
 			MultipartRequest multipartRequest = new MultipartRequest(request, uploadDir, maxSize, encoding,
-					new CustomFileRenamePolicy(resultId));
+					new CustomFileRenamePolicy(id));
 
 			// memberNum으로 재설정한 이름 newFileName에 대입
 			String newFileName = multipartRequest.getFilesystemName("file");
@@ -123,7 +128,7 @@ public class ProfileUploadAction extends HttpServlet {
 					}
 					// 확장자를 포함한 기존파일과 새로운파일의 이름이 다르고 "default_image.jpg" 가 아니라면 파일삭제
 				} else if (!existingFileName.equals(newFileName)) {
-					if (!existingFileName.equals("default_image.jpg")) {
+					if (!existingFileName.equals("default.jpg")) {
 						existingFile.delete();
 					}
 				}
@@ -162,7 +167,7 @@ class CustomFileRenamePolicy extends DefaultFileRenamePolicy {
 		// 업로드한파일 확장자를 extension에 대입
 		String extension = (extractExtension(file.getName()));
 
-		// newName에 newFileName(memberNum값) + ".확장자" 대입
+		// newName에 newFileName(memberID값) + ".확장자" 대입
 		String newName = newFileName + extension;
 
 		// 새로운 파일객체 생성 후 리턴

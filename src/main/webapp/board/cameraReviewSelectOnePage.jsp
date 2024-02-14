@@ -39,9 +39,17 @@ div {
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
 }
 
+p {
+	font-family: "Source Sans Pro", Helvetica, sans-serif;
+	font-size: 25px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+
+}
+
 pre {
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
-	font-size: 20;
+	font-size: 25px;
 	margin-top: 2px;
 	margin-bottom: 2px;
 }
@@ -51,6 +59,7 @@ pre. {
 	margin-bottom: 2px;
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
 	font-weight: bolder;
+	font-size: 25px;
 }
 
 table tbody tr {
@@ -74,13 +83,13 @@ table.alt tbody tr td {
 
 
 <body class="is-preload">
+	<script> console.log("[ 로그 : cameraReviewSelectOnePage.jsp ] 진입 " + ${jsonBoardDatas}); </script>	
 	<!-- 커스텀 태그를 사용하여 네비게이션 포함 -->
 	<stone:printNav member='${member}' />
 	
-	<!-- 메인 콘텐츠 래퍼 -->
-	<div id="main">
-		<section class="post">
-			<header class="major">
+	<div id="main"> <!-- 메인 div -->
+		 <section class="post">
+			<header class="major"> <!-- 헤더  -->
 				<!-- 게시판 이름 -->
 				<br><h3>camera review board</h3>
 			</header>
@@ -88,86 +97,87 @@ table.alt tbody tr td {
 			<hr style="margin-top: 1px; margin-bottom: 10px; background: grey; height: 4px; border: 0;">
 
 			<!-- 게시글 정보 (제목, 조회수, 좋아요수, 작성일, 작성자) -->
-			<div id="boardData" style="font-weight: bold;">
+			<div id="boardData" style="font-weight: bold;"> <!-- 게시글 정보 div -->
 				<!-- 게시글 제목 -->
 				<pre> Title  ${boardData.title} </pre>
 				<!-- 제시글 조회수, 좋아요 -->
 				<pre style="text-align: right"> Views   ${boardData.viewCount}   |   Recommend  ${boardData.recommendCNT} </pre>
 				<!-- 게시글 작성일, 작성자  -->
 				<pre> Date  ${boardData.boardDate}   |   Writer  ${boardData.nickname} </pre>
-			</div>
+			</div> <!-- 게시글 정보 div -->
 
 			<hr style="margin-top: 10px; margin-bottom: 10px; background: Lightgrey; height: 3px; border: 0;">
 
 			<!-- 리뷰할 카메라 상품 정보 -->
-			<div id="cameraReviewData" style="font-weight: bold;">
+			<div id="cameraReviewData" style="font-weight: bold;"> <!-- 카메라 상품 정보 div -->
 				<!-- 상품 가격 -->
-				<pre> Price  :  ${boardData.price}원</pre>
+				<pre> Price   |   ${boardData.price}원</pre>
 				<!-- 상품 종류 -->
-				<pre> ProductCategory  :  ${boardData.productCategory} </pre>
+				<pre> ProductCategory   |   ${boardData.productCategory} </pre>
 				<!-- 상품 이름 -->
-				<pre> ProductName  :  ${boardData.productName} </pre>
+				<pre> ProductName   |   ${boardData.productName} </pre>
 				<!-- 상품 제조사 -->
-				<pre> Company  :  ${boardData.company} </pre>
-			</div>
+				<pre> Company   |   ${boardData.company} </pre>
+			</div> <!-- 카메라 상품 정보 div -->
 
 			
 			<!-- 게시글 내용 -->
-			<div>
-				<pre style="font-weight: bold;"> Content : </pre>
+			<div> <!-- 게시글 내용 div -->
+				<pre style="font-weight: bold;"> Content </pre>
 				<!-- 첨부 이미지 -->
-				<img src="bimg/${boardData.image}" style="width: 30%; height: 30%;"> <br>
+				<img src="bimg/${boardData.image}"> <br>
 				<pre> ${boardData.contents} </pre>
-			</div>
+			</div> <!-- 게시글 내용 div -->
 
 
-			<!-- 게시글 좋아요 -->
-            <div class="col-6 col-12-small" style="text-align: center; margin-bottom: 40px;">
-                <br>
-                <c:if test="${member != null}">
-                  <c:if test="${member == recommendData.id}">
-                     <input class="button primary" type="button" id="recommendBtn" value="Recommend" />
+			<!-- '좋아요' 버튼 생성 -->
+            <div class="col-6 col-12-small" style="text-align: center; margin-bottom: 60px;"> <br> <!-- '좋아요' 버튼 div -->
+                <c:if test="${member != null}"> <!-- 만약 로그인이 되어있다면 -->
+                  <c:if test="${member == recommendData.id}"> <!-- 만약 member가 recommendData.id와 같다면 -->
+                     <input class="button primary" type="button" id="recommendBtn" value="Like" /> <!-- '좋아요' 버튼 생성 -->
                   </c:if>
-                  <c:if test="${member != recommendData.id}">
-                     <input type="button" id="recommendBtn" value="Recommend" />
+                  <c:if test="${member != recommendData.id}"> <!-- 만약 member가 recommendData.id와 같지 않다면 -->
+                     <input type="button" id="recommendBtn" value="Like" />  <!-- '좋아요' 버튼 생성 -->
                   </c:if>
                  </c:if>
-                   <c:if test="${member == null}">
-                     <input type="button" id="recommendBtn" value="Recommend" disabled />
+                   <c:if test="${member == null}"> <!-- 만약 로그인이 되어있지 않다면-->
+                     <input type="button" id="recommendBtn" value="Like" disabled /> <!-- '좋아요' 버튼 비활성화 -->
                  </c:if>
-            </div>
+            </div> <!-- '좋아요' 버튼 div -->
 
-			<hr style="margin-top: 10px; margin-bottom: 10px; background: Lightgrey; height: 2px; border: 0;">
 
-			<!-- '글 수정', '글 삭제', '글 작성', '현재 카테고리 목록으로' 버튼 생성 -->
-			<div class="col-6 col-12-small" style="margin-top: 45px; text-align: right;">
+			<hr style="margin-top: 10px; margin-bottom: 10px; background: Lightgrey; height: 3px; border: 0;">
+
+		
+			<!-- '글 수정', '글 삭제', '글 신고하기' 버튼 생성 -->
+			<div class="col-6 col-12-small" style="margin-top: 45px; margin-bottom: 45px; text-align: right;"> <!-- 버튼 생성 div -->
 				<!-- 로그인 상태인 경우 '글 수정', '글 삭제' 버튼 활성화 -->
 				<c:if test="${member == boardData.id}">
 					<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/cameraReviewUpdatePage.do?boardNum=${boardData.boardNum}'">Update</button>
 					<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/boardDelete.do?boardNum=${boardData.boardNum}&category=${boardData.category}'">Delete</button>
-				</c:if>	
-							
-				<!-- '글 작성', '현재 카테고리 목록으로' 버튼 생성 -->
-				<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/cameraReviewWritePage.do'">Write</button>
-				<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/cameraReviewSelectAllPage.do'">List</button>
-			</div>
-		
-             <!-- '글 신고하기' 버튼 생성 -->
-			 <div class="col-6 col-12-small" style="margin-top: 45px; margin-bottom: 40px; text-align: right;">
-                 <c:if test="${sessionScope.member != null && sessionSzope.member != boardData.id}">
-                     <button id="report"
-                         onClick="location.href='/chalKag/reportWritePage.do?boardNum=${boardData.boardNum}&reportPageURL='+window.location.href"
-                         style="border: 0; color: white;">Report</button>
+				</c:if>
+				<!-- 로그인 상태이고 글 작성자가 작성자가 아닐 경우 '글 신고하기' 버튼 활성화 -->
+                <c:if test="${sessionScope.member != null && sessionSzope.member != boardData.id}">
+                  	 <button id="report"  style="margin-left: 10px;"
+                      onClick="location.href='/chalKag/reportWritePage.do?boardNum=${boardData.boardNum}&reportPageURL='+window.location.href">Report</button>
                  </c:if>
-             </div>
-             
-			<hr style="margin-top: 10px; margin-bottom: 10px; background: Lightgrey; height: 2px; border: 0;">
+			</div> <!-- 버튼 생성 div -->
+
 			
 			<!-- 댓글 -->
 			<stone:review />
+			<!-- '현재 카테고리 목록으로', '메인으로 돌아가기' 버튼 생성 -->
+			<div class="col-6 col-12-small" style="margin-top: 45px; text-align: right;"> <!-- 버튼 생성 div -->
+				<!-- '글 작성', '현재 카테고리 목록으로', '메인으로 돌아가기' 버튼 생성 -->
+				<input type="button" value="Write" onclick="writeBtn()" /> 
+				<!-- 버튼 클릭 시 JavaScript 함수인 writeBtn()이 실행되도록 지정 -->
+				<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/cameraReviewSelectAllPage.do'">List</button>
+				<!-- 버튼 클릭 시 '현재 카테고리 목록'으로 이동시키는 경로 지정 -->
+				<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/main.do'">MainPage</button>
+				<!-- 버튼 클릭 시 '메인 페이지'로 이동시키는 경로 지정 -->
+			</div> <!-- 버튼 생성 div -->
 		</section>
-	</div>
-
+	</div> <!-- 메인 div -->
     <stone:copyright />
 	
 
@@ -180,32 +190,24 @@ table.alt tbody tr td {
 	<script src="/chalKag/assets/js/util.js"></script>
 	<script src="/chalKag/assets/js/main.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script>
-	/* 비 로그인 시 글 작성 불가. Write 버튼 클릭 시 로그인 페이지로 이동 */
+	<script> // writeBtn()이 눌렸을 때 실행되는 함수 ()
 		function writeBtn() {
-			// 서버에서 받은 회원 정보를 확인하여 로그인 상태를 판별
-			var member = "${member}";
-	
-			// 만약 회원 정보가 비어있다면, 즉 로그인이 되어있지 않다면
-			if (member == "") {
-				// SweetAlert를 사용하여 로그인 안내 메시지를 표시
-				Swal.fire({
-					title: '게시글 작성이 불가합니다!',     // Alert 제목
-					text: '로그인 후 이용해 주세요!',     // Alert 내용
-					icon: 'warning'                    // Alert 타입
-				}).then((result) => {
-					// 사용자가 확인을 클릭하면 로그인 페이지로 이동
-					if (result.isConfirmed) {
-						location.href = '/chalKag/loginPage.do';
-					}
-				});
-			} else {
-				// 회원 정보가 있으면, 즉 로그인이 되어있다면 글 작성 페이지로 이동
-				location.href = '/chalKag/cameraReviewWritePage.do';
+			var member = "${member}"; // 사용자 정보를 가져오기 위해 JSP에서 전달된 ${member} 값을 가져옴
+			if (member == "") { // 만약 회원 정보가 비어있다면 (로그인하지 않은 상태)
+				Swal.fire({ // SweetAlert2를 사용하여 경고창을 표시
+					 title: '게시글 작성이 불가합니다!', // Alert 제목
+					  text: '로그인 후 이용해 주세요!', // Alert 내용
+					  icon: 'warning' // Alert 타입
+					}).then((result) => {  // 경고창이 닫힐 때 확인 버튼이 눌리지 확인
+						if (result.isConfirmed) { // 확인 버튼이 눌린다면 로그인 페이지로 이동!
+							location.href = '/chalKag/loginPage.do';
+						}
+					});
+				} else { // 회원 정보가 있다면(로그인 되어있다면) 글 작성 페이지로 이동
+					location.href = '/chalKag/cameraReviewWritePage.do';
+				}
 			}
-		}
 	</script>
-	
 			
 	<script type="text/javascript"> /* 좋아요 버튼 클릭 시 액션 */
     $(function() {

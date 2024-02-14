@@ -27,6 +27,7 @@ public class RecommendUpAndDownAction extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		RecommendDAO recommendDAO = new RecommendDAO();	// DAO 연결
 		RecommendDTO recommendDTO = new RecommendDTO();	// 게시글 에서 받아온 데이터를 받는 DTO
 		RecommendDTO selectedRecommendDTO  = new RecommendDTO();	// selectOne으로 받아온 데이터를 받아두는 객체

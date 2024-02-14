@@ -77,8 +77,6 @@ public class PaginationAction extends HttpServlet {
 	    jsonPaginationgDatas.add("data", gson.toJsonTree(currentPageDatas));
 	    jsonPaginationgDatas.addProperty("currentPage", currentPage);
 	    jsonPaginationgDatas.addProperty("totalPages", totalPages);
-	    
-	    
 
 	    PrintWriter out = response.getWriter();
 	    out.write(jsonPaginationgDatas.toString());

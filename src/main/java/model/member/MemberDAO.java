@@ -31,10 +31,10 @@ public class MemberDAO {
 	// 생년월일 출력 형식은 '1993-09-10' 으로 지정
 	// 자신과 다른유저가 작성한 글 볼때 필요한 BOARDNUM, TITLE을 INNER JOIN으로 가져옴
 	// 아이디자체가 고유값이기 때문에 아이디로 확인해서 정보 가져옴 .정석진
-	private static final String SELECTONE_MYINFO = "SELECT MEMBER.ID,PW,NAME,NICKNAME, TO_CHAR(BIRTH,'YYYY-MM-DD') AS BIRTH_DATE,PH,PROFILE,GRADE, BOARDNUM"
+	private static final String SELECTONE_MYINFO = "SELECT MEMBER.ID, PW, NAME, NICKNAME, TO_CHAR(BIRTH,'YYYY-MM-DD') AS BIRTH_DATE,PH,PROFILE,GRADE, BOARDNUM"
 			+ " FROM MEMBER LEFT JOIN BOARD ON MEMBER.ID = BOARD.ID WHERE MEMBER.ID=?";
 
-	private static final String SELECTONE_MEMBERINFO = "SELECT MEMBER.ID,NICKNAME, PH, PROFILE, GRADE, BOARDNUM"
+	private static final String SELECTONE_MEMBERINFO = "SELECT MEMBER.ID, PW, NAME, NICKNAME, TO_CHAR(BIRTH,'YYYY-MM-DD') AS BIRTH_DATE, PH, PROFILE, GRADE, BOARDNUM"
 			+ " FROM MEMBER LEFT JOIN BOARD ON MEMBER.ID = BOARD.ID WHERE NICKNAME=?";
 
 	private static final String SELECTONE_REPORT = "SELECT MEMBER.ID,NICKNAME, BOARDNUM, TITLE, REPORTCONTENTS"
@@ -169,7 +169,10 @@ public class MemberDAO {
 				if (rs.next()) {
 					data = new MemberDTO();
 					data.setId(rs.getString("ID"));
+					data.setPw(rs.getString("PW"));
+					data.setName(rs.getString("NAME"));
 					data.setNickname(rs.getString("NICKNAME"));
+					data.setBirth(rs.getString("BIRTH_DATE"));
 					data.setPh(rs.getString("PH"));
 					data.setProfile(rs.getString("PROFILE"));
 					data.setGrade(rs.getString("GRADE"));

@@ -134,19 +134,17 @@ public class SearchDAO {
 				System.out.println("[로그] element값 : " + element);
 					
 			}
-	
-				
 			
 			if (!CATEGORYSQL.equals("")) {
 				System.out.println("[로그] SELECTALL 진입!");
 				SQL_SELECTALL = "SELECT " + "SORT_DATA.*, " + "MEMBER.NICKNAME, " + "MEMBER.ID " + "FROM (" + "SELECT "
-						+ "FILTER_DATA.*, " + "COALESCE(RECOMMEND_COUNT.RECOMMENDCNT, 0) AS RECOMMENDCNT " + "FROM ("
-						+ "SELECT ROWNUM, "
+						+ "FILTER_DATA.*, " + "COALESCE(RECOMMEND_COUNT.RECOMMENDCNT, 0) AS RECOMMENDCNT FROM ( " + "SELECT ROWNUM, ROWNUM_DATA.* FROM ("
+						+ "SELECT "
 						+ "BOARDNUM, ID, CATEGORY, TITLE, CONTENTS, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, "
 						+ "PRICE, PRODUCTCATEGORY, COMPANY, STATE, VIEWCOUNT " + "FROM BOARD " + "WHERE CATEGORY = '"
 						+ CATEGORYSQL + "' " + PRICESQL
-						+ " " + COMPANYSQL + " " + PRODUCTCATEGORYSQL + " " + STATESQL + "ORDER BY BOARDNUM ASC"
-						+ ") FILTER_DATA " + "LEFT JOIN (" + "SELECT " + "BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
+						+ " " + COMPANYSQL + " " + PRODUCTCATEGORYSQL + " " + STATESQL + "ORDER BY BOARDNUM ASC) "
+						+ "ROWNUM_DATA) FILTER_DATA " + "LEFT JOIN (" + "SELECT " + "BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
 						+ "FROM RECOMMEND " + "GROUP BY BOARDNUM"
 						+ ") RECOMMEND_COUNT ON FILTER_DATA.BOARDNUM = RECOMMEND_COUNT.BOARDNUM ORDER BY ROWNUM DESC" 
 						+ ") SORT_DATA " + "JOIN MEMBER ON MEMBER.ID = SORT_DATA.ID "  + USERSEARCHSQL  +" " + ORDERSQL;
@@ -170,28 +168,32 @@ public class SearchDAO {
 				}
 				rs.close(); // ResultSet을 닫음으로써 자원을 해제
 			} else {
-				SQL_SELECTALL = "SELECT " +
-	                      "SORT_DATA.*, " +
-	                      "MEMBER.NICKNAME " +
-	                      "FROM (" +
-	                      "    SELECT " +
-	                      "        FILTER_DATA.*, " +
-	                      "        COALESCE(RECOMMEND_COUNT.RECOMMENDCNT, 0) AS RECOMMENDCNT " +
-	                      "    FROM (" +
-	                      "        SELECT " +
-	                      "            ROWNUM, BOARDNUM, ID, TITLE, CONTENTS, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, VIEWCOUNT, STATE, CATEGORY, PRICE " +
-	                      "        FROM BOARD " +
-	                      "        ORDER BY BOARDNUM ASC" +
-	                      "    ) FILTER_DATA " +
-	                      "    LEFT JOIN (" +
-	                      "        SELECT " +
-	                      "            BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT " +
-	                      "        FROM RECOMMEND " +
-	                      "        GROUP BY BOARDNUM" +
-	                      "    ) RECOMMEND_COUNT ON FILTER_DATA.BOARDNUM = RECOMMEND_COUNT.BOARDNUM ORDER BY ROWNUM DESC" +
-	                      ") SORT_DATA " +
-	                      "JOIN MEMBER ON MEMBER.ID = SORT_DATA.ID " +
-	                      "WHERE MEMBER.ID='" + searchDTO.getId() + "' " + ORDERSQL;
+				SQL_SELECTALL = 
+						"SELECT " +
+						"SORT_DATA.*, " +
+						"MEMBER.NICKNAME " +
+						"FROM (" +
+						"    SELECT " +
+						"        FILTER_DATA.*, " +
+						"        COALESCE(RECOMMEND_COUNT.RECOMMENDCNT, 0) AS RECOMMENDCNT " +
+						"    FROM (SELECT ROWNUM, ROWNUM_DATA.* " +
+						"        FROM (" +
+						"            SELECT " +
+						"                BOARDNUM, ID, TITLE, CONTENTS, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, VIEWCOUNT, STATE, CATEGORY, PRICE " +
+						"            FROM BOARD "+ "WHERE ID='" + searchDTO.getId() + "' " +
+						"            ORDER BY BOARDNUM ASC" +
+						"        ) ROWNUM_DATA) FILTER_DATA " +
+						"    LEFT JOIN (" +
+						"        SELECT " +
+						"            BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT " +
+						"        FROM RECOMMEND " +
+						"        GROUP BY BOARDNUM" +
+						"    ) RECOMMEND_COUNT ON FILTER_DATA.BOARDNUM = RECOMMEND_COUNT.BOARDNUM " +
+						"    ORDER BY ROWNUM DESC" +
+						") SORT_DATA " +
+						"JOIN MEMBER ON MEMBER.ID = SORT_DATA.ID " + 
+						USERSEARCHSQL + " " +
+						ORDERSQL;
 				System.out.println(SQL_SELECTALL);
 				pstmt = conn.prepareStatement(SQL_SELECTALL);
 				ResultSet rs = pstmt.executeQuery();

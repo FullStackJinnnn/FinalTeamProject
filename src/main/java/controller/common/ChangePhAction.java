@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import controller.front.Action;
 import controller.front.ActionForward;
@@ -21,7 +22,9 @@ public class ChangePhAction implements Action {
 
 		MemberDAO memberDAO = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
+		HttpSession session = request.getSession();
 
+		memberDTO.setId((String)session.getAttribute("member"));
 		memberDTO.setPh(request.getParameter("ph"));
 		memberDTO.setSearchCondition("전화번호변경");
 
@@ -29,7 +32,7 @@ public class ChangePhAction implements Action {
 
 		if (flag) {
 
-			forward.setPath("commom/myPage.do");
+			forward.setPath("/chalKag/myPage.do");
 			forward.setRedirect(true);
 
 		} else {

@@ -62,6 +62,7 @@ public class SellBoardWriteAction implements Action { // 카메라 판매글 작
 		boardDTO.setProductCategory(multipartRequest.getParameter("productCategory"));
 		boardDTO.setCompany(multipartRequest.getParameter("company"));
 		boardDTO.setPrice(Integer.parseInt(multipartRequest.getParameter("price")));
+		boardDTO.setState("판매중");
 		
 
 		// 이미지 업로드를 처리하는 기능

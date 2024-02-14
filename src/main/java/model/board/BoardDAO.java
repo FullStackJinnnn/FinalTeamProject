@@ -15,12 +15,26 @@ public class BoardDAO {
 
 	// 게시글 목록 전체 출력. 전미지
 	private static final String SELECTALL = "SELECT FINAL_DATA.*, MEMBER.NICKNAME, MEMBER.ID "
-			+ "FROM (SELECT BOARD_DATA.*, COALESCE(RECOMMEND_DATA.RECOMMENDCNT, 0) AS RECOMMENDCNT "
-			+ "FROM (SELECT ROWNUM, BOARDNUM, ID, CATEGORY, TITLE, CONTENTS, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, "
-			+ "PRICE, PRODUCTCATEGORY, COMPANY, STATE, VIEWCOUNT FROM BOARD WHERE CATEGORY = ? "
-			+ "ORDER BY BOARDNUM ASC) BOARD_DATA LEFT JOIN (SELECT BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
-			+ "FROM RECOMMEND GROUP BY BOARDNUM) RECOMMEND_DATA ON BOARD_DATA.BOARDNUM = RECOMMEND_DATA.BOARDNUM ORDER BY BOARD_DATA.BOARDNUM DESC) "
-			+ "FINAL_DATA JOIN MEMBER ON MEMBER.ID = FINAL_DATA.ID";
+	        + "FROM ( "
+	        + "    SELECT BOARD_DATA.*, COALESCE(RECOMMEND_DATA.RECOMMENDCNT, 0) AS RECOMMENDCNT "
+	        + "    FROM ( "
+	        + "        SELECT ROWNUM, ROWNUM_DATA.* "
+	        + "        FROM ( "
+	        + "            SELECT BOARDNUM, ID, CATEGORY, TITLE, CONTENTS, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, "
+	        + "                PRICE, PRODUCTCATEGORY, COMPANY, STATE, VIEWCOUNT "
+	        + "            FROM BOARD "
+	        + "            WHERE CATEGORY = ?"
+	        + "            ORDER BY BOARDNUM ASC "
+	        + "        ) ROWNUM_DATA "
+	        + "    ) BOARD_DATA "
+	        + "    LEFT JOIN ( "
+	        + "        SELECT BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
+	        + "        FROM RECOMMEND "
+	        + "        GROUP BY BOARDNUM "
+	        + "    ) RECOMMEND_DATA ON BOARD_DATA.BOARDNUM = RECOMMEND_DATA.BOARDNUM "
+	        + "    ORDER BY BOARD_DATA.BOARDNUM DESC "
+	        + ") FINAL_DATA "
+	        + "JOIN MEMBER ON MEMBER.ID = FINAL_DATA.ID";
 	// 조인한 게시판 테이블 : 회원 테이블, 좋아요 테이블
 	// 사용한 컬럼(보여줄 목록) : 게시글 넘버, 글 제목, 작성자 아이디(회원 테이블), 작성자 닉네임(회원 테이블),
 	// 작성일, 좋아요 넘버(좋아요 테이블), 조회수, 판매상태, 카운트 함수 사용(좋아요수-좋아요 테이블 / 좋아요 값이 있을 때만 보여짐)
@@ -28,12 +42,24 @@ public class BoardDAO {
 	
 	// 본인이 작성한 게시글 또는 타 유저가 작성한 게시글 목록 전체 출력. 전미지
 	private static final String SELECTALL_MEMBER = "SELECT FINAL_DATA.*, MEMBER.NICKNAME "
-			+ "FROM (SELECT BOARD_DATA.*, COALESCE(RECOMMEND_DATA.RECOMMENDCNT, 0) AS RECOMMENDCNT "
-			+ "FROM (SELECT ROWNUM, BOARDNUM, ID, TITLE, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, "
-			+ "VIEWCOUNT, CATEGORY FROM BOARD "
-			+ "ORDER BY BOARDNUM ASC) BOARD_DATA LEFT JOIN (SELECT BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
-			+ "FROM RECOMMEND GROUP BY BOARDNUM) RECOMMEND_DATA ON BOARD_DATA.BOARDNUM = RECOMMEND_DATA.BOARDNUM ORDER BY BOARD_DATA.BOARDNUM DESC) "
-			+ "FINAL_DATA JOIN MEMBER ON MEMBER.ID = FINAL_DATA.ID " + "WHERE MEMBER.ID = ?";
+	        + "FROM ( "
+	        + "    SELECT BOARD_DATA.*, COALESCE(RECOMMEND_DATA.RECOMMENDCNT, 0) AS RECOMMENDCNT "
+	        + "    FROM ( "
+	        + "        SELECT ROWNUM, ROWNUM_DATA.* FROM ( "
+	        + "            SELECT BOARDNUM, ID, TITLE, TO_CHAR(BOARDDATE, 'YYYY-MM-DD') AS BOARDDATE, VIEWCOUNT, CATEGORY "
+	        + "            FROM BOARD WHERE ID = ?"
+	        + "            ORDER BY BOARDNUM ASC "
+	        + "        ) ROWNUM_DATA "
+	        + "    ) BOARD_DATA "
+	        + "    LEFT JOIN ( "
+	        + "        SELECT BOARDNUM, COUNT(BOARDNUM) AS RECOMMENDCNT "
+	        + "        FROM RECOMMEND "
+	        + "        GROUP BY BOARDNUM "
+	        + "    ) RECOMMEND_DATA ON BOARD_DATA.BOARDNUM = RECOMMEND_DATA.BOARDNUM "
+	        + "    ORDER BY BOARD_DATA.BOARDNUM DESC "
+	        + ") FINAL_DATA "
+	        + "JOIN MEMBER ON MEMBER.ID = FINAL_DATA.ID ";
+
 	// 조인한 게시판 테이블 : 회원 테이블, 좋아요 테이블
 	// 사용한 컬럼(보여줄 목록) : 게시글 넘버, 글제목, 작성자 아이디(회원 테이블), 작성자 닉네임(회원 테이블),
 	// 작성일, 좋아요 넘버(좋아요 테이블), 조회수, 판매상태, 카운트 함수 사용(좋아요수-좋아요 테이블 / 좋아요 값이 있을 때만 보여짐)

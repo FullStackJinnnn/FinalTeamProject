@@ -50,6 +50,7 @@ public class SellBoardUpdateAction implements Action { // 카메라 판매글 �
 				boardDTO.setProductCategory(multipartRequest.getParameter("productCategory"));
 				boardDTO.setCompany(multipartRequest.getParameter("company"));
 				boardDTO.setPrice(Integer.parseInt(multipartRequest.getParameter("price")));
+				boardDTO.setState(multipartRequest.getParameter("state"));
 				
 
 				// 이미지 업로드를 처리하는 기능
@@ -64,11 +65,13 @@ public class SellBoardUpdateAction implements Action { // 카메라 판매글 �
 //				    String uploadDir=SAVE_DIRECTORY;
 //				    System.out.println("확인: "+SAVE_DIRECTORY);
 				    String filePath = uploadDir + File.separator + newFilename;		// 위 내용을 전부 통합하여 저장하는 변수
-				    boardDTO.setImage(filePath);
+				    boardDTO.setImage(newFilename);
 				    // 파일 객체 선언 후 파일 위치를 객체에 저장한다.
 				    File newFile = new File(filePath);
 				    // 파일을 새 위치로 이동시킵니다.
 				    uploadedFile.renameTo(newFile);
+				} else {
+					 boardDTO.setImage(multipartRequest.getParameter("image"));
 				}
 
 		boolean flag = boardDAO.update(boardDTO);

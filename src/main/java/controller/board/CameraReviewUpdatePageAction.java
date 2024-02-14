@@ -43,7 +43,7 @@ public class CameraReviewUpdatePageAction implements Action {
 //			System.out.println("상대경로 확인용 : " + relativePath);
 			request.setAttribute("boardData", boardDTO);
 
-			forward.setPath("/chalKag/board/cameraReviewUpdatePage.jsp");
+			forward.setPath("/board/cameraReviewUpdatePage.jsp");
 			forward.setRedirect(false);
 		} else {
 			request.setAttribute("msg", "없거나 볼 수 없는 글입니다!");

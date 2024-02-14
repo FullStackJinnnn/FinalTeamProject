@@ -37,7 +37,6 @@ a {
 
 					<!-- 아이디 찾기 버튼.안승준 -->
 					<div class="field">
-
 						<div class="actions" style="text-align: center; margin-top: 10px;">
 							<input type="submit" value="아이디 찾기" style="width: 250px;" />
 						</div>

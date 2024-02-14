@@ -39,7 +39,7 @@ public class CameraReviewSelectAllPageAction implements Action { // 카메라 �
 		boardDatas = boardDAO.selectAll(boardDTO);
 //		System.out.println("[로그] CameraReviewSelectAllPageAction 2" + boardDTO)
 //		System.out.println("[로그] CameraReviewSelectAllPageAction 3" + boardDatas);
-		System.out.println("[로그] 리뷰고장남" + boardDatas);
+		System.out.println(boardDatas);
 		if (boardDatas != null) { // 게시글 정보(boardDatas)가 있다면
 			// 가져온 게시글 정보(boardDatas)를 request 객체에 "reviewBoardDTO"라는 이름으로 저장
 			//	request.setAttribute("boardDatas", boardDatas);

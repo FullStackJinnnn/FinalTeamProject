@@ -9,9 +9,6 @@
 <title>회원가입 페이지</title>
 <link rel="stylesheet" href="/chalKag/assets/css/main.css" />
 <style>
-a {
-	border-bottom: none;
-}
 #uploadDiv {
 	display: flex;
 	justify-content: center;
@@ -89,8 +86,8 @@ a {
 						<label for="nickname">nick name</label> <input type="text"
 							id="nickname" name="nickname" minlength="2" maxlength="50"
 							required /> <input style="margin-top: 10px;" type="button"
-							value="닉네임 중복확인" onclick="checkNickname()" /> <span
-							id="nicknameErrMsg" class="error"></span>
+							value="닉네임 중복확인" onclick="checkNickname()" />
+							 <p id="nicknameErrMsg" class="error"></p>
 					</div>
 					
 					<div class="field">
@@ -105,14 +102,17 @@ a {
 					<stone:phCheck />
 					
 					<div class="field">
-						<label for="birth">birth</label> <select id="year" name="year"></select>
-						<label for="year">year</label> <select id="month" name="month"></select>
-						<label for="month">month</label> <select id="day" name="day"></select>
+						<label for="birth">birth</label> 
+						<select id="year" name="year"></select>
+						<label for="year">year</label>
+						<select id="month" name="month"></select>
+						<label for="month">month</label> 
+						<select id="day" name="day"></select>
 						<label for="day">day</label>
 					</div>
 
 
-					<div class="field" style="justify-content:center;">
+					<div class="field" style="display:flex; justify-content:center;">
 						<div class="terms">
 							<div class="field">
 								<input type="checkbox" id="agreeTerms" name="agreeTerms1">
@@ -189,11 +189,11 @@ a {
 									변경될 수 있습니다. 변경 사항에 대해서는 홈페이지를 통해 사전에 공지할 것입니다.</p>
 							</div>
 						</div>
-						<div class="field" style="text-align: center;">
-							<input type="submit" value="signIn" />
-						</div>
 					</div>
 				</div>
+						<div class="field" style="display:flex; justify-content: center;">
+							<input type="submit" value="signIn" />
+						</div>
 			</form>
 		</section>
 	</footer>

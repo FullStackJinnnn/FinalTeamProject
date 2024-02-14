@@ -3,6 +3,7 @@ package controller.async;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -174,10 +175,17 @@ public class NaverLoginAction extends HttpServlet {
 							session.setAttribute("member", memberDTO.getId());
 							System.out.println("[NaverLoginAction]로그인 성공");
 							
-							response.sendRedirect("/chalKag/main.do");
+							String PageUrl = "/chalKag/main.do";
+							
+							response.setContentType("text/html; charset=UTF-8");
+							PrintWriter writer = response.getWriter();
+							writer.println("<script>alert('LOGIN SUCCESS'); location.href='"+ PageUrl +"';</script>"); 
+							writer.close();
+							
+//							response.sendRedirect(PageUrl);
 							
 						} else {
-							System.out.println("[NaverLoginAction] 로그인 실패");
+							System.out.println("[NaverLoginAction] LOGIN FAILED");
 						}
 					} else {
 						System.out.println("[NaverLoginAction] 없는 회원입니다.");

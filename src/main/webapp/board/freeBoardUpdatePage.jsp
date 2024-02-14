@@ -106,7 +106,8 @@ i, em {
 	    			</div> 
 	    			<!-- 이미지 미리보기 -->
 	    			<div class="actions"  id="previewDiv">
-	    				<img id="preview" style="width: 800px;" src="${boardData.image}"/>
+	    			<input type="hidden" name="image" value="${boardData.image}">
+	    				<img id="preview" style="width: 800px;" src="bimg/${boardData.image}"/>
 	    			</div>
 					<!-- 내용 -->
 					<div class="col-12">
@@ -143,7 +144,6 @@ i, em {
    var imgFile = $('#fileInput').val();            
    var fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|webp)$/;   // 이미지 업로드 제약
    var maxSize = 5 * 1024 * 1024;                     // 파일 사이즈 제약
-   var fileSize;
    const preview = document.querySelector('#preview');      // 이미지 업로드시 미리보기 기능을 담당
    var fileDOM = document.getElementById('fileInput');
    var previewDiv = document.getElementById('previewDiv');   // 이미지 업로드 미리보기 태그
@@ -179,26 +179,33 @@ i, em {
 
          form.addEventListener("submit", function(event) {
            const contents = editor.getData().trim();
-           const image = document.querySelector("#image").files[0];
+           const image = document.querySelector("#fileInput").files[0];
+           const fileSize = image ? image.size : 0; // 파일이 있을 때만 파일 사이즈를 가져옴
 
-           if (contents === null || contents === "") {
-             event.preventDefault();
+           requiredInputs.forEach(function(input) {
+               if (input.value.trim() === '') {
+                   isEmpty = true;
+               }
+           });
+           
+           if (isEmpty) {
+               event.preventDefault(); // 폼 제출 막기
+               alert('필수 입력 필드를 모두 작성해주세요.');
+           } else if (contents === null || contents === "") {
              alert("내용을 입력해주세요.");
-           } else  if(imgFile != "" && imgFile != null) {
-            fileSize = document.getElementById("fileInput").files[0].size;   // submit 전 파일이 없을 경우
-             if(!imgFile.match(fileForm)) {                           // submit을 막는 유효성
-                event.preventDefault();
+             event.preventDefault();
+           } else  if(image && !image.name.match(fileForm)) {
                alert("이미지 파일만 업로드 가능");
-               return;
-              } else if(fileSize = maxSize) {
-                event.preventDefault();
+        	   event.preventDefault();
+        	   return;
+           } else if(fileSize > maxSize) {
                alert("파일 사이즈는 5MB까지 가능");
+               event.preventDefault();
                return;
              }
-           } 
          });
        });
-      
+   
     </script>
 </body>
 </html>

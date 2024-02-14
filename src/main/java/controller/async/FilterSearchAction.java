@@ -12,9 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import model.board.BoardDTO;
 import model.board.SearchDAO;
@@ -49,11 +46,10 @@ public class FilterSearchAction extends HttpServlet {
 		String searchField = request.getParameter("searchField");
 		String searchInput = request.getParameter("searchInput");
 		String jsonOrderColumnDirection = request.getParameter("jsonOrderColumnDirection");
-		System.out.println("[로그] 59번 라인" + jsonOrderColumnDirection);
+		String priceSort = request.getParameter("priceSort");
 		
 		String id = request.getParameter("id");
-		
-		
+		System.out.println("[로그] 59번 라인" + jsonOrderColumnDirection);
 
 		// Map을 사용하여 정렬기준과 방향 정보를 담음
 		Map<String, String> orderMap = new HashMap<>();
@@ -68,6 +64,7 @@ public class FilterSearchAction extends HttpServlet {
 		//마이보드, 멤버보드 정렬을 위한 set
 		searchDTO.setCategory(category);
 		searchDTO.setId(id);
+		searchDTO.setPriceSort(priceSort);
 		
 
 		if (jsonOrderColumnDirection != null) {
@@ -84,7 +81,6 @@ public class FilterSearchAction extends HttpServlet {
 
 				// 키-값 쌍을 맵에 추가
 				orderMap.put(key, value);
-
 			}
 
 			System.out.println("[로그] 받아온 정렬 파라미터 값 :" + orderMap);
@@ -134,12 +130,13 @@ public class FilterSearchAction extends HttpServlet {
 		ArrayList<BoardDTO> filteredBoardDatas = searchDAO.selectAll(searchDTO);
 		System.out.println("[로그] 필터된 데이터 : " + filteredBoardDatas);
 
+		// 검색 결과를 JSON 형식으로 응답
 		if (filteredBoardDatas != null) {
-		    Gson gson = new Gson();
-		    String jsonFilterBoardDatasStr = gson.toJson(filteredBoardDatas);
-		    response.setContentType("application/json");
-		    response.setCharacterEncoding("UTF-8");
-		    response.getWriter().write(jsonFilterBoardDatasStr);
+			Gson gson = new Gson();
+			String jsonFilterBoardDatasStr = gson.toJson(filteredBoardDatas);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(jsonFilterBoardDatasStr);
 		}
 	}
 

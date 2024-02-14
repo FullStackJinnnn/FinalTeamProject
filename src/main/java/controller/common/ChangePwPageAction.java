@@ -16,7 +16,7 @@ public class ChangePwPageAction implements Action {
 			throws ServletException, IOException {
 
 		ActionForward forward = new ActionForward();
-		forward.setPath("/chalKag/common/changePwPage.jsp");
+		forward.setPath("common/changePwPage.jsp");
 		forward.setRedirect(false);
 		request.setAttribute("id", request.getParameter("id"));
 

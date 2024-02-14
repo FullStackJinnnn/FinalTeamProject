@@ -25,6 +25,7 @@ import controller.board.SellBoardUpdatePageAction;
 import controller.board.SellBoardWriteAction;
 import controller.board.SellBoardWritePageAction;
 import controller.common.ChangePhAction;
+import controller.common.ChangePhPageAction;
 import controller.common.ChangePwAction;
 import controller.common.ChangePwPageAction;
 import controller.common.CheckPwAction;
@@ -35,7 +36,6 @@ import controller.common.FindIdResultPageAction;
 import controller.common.FindPwPageAction;
 import controller.common.JoinAction;
 import controller.common.JoinPageAction;
-import controller.common.LoginAction;
 import controller.common.LoginPageAction;
 import controller.common.LogoutAction;
 import controller.common.MainAction;
@@ -61,7 +61,6 @@ public class HandlerMapper {
 		handlerMap.put("/joinPage.do", new JoinPageAction());
 		handlerMap.put("/join.do", new JoinAction());
 		handlerMap.put("/loginPage.do", new LoginPageAction());
-		handlerMap.put("/login.do", new LoginAction());
 		handlerMap.put("/logout.do", new LogoutAction());
 		handlerMap.put("/findIdPage.do", new FindIdPageAction());
 		handlerMap.put("/findPwPage.do", new FindPwPageAction());
@@ -101,6 +100,7 @@ public class HandlerMapper {
 		handlerMap.put("/findIdResultPage.do", new FindIdResultPageAction());
 		handlerMap.put("/reviewWrite.do", new ReviewWriteAction());
 		handlerMap.put("/boardDelete.do", new BoardDeleteAction());
+		handlerMap.put("/changePhPage.do", new ChangePhPageAction());
 
 	}
 

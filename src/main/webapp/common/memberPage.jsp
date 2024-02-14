@@ -70,8 +70,7 @@ a {
 					<!-- 프사 -->
 					<div class="field">
 						<div class="photo">
-							<img id="preview" alt="프로필 이미지" src="memberProfileImages/${memberData.profile}"
-								onload="resizePreviewImage(this, 350, 350)">
+							<img id="preview" alt="프로필 이미지" src="memberProfileImages/${memberData.profile}"">
 						</div>
 					</div>
 				</form>

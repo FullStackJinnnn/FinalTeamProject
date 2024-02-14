@@ -1,6 +1,7 @@
 package controller.async;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -52,15 +53,28 @@ public class NaverJoinAction extends HttpServlet {
 		memberDTO.setName((String) naverMember.get("name"));
 		memberDTO.setNickname((String) naverMember.get("nickname"));
 		memberDTO.setBirth((String) naverMember.get("birthyear") + '-' + (String) naverMember.get("birthday"));
-		memberDTO.setPh((String) naverMember.get("mobile"));
+		
+		String ph = (String) naverMember.get("mobile");
+		
+		ph = ph.replace("-", "");
+		
+		memberDTO.setPh(ph);
 
 		boolean flag = memberDAO.insert(memberDTO);
 
 		if (flag) { // 성공시 메인으로 이동.안승준
 
 			System.out.println("회원가입 성공!");
-			session.invalidate();
-			response.sendRedirect("/chalKag/loginPage.do");
+			session.invalidate();	
+			
+			String PageUrl = "/chalKag/loginPage.do";
+			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter writer = response.getWriter();
+			writer.println("<script>alert('JOIN SUCCESS'); location.href='"+ PageUrl +"';</script>"); 
+			writer.close();
+			
+//			response.sendRedirect("/chalKag/loginPage.do");
 
 		} else { // 실패시 alert 창으로 이동.안승준
 

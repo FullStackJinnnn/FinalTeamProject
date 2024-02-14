@@ -34,6 +34,7 @@ public class KakaoJoinAction extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
+		// 카카오 계정의 이메일을 저장한다.
 		memberDTO.setId(request.getParameter("memberID"));
 
 		// UUID 생성
@@ -45,18 +46,21 @@ public class KakaoJoinAction extends HttpServlet {
 		// memberDTO에 임시 비밀번호 설정
 		memberDTO.setPw(temporaryPassword);
 
+		// 카카오 계정에서 가져온 이름, 닉네임, 생일을 저장한다.
 		memberDTO.setName(request.getParameter("name"));
 		memberDTO.setNickname(request.getParameter("nickname"));
 		memberDTO.setBirth(request.getParameter("memberBirth"));
 
+		// 카카오 계정에서 가져온 번호 : +82 10-xxxx-xxxx
 		String ph = request.getParameter("ph");
-		System.out.println(ph);
+		// +82 를 replace 메소드로 제거
 		ph = ph.replace("+82 ", "0");
-		System.out.println(ph);
-		memberDTO.setPh(ph);
-		memberDTO.setGrade(request.getParameter("grade"));
-		memberDTO.setProfile("default.jpg");
+		// -를 replace 메소드로 제거
+		ph = ph.replace("-", "");
+		// 010xxxxxxxx형식으로 변경된 번호를 저장한다.
+		memberDTO.setPh(ph);	
 
+		// DTO에 저장된 값들을 DAO로 전달하여 회원가입
 		boolean flag = memberDAO.insert(memberDTO);
 
 		if (flag) { // 성공시 메인으로 이동

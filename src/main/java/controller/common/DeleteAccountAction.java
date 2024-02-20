@@ -31,8 +31,9 @@ public class DeleteAccountAction implements Action {
 		boolean flag = memberDAO.update(memberDTO);
 
 		if (flag) {
-			forward.setPath("main.do");
-			forward.setRedirect(true);
+			forward.setPath("error/alertPage.jsp");
+			request.setAttribute("status","deleteAccountSuccess");
+			forward.setRedirect(false);
 			session.invalidate();
 
 		} else {

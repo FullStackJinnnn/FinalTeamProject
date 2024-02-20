@@ -97,7 +97,7 @@ i, em {
 				<!-- 상품명 -->
 				<div class="col-6 col-12-xsmall">
 					<input type="text" name="productName" id="productName"
-						placeholder="Name" required />
+						placeholder="productName" required />
 				</div>
 				<!-- 가격 -->
 				<div class="col-6 col-12-xsmall">

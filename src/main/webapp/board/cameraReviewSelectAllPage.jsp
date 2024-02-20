@@ -189,9 +189,15 @@ font-family: "Source Sans Pro", Helvetica, sans-serif;
 	text-align: center;
 }
 
-tableWrapper {
-	align-items: center;
-	text-align: center;
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+table th, table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #paginationContainer {
@@ -211,7 +217,7 @@ tableWrapper {
 </head>
 
 <body class="is-preload">
-	<script> console.log("[ 로그 : cameraReviewSelectAllPage.jsp ] 진입 " + ${jsonBoardDatas});</script>	
+	<script> console.log("[로그] cameraReviewSelectAllPage.jsp 진입 " + ${jsonBoardDatas});</script>	
 	<stone:printNav member='${member}' />
 
 	<div id="main"> <!-- 메인 div -->
@@ -226,9 +232,7 @@ tableWrapper {
 
 		<!-- 게시글 상세 검색(필터 검색) 폼 -->
 		<div id="filterRemoteContainer"> <!-- 게시글 상세 검색(필터 검색) 폼 -->
-	 	<p style="margin-top: 20px; text-align: center; font-weight: bolder; font-size: 30px; ">게시글 상세 검색</p>
 		
-		<hr style="margin-top: 0px; margin-bottom: 0px; background: #d3d3d3; height: 2px; border: 0;">
 			<!-- 금액대별 검색 -->
 			<div class="price" style="justify-content:center;" > <!-- 금액대별 검색 div -->
 				<div style="display: inline-block; width: 50%;"> <!-- 최저 금액 div / 최저 금액 범위 설정 -->
@@ -254,7 +258,7 @@ tableWrapper {
 				<input type="checkbox" id="company3" name="company" value="니콘">
 				<label for="company3">니콘</label>
 			</div>  <!-- 제조사별 검색 div -->
-			<hr style="margin: 10px 0;background: #d3d3d3; height: 2px; border: 0;;">
+			<hr style="margin: 10px 0;background: #d3d3d3; height: 2px; border: 0;">
 
 			<!-- 카메라 기종별  검색 -->
 			<div class="productCategory"> <!-- 카메라 기종별 검색 div -->
@@ -297,10 +301,10 @@ tableWrapper {
 					<tr>
 						<th width="12%" class="sortable" data-column="boardNum">boardNum</th>
 						<th width="*" class="sortable" data-column="title">title</th>
+						<th width="12%" class="sortable" data-column="price">price</th>
 						<th width="15%" class="sortable" data-column="writer">writer</th>
 						<th width="12%" class="sortable" data-column="boardDate">boardDate</th>
 						<th width="7%" class="sortable" data-column="recommendCNT">like</th>
-						<th width="12%" class="sortable" data-column="price">price</th>
 						<th width="9%" class="sortable" data-column="views">views</th>
 					</tr>
 				</thead>
@@ -312,8 +316,8 @@ tableWrapper {
 		</div> <!-- 카메라 리뷰 게시판 테이블 div -->
 	</div> <!-- 메인 div -->
 
-	<!-- 저작권 및 회사 정보를 담은 푸터 섹션 -->
-	<stone:copyright />
+	<!-- 저작권 및 회사 정보를 담은 푸터 섹션.-->
+	<stone:copyright /> <!-- 카피라이트 태그 -->
 
 	<!-- JavaScript 파일 링크 -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

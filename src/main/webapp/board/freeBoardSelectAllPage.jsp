@@ -92,9 +92,15 @@ font-family: "Source Sans Pro", Helvetica, sans-serif;
 	text-align: center;
 }
 
-tableWrapper {
-	align-items: center;
-	text-align: center;
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+table th, table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #paginationContainer {
@@ -114,7 +120,7 @@ tableWrapper {
 </head>
 
 <body class="is-preload">
-	<script> console.log("[ 로그 : freeBoardSelectAllPage.jsp ] 진입 " + ${jsonBoardDatas}); </script>	
+	<script> console.log("[로그] freeBoardSelectAllPage.jsp 진입 " + ${jsonBoardDatas}); </script>	
 	<stone:printNav member='${member}' />
 
 	<div id="main"> <!-- 메인 div -->
@@ -168,8 +174,8 @@ tableWrapper {
 		</div> <!-- 자유 게시판 테이블 div -->
 	</div> <!-- 메인 div -->
 
-	<!-- 저작권 및 회사 정보를 담은 푸터 섹션 -->
-	<stone:copyright />
+	<!-- 저작권 및 회사 정보를 담은 푸터 섹션.-->
+	<stone:copyright /> <!-- 카피라이트 태그 -->
 
 	<!-- JavaScript 파일 링크 -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -18,7 +18,12 @@ $("#btnImageSubmit").on("click", function(event) {
 
     // 이미지 파일이 선택되지 않았을 경우 경고 메시지 출력
     if (fileInput.files.length === 0) {
-        alert("이미지를 선택해주세요.");
+		Swal.fire({
+					title: '이미지 미선택',
+					text: '이미지를 선택해주세요.',
+					icon: 'warning',
+					confirmButtonText: '확인'
+				})
         return false;
     }
 
@@ -40,7 +45,12 @@ $("#btnImageSubmit").on("click", function(event) {
         success: function(data) {
             console.log(data);
             if (data == '1') {
-                alert("프로필 이미지 변경완료!");
+					Swal.fire({
+					title: '이미지 확정',
+					text: '프로필 변경이 완료 되었습니다.',
+					icon: 'success',
+					confirmButtonText: '확인'
+				})
                 return true;
             }
         },
@@ -75,10 +85,20 @@ $("#btnNicknameSubmit").on("click", function(event) {
         success: function(data) {
             console.log(data);
             if (data == '1') {
-                alert("닉네임 변경완료!");
+				Swal.fire({
+					title: '닉네임 확정',
+					text: '닉네임 변경이 완료 되었습니다.',
+					icon: 'success',
+					confirmButtonText: '확인'
+				})
                 return true;
             } else {
-                alert("닉네임 중복!");
+                	Swal.fire({
+					title: '닉네임 중복',
+					text: '중복된 닉네임 입니다.',
+					icon: 'warning',
+					confirmButtonText: '확인'
+				})
                 return true;
             }
         },

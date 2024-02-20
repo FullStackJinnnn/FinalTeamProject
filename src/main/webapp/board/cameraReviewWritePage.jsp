@@ -93,7 +93,7 @@ i, em {
 				</div>
 				<!-- 상품명 -->
 				<div class="col-6 col-12-xsmall">
-					<input type="text" name="productName" id="productName" placeholder="Name" />
+					<input type="text" name="productName" id="productName" placeholder="productName" />
 				</div>
 				<!-- 가격 -->
 				<div class="col-6 col-12-xsmall">

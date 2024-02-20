@@ -92,9 +92,15 @@ font-family: "Source Sans Pro", Helvetica, sans-serif;
 	text-align: center;
 }
 
-tableWrapper {
-	align-items: center;
-	text-align: center;
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+table th, table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #paginationContainer {
@@ -114,7 +120,7 @@ tableWrapper {
 </head>
 
 <body class="is-preload">
-	<script> console.log("[ 로그 : myBoarSelectAllPage.jsp] 진입 " + ${jsonBoardDatas}); </script>	
+	<script> console.log("[로그] myBoarSelectAllPage.jsp 진입 " + ${jsonBoardDatas}); </script>	
 	<stone:printNav member='${member}' />
 
 	<div id="main"> <!-- 메인 div -->
@@ -137,7 +143,7 @@ tableWrapper {
 		</div> <!-- 일반 검색 div -->
 			
 		<!-- '메인으로 돌아가기' 버튼 생성 -->
-		<div class="col-6 col-12-small" style="padding-bottom: 0px; padding-bootom: 0px; margin-right: 25px; text-align: right"> <!-- '게시글 작성', '메인으로 돌아가기' 버튼 div -->
+		<div class="col-6 col-12-small" style="padding-bottom: 0px; padding-bootom: 0px; margin-right: 25px; text-align: right"> <!-- '메인으로 돌아가기' 버튼 div -->
 			<button type="button" style="margin-left: 10px;" onclick="location.href='/chalKag/main.do'">MainPage</button>
 			<!-- 버튼 클릭 시 main 페이지로 이동키는 경로 지정  -->
 		</div> <!-- '게시글 작성', '메인으로 돌아가기'버튼 div -->
@@ -163,8 +169,8 @@ tableWrapper {
 		</div> <!--  본인이 작성한 게시글 테이블 div -->
 	</div> <!-- 메인 div -->
 
-	<!-- 저작권 및 회사 정보를 담은 푸터 섹션 -->
-	<stone:copyright />
+	<!-- 저작권 및 회사 정보를 담은 푸터 섹션.-->
+	<stone:copyright /> <!-- 카피라이트 태그 -->
 
 	<!-- JavaScript 파일 링크 -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -177,25 +183,6 @@ tableWrapper {
 	<script src="/chalKag/assets/js/main.js"></script>
 	<script src="/chalKag/assets/js/pagination.js"></script>
 	<script src="/chalKag/assets/js/filterSearch.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
-	<script> // writeBtn()이 눌렸을 때 실행되는 함수 ()
-		function writeBtn() {
-			var member = "${member}"; // 사용자 정보를 가져오기 위해 JSP에서 전달된 ${member} 값을 가져옴
-			if (member == "") { // 만약 회원 정보가 비어있다면 (로그인하 않은 상태)
-				Swal.fire({ // SweetAlert2를 사용하여 경고창을 표시
-					 title: '게시글 작성이 불가합니다!', // Alert 제목
-					  text: '로그인 후 이용해 주세요!', // Alert 내용
-					  icon: 'warning' // Alert 타입
-					}).then((result) => {  // 경고창이 닫힐 때 확인 버튼이 눌리지 확인
-						if (result.isConfirmed) { // 확인 버튼이 눌린다면 로그인 페이지로 이동!
-							location.href = '/chalKag/loginPage.do';
-						}
-					});
-				} else { // 회원 정보가 있다면(로그인 되어있다면) 글 작성 페이지로 이동
-					location.href = '/chalKag/freeBoardWritePage.do';
-				}
-			}
-	</script>
-
+	
 </body>
 </html>

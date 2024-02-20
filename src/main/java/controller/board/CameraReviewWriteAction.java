@@ -36,8 +36,9 @@ public class CameraReviewWriteAction implements Action {
 		String uploadDir = this.getClass().getResource("").getPath();
 
 		// .metadata 앞까지 문자열잘라서 이미지가 저장되는 폴더인 memberProfileImages까지의 절대경로 부여
-		uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata"))
-				+ "chalKag/src/main/webapp/bimg";
+		uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata")) + "chalKag/src/main/webapp/bimg"; // 윈도우 경로 
+//		uploadDir = uploadDir.substring(0, uploadDir.indexOf("/WEB-INF")) + "/bimg"; // 맥북 경로	
+		
 		/*
 		 * uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata")) +
 		 * "/chalKag/src/main/webapp/bimg";

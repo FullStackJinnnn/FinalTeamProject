@@ -34,7 +34,9 @@ public class ReportWriteAction implements Action {
 		boolean flag = reportDAO.insert(reportDTO);
 		System.out.println(reportDTO);
 		if (flag) {
-			forward.setPath(reportPageURL);
+			forward.setPath("error/alertPage.jsp");
+			request.setAttribute("status","reportSuccess");
+			request.setAttribute("path",reportPageURL);
 			forward.setRedirect(false);
 		} else {
 			forward.setPath("error/alertPage.jsp");

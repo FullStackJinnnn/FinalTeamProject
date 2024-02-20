@@ -52,7 +52,7 @@
     height: 63px;
      line-height: 63px;
     font-size: 27px; /* 글씨 크기 조절 */
-    text-align: right;
+    text-align: left;
     
 
 }
@@ -103,19 +103,19 @@
 			<div id="labels">
 				<div class="field" id="label">
 					<div class="field">
-						<label for="myPageID">ID :</label>
+						<label for="myPageID">&nbsp;&nbsp;&nbsp;&nbsp;ID :</label>
 					</div>
 					
 					<div class="field">
-					<label for="myPageID">NAME :</label>
+					<label for="myPageID">&nbsp;&nbsp;&nbsp;&nbsp;NAME :</label>
 					</div>
 					
 					<div class="field">
-					<label for="myPageNickname" >NICKNAME :</label> 
+					<label for="myPageNickname" >&nbsp;&nbsp;&nbsp;&nbsp;NICKNAME :</label> 
 					</div>
 					
 					<div class="field">
-						<label for="myPagePh">PH :</label> 
+						<label for="myPagePh">&nbsp;&nbsp;&nbsp;&nbsp;PH :</label> 
 					</div>
 				</div>
 			</div>
@@ -142,7 +142,7 @@
 					</div>
 
 <div class="field" style="padding-left: 10%; display: flex; justify-content: flex-end;">
-    <button class="footerBtns" type="button" style="margin: 13px; padding: 0.1rem;" onclick="location.href='/chalKag/myboardSelectAllPage.do?id=${memberData.nickname}'">내 작성글로 가기</button>
+    <button class="footerBtns" type="button" style="margin: 13px; padding: 0.1rem;" onclick="location.href='/chalKag/memberBoardSelectAllPage.do?nickname=${memberData.nickname}'">회원 작성글로 가기</button>
 </div>
 				</div>
 			</div>

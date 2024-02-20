@@ -260,6 +260,7 @@ a {
 	<script src="/chalKag/assets/js/breakpoints.min.js"></script>
 	<script src="/chalKag/assets/js/util.js"></script>
 	<script src="/chalKag/assets/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script src="/chalKag/assets/js/profileImage.js"></script>
 
 </body>

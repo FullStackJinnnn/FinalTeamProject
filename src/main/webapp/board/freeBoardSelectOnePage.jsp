@@ -62,16 +62,54 @@ pre. {
 	font-size: 25px;
 }
 
+/* 이미지를 담는 컨테이너 요소에 대한 스타일 지정 (클래스 'imageContainer') */
+.imageContainer {
+    max-width: 1400px; /* 이미지 컨테이너의 최대 너비를 1400px로 설정 */
+    width: 100%; /* 너비를 부모 요소의 100%로 설정하여 반응형으로 만듦 */
+    height: auto; /* 높이를 자동으로 조정하여 이미지 비율을 유지함 */
+    overflow: hidden; /* 이미지가 컨테이너를 벗어나지 않도록 설정 */
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리: 화면 크기가 1400px 이하일 때 이미지 컨테이너의 너비 조정 */
+@media (max-width: 1400px) {
+    .imageContainer {
+        max-width: 100%; /* 이미지 컨테이너의 최대 너비를 부모 요소의 100%로 설정하여 화면 크기에 따라 조정 */
+    }
+}
+
+/* 이미지에 대한 스타일 지정 (클래스 'boardImage') */
+.boardImage {
+    max-width: 100%; /* 이미지의 최대 너비를 부모 요소의 100%로 설정하여 반응형으로 만듦 */
+    height: auto; /* 높이를 자동으로 조정하여 이미지 비율을 유지함 */
+    display: block; /* 블록 요소로 설정하여 가로 여백을 자동으로 추가 */
+    margin: 0 auto 0 0; /* 상하 여백 0, 좌우 여백을 자동으로 조정하여 가운데 정렬 */
+}
+
+/* 'boardContents' 클래스를 가진 요소에 대한 스타일 지정 */
+.boardContents {
+    /* white-space 속성: pre-wrap으로 설정하여 공백 유지 및 줄 바꿈 유지 */
+    white-space: pre-wrap;
+    /* word-wrap 속성: break-word로 설정하여 긴 단어나 문자열이 컨테이너를 넘어갈 때 줄 바꿈 처리 */
+    word-wrap: break-word;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리: 화면 크기가 1400px 이하일 때 특정 클래스 'boardContents'의 white-space 조정 */
+@media (max-width: 1400px) {
+    .boardContents {
+        white-space: normal; /* 화면이 작을 때 줄 바꿈을 자동으로 처리하여 텍스트가 잘리지 않도록 함 */
+        word-wrap: break-word; /* 긴 단어가 넘칠 경우 줄 바꿈 처리 */
+    }
+}
+
 .actions {
 	float: right;
 }
-
 </style>
 </head>
 
 
 <body class="is-preload">
-	<script> console.log("[ 로그 : freeBoardSelectOnePage.jsp ] 진입 " + ${jsonBoardDatas}); </script>	
+	<script> console.log("[로그] freeBoardSelectOnePage.jsp 진입 " + ${jsonBoardDatas}); </script>	
 	<!-- 커스텀 태그를 사용하여 네비게이션 포함 -->
 	<stone:printNav member='${member}' />
 	
@@ -93,25 +131,26 @@ pre. {
 				<!-- 게시글 작성일, 작성자  -->
 				<pre> Date  ${boardData.boardDate}   |   Writer  ${boardData.nickname} </pre>
 			</div> <!-- 게시글 정보 div -->
-
+			
 			<hr style="margin-top: 10px; margin-bottom: 10px; background: Lightgrey; height: 3px; border: 0;">
 
 		
 			<!-- 게시글 내용 -->
 			<div> <!-- 게시글 내용 div -->
-				<pre style="font-weight: bold;"> Content </pre>
+				<pre style="font-weight: bold;"> Content  :</pre>
 				<!-- 첨부 이미지 -->
-				<c:if test="${boardData.image != null }">
-					<img id="preview" style="width: 800px;" src="bimg/${boardData.image}" />
-				</c:if>
-				<c:if test="${boardData.image == null }">
-					<span>등록된 이미지가 없습니다.</span>
-				</c:if> 
-				<br>
-				<pre> ${boardData.contents} </pre>
+				<div id="imageContainer">
+					<c:if test="${boardData.image != null }">
+						<img id="boardImage" class="boardImage" src="bimg/${boardData.image}">
+					</c:if>
+					<c:if test="${boardData.image == null }">
+						<span>등록된 이미지가 없습니다.</span>
+					</c:if> 
+				</div>
+				<pre class="boardContents"> ${boardData.contents} </pre>
 			</div> <!-- 게시글 내용 div -->
 			
-
+			
 			<!-- '좋아요' 버튼 생성 -->
             <div class="col-6 col-12-small" style="text-align: center; margin-bottom: 60px;"> <br> <!-- '좋아요' 버튼 div -->
                 <c:if test="${member != null}"> <!-- 만약 로그인이 되어있다면 -->
@@ -126,7 +165,7 @@ pre. {
                      <input type="button" id="recommendBtn" value="Like" disabled /> <!-- '좋아요' 버튼 비활성화 -->
                  </c:if>
             </div> <!-- '좋아요' 버튼 div -->
-
+			
 			<hr style="margin-top: 10px; margin-bottom: 10px; background: Lightgrey; height: 3px; border: 0;">
 
 			
@@ -159,7 +198,9 @@ pre. {
 			</div> <!-- 버튼 생성 div -->
 		</section>
 	</div> <!-- 메인 div -->
-    <stone:copyright />
+
+	<!-- 저작권 및 회사 정보를 담은 푸터 섹션.-->
+	<stone:copyright /> <!-- 카피라이트 태그 -->
 	
 
 	<!-- JavaScript 파일 링크 -->

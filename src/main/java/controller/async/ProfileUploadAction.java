@@ -60,8 +60,8 @@ public class ProfileUploadAction extends HttpServlet {
 		String uploadDir = this.getClass().getResource("").getPath();
 
 		// .metadata 앞까지 문자열잘라서 이미지가 저장되는 폴더인 memberProfileImages까지의 절대경로 부여
-		uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata"))
-				+ "chalKag/src/main/webapp/memberProfileImages";
+		uploadDir = uploadDir.substring(1, uploadDir.indexOf(".metadata")) + "chalKag/src/main/webapp/memberProfileImages"; // 윈도우 경로 
+//		uploadDir = uploadDir.substring(0, uploadDir.indexOf("/WEB-INF")) + "/memberProfileImages"; // 맥북 경로	
 
 		// 총 100M 까지 저장 가능하게 함
 		int maxSize = 1024 * 1024 * 100;
